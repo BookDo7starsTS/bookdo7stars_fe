@@ -1,7 +1,6 @@
 'use client';
 
 import { ReactNode } from 'react';
-
 import { ThemeProvider as MuiThemeProvider, CssBaseline } from '@mui/material';
 import createTheme from '@mui/material/styles/createTheme';
 
@@ -12,7 +11,7 @@ const theme = createTheme({
   palette: {
     primary: {
       main: '#035036',
-      light: '#AFC6AA', // 원하는 색상 코드로 변경
+      light: '#AFC6AA',
     },
     secondary: {
       main: '#AFC6AA',

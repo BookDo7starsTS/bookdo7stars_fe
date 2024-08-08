@@ -1,6 +1,5 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
-
 import './styles.css';
 import StyledComponentsRegistry from './lib/registry';
 import ThemeProvider from './theme-provider';
@@ -19,7 +18,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body>
         <StyledComponentsRegistry>
           <ThemeProvider>{children}</ThemeProvider>
         </StyledComponentsRegistry>
