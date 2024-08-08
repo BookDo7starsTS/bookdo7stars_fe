@@ -7,8 +7,8 @@ const RegisterForm = () => {
     <Container maxWidth="md">
       <Box>
         <Grid container spacing={1}>
-          <Grid item xs={4}>
-            <Box sx={{ mr: 2 }}>
+          <Grid item xs={6}>
+            <Box sx={{ mr: 2, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <Image src={'/images/register.png'} alt="register" width={400} height={400} />
             </Box>
           </Grid>
