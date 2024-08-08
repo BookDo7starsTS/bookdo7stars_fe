@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "npm run tailwind:build & next dev",
+    "dev": "next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
@@ -11,9 +11,18 @@
     "tailwind:build": "tailwind build -i ./src/app/styles/globals.css -o ./src/app/styles/styles.css"
   },
   "dependencies": {
+    "@emotion/react": "11.13.0",
+    "@emotion/styled": "11.13.0",
+    "@mui/base": "5.0.0-beta.40",
+    "@mui/icons-material": "5.16.6",
+    "@mui/lab": "5.0.0-alpha.173",
+    "@mui/material": "5.16.6",
+    "@mui/system": "5.16.6",
+    "@mui/x-data-grid": "7.12.0",
     "next": "14.2.5",
     "react": "^18",
-    "react-dom": "^18"
+    "react-dom": "^18",
+    "styled-components": "6.1.12"
   },
   "devDependencies": {
     "@next/eslint-plugin-next": "14.2.5",
