@@ -1,7 +1,12 @@
 'use client';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+
 import { Box, Button, Checkbox, Container, FormControlLabel, Grid, TextField, Typography } from '@mui/material';
 import Image from 'next/image';
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { registerRequest } from '../actions';
+import { AppDispatch, AppState } from '../store/store';
 
 type FormData = {
   name: string;
@@ -9,18 +14,22 @@ type FormData = {
   password: string;
   confirmPassword: string;
   address: string;
-  phone: string;
+  mobile: string;
   policyyn: boolean;
 };
 
 const RegisterForm = () => {
+  const dispatch = useDispatch<AppDispatch>();
+  const rester_state = useSelector<AppState>((state) => state.user);
+  console.log(rester_state);
+
   const [formData, setFormData] = useState<FormData>({
     name: '',
     email: '',
     password: '',
     confirmPassword: '',
     address: '',
-    phone: '',
+    mobile: '',
     policyyn: false,
   });
 
@@ -65,7 +74,10 @@ const RegisterForm = () => {
     event.preventDefault();
 
     if (handleErrors(formData)) {
-      alert('register!');
+      dispatch(
+        registerRequest({ name: formData.name, email: formData.email, password: formData.password, address: formData.address, mobile: formData.mobile }),
+      );
+
       console.log('formData', formData);
       setFormData({
         name: '',
@@ -73,7 +85,7 @@ const RegisterForm = () => {
         password: '',
         confirmPassword: '',
         address: '',
-        phone: '',
+        mobile: '',
         policyyn: false,
       });
     }
@@ -184,12 +196,12 @@ const RegisterForm = () => {
                 <TextField
                   margin="normal"
                   fullWidth
-                  id="phone"
-                  label="phone"
-                  name="phone"
-                  value={formData.phone}
+                  id="mobile"
+                  label="mobile"
+                  name="mobile"
+                  value={formData.mobile}
                   onChange={handleOnChange}
-                  autoComplete="phone"
+                  autoComplete="mobile"
                   InputLabelProps={{
                     shrink: true,
                   }}
