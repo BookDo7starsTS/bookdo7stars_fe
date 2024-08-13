@@ -4,9 +4,11 @@ import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 import { Box, Button, Checkbox, Container, FormControlLabel, Grid, TextField, Typography } from '@mui/material';
 import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/navigation';
 
 import { registerRequest } from '../actions';
 import { AppDispatch, AppState } from '../store/store';
+import { toast } from 'react-toastify';
 
 type FormData = {
   name: string;
@@ -20,7 +22,18 @@ type FormData = {
 
 const RegisterForm = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const rester_state = useSelector<AppState>((state) => state.user);
+  const { isRegisterDone, isRegisterError } = useSelector((store: AppState) => store.user);
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isRegisterDone) {
+      toast.success('Registration successful!');
+      router.push('/login');
+    }
+    if (isRegisterError) {
+      toast.error(isRegisterError);
+    }
+  }, [isRegisterDone, isRegisterError]);
 
   const [formData, setFormData] = useState<FormData>({
     name: '',
