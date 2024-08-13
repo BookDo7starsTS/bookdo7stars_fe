@@ -21,7 +21,6 @@ type FormData = {
 const RegisterForm = () => {
   const dispatch = useDispatch<AppDispatch>();
   const rester_state = useSelector<AppState>((state) => state.user);
-  console.log(rester_state);
 
   const [formData, setFormData] = useState<FormData>({
     name: '',
@@ -74,11 +73,17 @@ const RegisterForm = () => {
     event.preventDefault();
 
     if (handleErrors(formData)) {
+      console.log('handleOnSubmit called');
       dispatch(
-        registerRequest({ name: formData.name, email: formData.email, password: formData.password, address: formData.address, mobile: formData.mobile }),
+        registerRequest({
+          name: formData.name,
+          email: formData.email,
+          password: formData.password,
+          address: formData.address,
+          mobile: formData.mobile,
+        }),
       );
 
-      console.log('formData', formData);
       setFormData({
         name: '',
         email: '',
