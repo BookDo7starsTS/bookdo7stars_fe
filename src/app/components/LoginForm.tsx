@@ -6,6 +6,7 @@ import { Container, Box, Grid, Typography, TextField, Button } from '@mui/materi
 import Image from 'next/image';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { LOGIN_REQUEST, loginRequest } from '../actions';
 import { AppDispatch, AppState } from '../store/store';
 
 type FormData = {
@@ -14,9 +15,9 @@ type FormData = {
 };
 
 const LoginForm = () => {
-  //   const dispatch = useDispatch<AppDispatch>();
-  //   const user_state = useSelector<AppState>((state) => state.user);
-  //   console.log('user_state:', user_state);
+  const dispatch = useDispatch<AppDispatch>();
+  const { user, isLoginError } = useSelector<AppState>((state) => state.user);
+  console.log('로그인폼에서:', isLoginError);
 
   const [formData, setFormData] = useState<FormData>({
     email: '',
@@ -25,9 +26,9 @@ const LoginForm = () => {
 
   const handleOnSubmit = (event: FormEvent<HTMLFormElement>) => {
     event?.preventDefault();
-    // dispatch( loginRequest({email: formData.email, password: formData.password}));
+    dispatch(loginRequest({ email: formData.email, password: formData.password }));
+    // dispatch({ type: LOGIN_REQUEST, data: formData });
 
-    console.log('formData:', formData);
     setFormData({
       email: '',
       password: '',
