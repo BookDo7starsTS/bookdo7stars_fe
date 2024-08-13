@@ -3,12 +3,12 @@ import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
 import { Box, Button, Checkbox, Container, FormControlLabel, Grid, TextField, Typography } from '@mui/material';
 import Image from 'next/image';
-import { useDispatch, useSelector } from 'react-redux';
 import { useRouter } from 'next/navigation';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import { registerRequest } from '../actions';
 import { AppDispatch, AppState } from '../store/store';
-import { toast } from 'react-toastify';
 
 type FormData = {
   name: string;
@@ -30,10 +30,13 @@ const RegisterForm = () => {
       toast.success('Registration successful!');
       router.push('/login');
     }
+  }, [isRegisterDone]);
+
+  useEffect(() => {
     if (isRegisterError) {
       toast.error(isRegisterError);
     }
-  }, [isRegisterDone, isRegisterError]);
+  }, [isRegisterError]);
 
   const [formData, setFormData] = useState<FormData>({
     name: '',

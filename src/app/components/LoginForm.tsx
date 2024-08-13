@@ -26,10 +26,13 @@ const LoginForm = () => {
       toast.success('Login successful!');
       router.push('/');
     }
+  }, [isLoginDone]);
+
+  useEffect(() => {
     if (isLoginError) {
       toast.error(isLoginError);
     }
-  });
+  }, [isLoginError]);
 
   const [formData, setFormData] = useState<FormData>({
     email: '',
