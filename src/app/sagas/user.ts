@@ -15,7 +15,6 @@ import {
 
 // Register API
 function registerAPI(data: RegisterRequestAction['data']) {
-  console.log('DATA', data);
   return axios.post('/users', data);
 }
 
@@ -36,13 +35,13 @@ function* register(action: RegisterRequestAction) {
 
 // Login API
 function loginAPI(data: LoginRequestAction['data']) {
-  return axios.post('/login', data); // 로그인 API 엔드포인트 (라우터, 바디에 담을 내용)
+  return axios.post('/login', data);
 }
 
 // Login saga
 function* login(action: LoginRequestAction): SagaIterator {
   try {
-    const response: any = yield call(loginAPI, action.data); //(실행할 함수, 그 함수에서 사용할 인자)
+    const response: any = yield call(loginAPI, action.data);
     yield put({
       type: LOGIN_SUCCESS,
       payload: response.data,
@@ -61,7 +60,7 @@ function* watchRegister() {
 }
 
 function* watchLogin() {
-  yield takeLatest(LOGIN_REQUEST, login); //(디스페치감지, 감지했을 때 실행되는함수)
+  yield takeLatest(LOGIN_REQUEST, login);
 }
 
 // Root Saga
