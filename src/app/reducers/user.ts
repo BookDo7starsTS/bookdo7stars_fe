@@ -7,7 +7,7 @@ type InitialState = {
   isLoginLoading: boolean;
   isLoginDone: boolean;
   isLoginError: string;
-  user: User;
+  user: User | null;
 };
 
 export const initialState: InitialState = {
@@ -17,7 +17,7 @@ export const initialState: InitialState = {
   isLoginLoading: false,
   isLoginDone: false,
   isLoginError: '',
-  user: { name: '', grade: '' },
+  user: null,
 };
 
 function userReducer(state = initialState, action: UserActionTypes) {
