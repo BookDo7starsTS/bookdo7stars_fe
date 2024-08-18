@@ -89,7 +89,6 @@ const RegisterForm = () => {
     event.preventDefault();
 
     if (handleErrors(formData)) {
-      console.log('handleOnSubmit called');
       dispatch(
         registerRequest({
           name: formData.name,

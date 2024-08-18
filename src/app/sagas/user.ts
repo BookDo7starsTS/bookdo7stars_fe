@@ -64,12 +64,10 @@ function logoutAPI() {
 //Logout saga
 function* logout(): SagaIterator {
   try {
-    console.log('로그아웃 사가 잘 탔니?');
     const response: any = yield call(logoutAPI); //{ message: 'User logged out successfully' }
     yield put({ type: LOGOUT_SUCCESS, payload: response.data.message }); //'User logged out successfully'
   } catch (err: any) {
     const errMessage = err.response?.data?.message || 'Unknown error occured'; //{ message: 'Error logging out' }
-    console.log('logout error');
     yield put({
       type: LOGIN_FAILURE,
       error: errMessage, //'Error logging out'

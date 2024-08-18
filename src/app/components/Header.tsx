@@ -94,7 +94,7 @@ const Header = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
-  const { user } = useSelector((store: AppState) => store.user);
+  const { user, isLogoutDone } = useSelector((store: AppState) => store.user);
 
   const handleLogin = () => {
     router.push('/login');
@@ -102,7 +102,9 @@ const Header = () => {
 
   const handleLogout = () => {
     dispatch(logoutRequest());
-    router.push('/');
+    if (isLogoutDone) {
+      router.push('/');
+    }
   };
 
   const handleRegister = () => {
@@ -114,9 +116,7 @@ const Header = () => {
   };
 
   const handleSession = async () => {
-    console.log('handleSession');
     const res = await axios.get('/session');
-    console.log(res);
   };
 
   return (
