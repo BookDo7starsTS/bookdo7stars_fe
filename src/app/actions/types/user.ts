@@ -1,4 +1,14 @@
-import { REGISTER_REQUEST, REGISTER_SUCCESS, REGISTER_FAILURE, LOGIN_REQUEST, LOGIN_SUCCESS, LOGIN_FAILURE } from '..';
+import {
+  REGISTER_REQUEST,
+  REGISTER_SUCCESS,
+  REGISTER_FAILURE,
+  LOGIN_REQUEST,
+  LOGIN_SUCCESS,
+  LOGIN_FAILURE,
+  LOGOUT_REQUEST,
+  LOGOUT_SUCCESS,
+  LOGOUT_FAILURE,
+} from '..';
 import { User } from '../../models/user';
 
 // action type
@@ -39,6 +49,19 @@ export interface LoginFailureAction {
   type: typeof LOGIN_FAILURE;
   error: string;
 }
+export interface LogoutRequestAction {
+  type: typeof LOGOUT_REQUEST;
+}
+
+export interface LogoutSuccessAction {
+  type: typeof LOGOUT_SUCCESS;
+  payload: string;
+}
+
+export interface LogoutFailureAction {
+  type: typeof LOGOUT_FAILURE;
+  error: string;
+}
 
 export type UserActionTypes =
   | RegisterRequestAction
@@ -46,7 +69,10 @@ export type UserActionTypes =
   | LoginRequestAction
   | RegisterFailureAction
   | LoginSuccessAction
-  | LoginFailureAction;
+  | LoginFailureAction
+  | LogoutRequestAction
+  | LogoutSuccessAction
+  | LogoutFailureAction;
 
 // action creater functions
 export const registerRequest = (data: RegisterRequestAction['data']): RegisterRequestAction => ({
@@ -75,5 +101,19 @@ export const loginSuccess = (payload: LoginSuccessAction['payload']): LoginSucce
 
 export const loginFailure = (error: string): LoginFailureAction => ({
   type: LOGIN_FAILURE,
+  error,
+});
+
+export const logoutRequest = (): LogoutRequestAction => ({
+  type: LOGOUT_REQUEST,
+});
+
+export const logoutSuccess = (payload: LogoutSuccessAction['payload']): LogoutSuccessAction => ({
+  type: LOGOUT_SUCCESS,
+  payload,
+});
+
+export const logoutFailure = (error: string): LogoutFailureAction => ({
+  type: LOGOUT_FAILURE,
   error,
 });

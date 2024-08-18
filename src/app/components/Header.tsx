@@ -6,27 +6,14 @@ import LogoutRoundedIcon from '@mui/icons-material/LogoutRounded';
 import SearchIcon from '@mui/icons-material/Search';
 import SentimentVerySatisfiedRoundedIcon from '@mui/icons-material/SentimentVerySatisfiedRounded';
 import ShoppingCartRoundedIcon from '@mui/icons-material/ShoppingCartRounded';
-import {
-  alpha,
-  AppBar,
-  Box,
-  Button,
-  IconButton,
-  InputAdornment,
-  InputBase,
-  styled,
-  TextField,
-  Toolbar,
-  Typography,
-  useMediaQuery,
-  useTheme,
-} from '@mui/material';
+import { alpha, AppBar, Box, Button, IconButton, InputAdornment, styled, TextField, Toolbar, Typography, useMediaQuery, useTheme } from '@mui/material';
 import axios from 'axios';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-import { AppState } from '../store/store';
+import { logoutRequest } from '../actions';
+import { AppDispatch, AppState } from '../store/store';
 
 const StyledSearchField = styled(TextField)(({ theme }) => ({
   position: 'relative',
@@ -106,6 +93,7 @@ const Header = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
   const { user } = useSelector((store: AppState) => store.user);
 
   const handleLogin = () => {
@@ -113,7 +101,7 @@ const Header = () => {
   };
 
   const handleLogout = () => {
-    // dispat
+    dispatch(logoutRequest());
     router.push('/');
   };
 
