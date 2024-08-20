@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { loginRequest, LoginRequestAction, loginSuccess } from '@/app/actions';
+import { loginFailure, loginRequest, LoginRequestAction, loginSuccess } from '@/app/actions';
 import LoginForm from '@/app/components/LoginForm';
 import rootReducer from '@/app/reducers';
 import rootSaga from '@/app/sagas';
@@ -91,5 +91,30 @@ describe('LoginForm', () => {
     ).toPromise();
 
     expect(dispatchedActions[0]).toEqual(loginSuccess(mockResponse.data));
+  });
+
+  it('should dispatch LOGIN_FAILURE when login API failed', async () => {
+    const mockErrorResponse = {
+      response: {
+        data: {
+          message: 'user not found',
+        },
+      },
+    };
+    (axios.post as jest.Mock).mockRejectedValueOnce(mockErrorResponse);
+
+    const dispatchedActions: any[] = [];
+
+    const fakeAction = loginRequest({ email: 'joon2@gmail.com', password: 'password123' });
+
+    await runSaga(
+      {
+        dispatch: (action) => dispatchedActions.push(action),
+      },
+      login,
+      fakeAction,
+    ).toPromise();
+
+    expect(dispatchedActions[0]).toEqual(loginFailure(mockErrorResponse.response.data.message));
   });
 });
