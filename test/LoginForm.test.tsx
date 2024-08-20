@@ -1,16 +1,14 @@
 import '@testing-library/jest-dom';
-// import { loginRequest } from '@/app/actions';
 import { loginRequest, LoginRequestAction, loginSuccess } from '@/app/actions';
 import LoginForm from '@/app/components/LoginForm';
 import rootReducer from '@/app/reducers';
 import rootSaga from '@/app/sagas';
+import { login } from '@/app/sagas/user';
 import { fireEvent, render, screen } from '@testing-library/react';
+import axios from 'axios';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
-import createSagaMiddleware from 'redux-saga';
-import { runSaga } from 'redux-saga';
-import axios from 'axios';
-import { login } from '@/app/sagas/user';
+import createSagaMiddleware, { runSaga } from 'redux-saga';
 
 const sagaMiddleware = createSagaMiddleware();
 const mockStore = configureStore([sagaMiddleware]);
