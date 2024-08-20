@@ -1,6 +1,6 @@
 import '@testing-library/jest-dom';
 // import { loginRequest } from '@/app/actions';
-import { loginRequest } from '@/app/actions';
+import { loginRequest, LoginRequestAction, loginSuccess } from '@/app/actions';
 import LoginForm from '@/app/components/LoginForm';
 import rootReducer from '@/app/reducers';
 import rootSaga from '@/app/sagas';
@@ -8,6 +8,9 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
 import createSagaMiddleware from 'redux-saga';
+import { runSaga } from 'redux-saga';
+import axios from 'axios';
+import { login } from '@/app/sagas/user';
 
 const sagaMiddleware = createSagaMiddleware();
 const mockStore = configureStore([sagaMiddleware]);
@@ -30,6 +33,8 @@ jest.mock('next/navigation', () => ({
 }));
 
 sagaMiddleware.run(rootSaga);
+
+jest.mock('axios');
 
 let emailInput: HTMLInputElement, passwordInput: HTMLInputElement, loginButton: HTMLButtonElement;
 
@@ -69,5 +74,24 @@ describe('LoginForm', () => {
         password: '0909',
       }),
     );
+  });
+
+  it('should dispatch LOGIN_SUCCESS when login API is successful', async () => {
+    const mockResponse = { data: { name: 'joon2', grade: 'bronze' } };
+    (axios.post as jest.Mock).mockResolvedValueOnce(mockResponse);
+
+    const dispatchedActions: any[] = [];
+
+    const fakeAction = loginRequest({ email: 'joon2@gmail.com', password: 'password123' });
+
+    await runSaga(
+      {
+        dispatch: (action) => dispatchedActions.push(action),
+      },
+      login,
+      fakeAction,
+    ).toPromise();
+
+    expect(dispatchedActions[0]).toEqual(loginSuccess(mockResponse.data));
   });
 });
