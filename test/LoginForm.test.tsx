@@ -80,7 +80,7 @@ describe('LoginForm', () => {
 
     const dispatchedActions: any[] = [];
 
-    const fakeAction = loginRequest({ email: 'joon2@gmail.com', password: 'password123' });
+    const fakeAction = loginRequest({ email: 'joon2@gmail.com', password: 'password12' });
 
     await runSaga(
       {
