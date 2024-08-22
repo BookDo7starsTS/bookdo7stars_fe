@@ -41,7 +41,7 @@ function loginAPI(data: LoginRequestAction['data']) {
 }
 
 // Login saga
-function* login(action: LoginRequestAction): SagaIterator {
+export function* login(action: LoginRequestAction): SagaIterator {
   try {
     const response = yield call(loginAPI, action.data);
     yield put({
