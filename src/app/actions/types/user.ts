@@ -1,3 +1,4 @@
+import { User } from '../../models/user';
 import {
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
@@ -8,10 +9,10 @@ import {
   LOGOUT_REQUEST,
   LOGOUT_SUCCESS,
   LOGOUT_FAILURE,
-} from '..';
-import { User } from '../../models/user';
+} from '../constants';
 
 // action type
+// We’ve decided to define request data as data:{}, response data as payload, and errors simply as error.
 export interface RegisterRequestAction {
   type: typeof REGISTER_REQUEST;
   data: {
@@ -25,6 +26,7 @@ export interface RegisterRequestAction {
 
 export interface RegisterSuccessAction {
   type: typeof REGISTER_SUCCESS;
+  payload: string;
 }
 
 export interface RegisterFailureAction {
@@ -80,8 +82,9 @@ export const registerRequest = (data: RegisterRequestAction['data']): RegisterRe
   data,
 });
 
-export const registerSuccess = (): RegisterSuccessAction => ({
+export const registerSuccess = (payload: RegisterSuccessAction['payload']): RegisterSuccessAction => ({
   type: REGISTER_SUCCESS,
+  payload,
 });
 
 export const registerFailure = (error: string): RegisterFailureAction => ({

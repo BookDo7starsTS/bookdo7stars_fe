@@ -13,7 +13,7 @@ import {
   LoginRequestAction,
   LOGOUT_SUCCESS,
   LOGOUT_REQUEST,
-} from '../actions';
+} from '../actions/constants';
 
 // Register API
 function registerAPI(data: RegisterRequestAction['data']) {
@@ -21,11 +21,12 @@ function registerAPI(data: RegisterRequestAction['data']) {
 }
 
 // Register saga
-function* register(action: RegisterRequestAction) {
+function* register(action: RegisterRequestAction): SagaIterator {
   try {
-    yield call(registerAPI, action.data);
+    const response: any = yield call(registerAPI, action.data);
     yield put({
       type: REGISTER_SUCCESS,
+      payload: response.data.message,
     });
   } catch (err: any) {
     yield put({
@@ -43,7 +44,8 @@ function loginAPI(data: LoginRequestAction['data']) {
 // Login saga
 export function* login(action: LoginRequestAction): SagaIterator {
   try {
-    const response = yield call(loginAPI, action.data);
+    const response: any = yield call(loginAPI, action.data);
+    console.log('로그인사가에서 response:', response.data);
     yield put({
       type: LOGIN_SUCCESS,
       payload: response.data,
@@ -67,7 +69,7 @@ function* logout(): SagaIterator {
     const response: any = yield call(logoutAPI); //{ message: 'User logged out successfully' }
     yield put({ type: LOGOUT_SUCCESS, payload: response.data.message }); //'User logged out successfully'
   } catch (err: any) {
-    const errMessage = err.response?.data?.message || 'Unknown error occured'; //{ message: 'Error logging out' }
+    const errMessage = err.response.data.message || 'Unknown error occured'; //{ message: 'Error logging out' }
     yield put({
       type: LOGIN_FAILURE,
       error: errMessage, //'Error logging out'

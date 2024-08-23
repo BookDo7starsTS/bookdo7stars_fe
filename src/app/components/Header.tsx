@@ -12,7 +12,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { logoutRequest } from '../actions';
+import { logoutRequest } from '../actions/constants';
 import { AppDispatch, AppState } from '../store/store';
 
 const StyledSearchField = styled(TextField)(({ theme }) => ({

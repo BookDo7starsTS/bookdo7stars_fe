@@ -8,11 +8,12 @@ import {
   UserActionTypes,
   LOGOUT_SUCCESS,
   LOGOUT_FAILURE,
-} from '../actions';
+} from '../actions/constants';
 import { User } from '../models/user';
 type InitialState = {
   isRegisterLoading: boolean;
   isRegisterDone: boolean;
+  registerMessage: string | null;
   isRegisterError: string;
   isLoginLoading: boolean;
   isLoginDone: boolean;
@@ -26,6 +27,7 @@ type InitialState = {
 export const initialState: InitialState = {
   isRegisterLoading: false,
   isRegisterDone: false,
+  registerMessage: null,
   isRegisterError: '',
   isLoginLoading: false,
   isLoginDone: false,
@@ -41,13 +43,14 @@ function userReducer(state = initialState, action: UserActionTypes) {
     case REGISTER_REQUEST:
       return { ...state, isRegisterLoading: true };
     case REGISTER_SUCCESS:
-      return { ...state, isRegisterLoading: false, isRegisterDone: true };
+      return { ...state, isRegisterLoading: false, isRegisterDone: true, registerMessage: action.payload };
     case REGISTER_FAILURE:
       return { ...state, isRegisterError: action.error };
 
     case LOGIN_REQUEST:
       return { ...state, isLoginLoading: true };
     case LOGIN_SUCCESS:
+      console.log('리듀서에서user: ', action.payload);
       return { ...state, isLoginLoading: false, isLoginDone: true, user: action.payload };
     case LOGIN_FAILURE:
       return { ...state, isLoginLoading: false, isLoginError: action.error };

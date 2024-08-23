@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
-import { registerRequest } from '../actions';
+import { registerRequest } from '../actions/constants';
 import { AppDispatch, AppState } from '../store/store';
 
 type FormData = {
