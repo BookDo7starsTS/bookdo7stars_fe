@@ -22,15 +22,15 @@ type FormData = {
 
 const RegisterForm = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { isRegisterDone, isRegisterError } = useSelector((store: AppState) => store.user);
+  const { registerMessage, isRegisterError } = useSelector((store: AppState) => store.user);
   const router = useRouter();
 
   useEffect(() => {
-    if (isRegisterDone) {
-      toast.success('Registration successful!');
+    if (registerMessage) {
+      toast.success(`${registerMessage}`);
       router.push('/login');
     }
-  }, [isRegisterDone]);
+  }, [registerMessage]);
 
   useEffect(() => {
     if (isRegisterError) {

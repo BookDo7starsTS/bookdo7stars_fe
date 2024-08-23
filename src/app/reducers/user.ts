@@ -50,7 +50,6 @@ function userReducer(state = initialState, action: UserActionTypes) {
     case LOGIN_REQUEST:
       return { ...state, isLoginLoading: true };
     case LOGIN_SUCCESS:
-      console.log('리듀서에서user: ', action.payload);
       return { ...state, isLoginLoading: false, isLoginDone: true, user: action.payload };
     case LOGIN_FAILURE:
       return { ...state, isLoginLoading: false, isLoginError: action.error };
