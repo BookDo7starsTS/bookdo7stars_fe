@@ -45,7 +45,6 @@ function loginAPI(data: LoginRequestAction['data']) {
 export function* login(action: LoginRequestAction): SagaIterator {
   try {
     const response: any = yield call(loginAPI, action.data);
-    console.log('로그인사가에서 response:', response.data);
     yield put({
       type: LOGIN_SUCCESS,
       payload: response.data,
