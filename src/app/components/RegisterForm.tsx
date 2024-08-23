@@ -1,5 +1,5 @@
 'use client';
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState, useRef } from 'react';
 
 import { Box, Button, Checkbox, Container, FormControlLabel, Grid, TextField, Typography } from '@mui/material';
 import Image from 'next/image';
@@ -21,14 +21,16 @@ type FormData = {
 };
 
 const RegisterForm = () => {
+  const toastDisplayed = useRef(false);
   const dispatch = useDispatch<AppDispatch>();
   const { registerMessage, isRegisterError } = useSelector((store: AppState) => store.user);
   const router = useRouter();
 
   useEffect(() => {
-    if (registerMessage) {
+    if (registerMessage && !toastDisplayed.current) {
       toast.success(`${registerMessage}`);
       router.push('/login');
+      toastDisplayed.current = true;
     }
   }, [registerMessage]);
 
