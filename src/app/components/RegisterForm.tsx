@@ -210,6 +210,7 @@ const RegisterForm = () => {
                   label="address"
                   name="address"
                   value={formData.address}
+                  onChange={handleOnChange}
                   autoComplete="address"
                   InputLabelProps={{
                     shrink: true,
