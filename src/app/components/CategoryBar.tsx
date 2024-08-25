@@ -1,10 +1,10 @@
-import React, { useEffect, useState } from 'react';
-
 import MenuIcon from '@mui/icons-material/Menu';
 import { AppBar, Toolbar, Typography, MenuItem, Box, IconButton, useTheme, useMediaQuery } from '@mui/material';
 // import { useRouter } from 'next/router';
 
 import CategoryPopOver from './CategoryPopOver';
+import { useRouter } from 'next/navigation';
+import { QueryTypes, bookGroups, getBooksPageURL } from '../books/constants';
 
 // Props 타입 정의
 interface CategoryBarProps {
@@ -14,6 +14,7 @@ interface CategoryBarProps {
 const CategoryBar: React.FC<CategoryBarProps> = ({ bookList }) => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
+  const router = useRouter();
   //   const router = useRouter();
   const handlePopperClick = () => {
     // 팝오버 열기 로직 추가
@@ -23,15 +24,9 @@ const CategoryBar: React.FC<CategoryBarProps> = ({ bookList }) => {
     // 팝오버 닫기 로직 추가
   };
 
-  const queryTypes: string[] = ['ItemNewAll', 'ItemNewSpecial', 'BestSeller', 'BlogBest'];
-  const bookGroups: Record<string, string> = {
-    ItemNewAll: '새로 나온 책',
-    ItemNewSpecial: '화제의 신간',
-    BestSeller: '베스트 셀러',
-    BlogBest: '블로그 베스트',
-  };
+  const queryTypes: QueryTypes[] = [QueryTypes.All, QueryTypes.ItemNewAll, QueryTypes.ItemNewSpecial, QueryTypes.BestSeller, QueryTypes.BlogBest];
 
-  const getGroups = (queryTypes: string[], bookGroups: Record<string, string>): string[] => {
+  const getGroups = (queryTypes: QueryTypes[], bookGroups: Record<string, string>): string[] => {
     const groups: string[] = [];
     queryTypes.forEach((q) => {
       if (bookGroups[q]) {
@@ -44,22 +39,16 @@ const CategoryBar: React.FC<CategoryBarProps> = ({ bookList }) => {
   const groups = getGroups(queryTypes, bookGroups);
 
   const goToAllBooksOfGroup = (group: string) => {
-    if (group === '전체도서') {
-      router.push('/books/all'); //넥스트에서는 어떻게 navigate을 하나?
-    } else if (group === '에디터 추천') {
-      router.push('/books/editor-recommend');
-    } else {
-      // 다른 그룹에 대한 네비게이션 추가
-    }
+    router.push(getBooksPageURL(group));
   };
 
   return (
     <div>
       <AppBar position="static" sx={{ backgroundColor: '#fff', borderBottom: '2px solid #035036', borderTop: '2px solid #035036' }}>
         <Toolbar sx={{ padding: { xs: '0 8px', sm: '0 16px' } }}>
-          <Box>
+          {/* <Box>
             <CategoryPopOver />
-          </Box>
+          </Box> */}
           <Box
             sx={{
               display: 'flex',
