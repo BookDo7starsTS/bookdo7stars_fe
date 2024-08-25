@@ -14,6 +14,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { logoutRequest } from '../actions/constants';
 import { AppDispatch, AppState } from '../store/store';
+import CategoryBar from './CategoryBar';
 
 const StyledSearchField = styled(TextField)(({ theme }) => ({
   position: 'relative',
