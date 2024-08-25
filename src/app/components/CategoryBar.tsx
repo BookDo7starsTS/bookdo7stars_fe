@@ -1,15 +1,14 @@
 import MenuIcon from '@mui/icons-material/Menu';
 import { AppBar, Toolbar, Typography, MenuItem, Box, IconButton, useTheme, useMediaQuery } from '@mui/material';
-
-import CategoryPopOver from './CategoryPopOver';
 import { useRouter } from 'next/navigation';
+
 import { QueryTypes, bookGroups, getBooksPageURL } from '../books/constants';
 
 const CategoryBar = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const router = useRouter();
-  //   const router = useRouter();
+
   const handlePopperClick = () => {
     // 팝오버 열기 로직 추가
   };
@@ -47,9 +46,6 @@ const CategoryBar = () => {
     <div>
       <AppBar position="static" sx={{ backgroundColor: '#fff', borderBottom: '2px solid #035036', borderTop: '2px solid #035036' }}>
         <Toolbar sx={{ padding: { xs: '0 8px', sm: '0 16px' } }}>
-          {/* <Box>
-            <CategoryPopOver />
-          </Box> */}
           <Box
             sx={{
               display: 'flex',
