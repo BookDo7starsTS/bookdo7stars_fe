@@ -1,5 +1,5 @@
 'use client';
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState, useRef } from 'react';
 
 import { Box, Button, Checkbox, Container, FormControlLabel, Grid, TextField, Typography } from '@mui/material';
 import Image from 'next/image';
@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
-import { registerRequest } from '../actions';
+import { registerRequest } from '../actions/constants';
 import { AppDispatch, AppState } from '../store/store';
 
 type FormData = {
@@ -21,16 +21,18 @@ type FormData = {
 };
 
 const RegisterForm = () => {
+  const toastDisplayed = useRef(false);
   const dispatch = useDispatch<AppDispatch>();
-  const { isRegisterDone, isRegisterError } = useSelector((store: AppState) => store.user);
+  const { registerMessage, isRegisterError } = useSelector((store: AppState) => store.user);
   const router = useRouter();
 
   useEffect(() => {
-    if (isRegisterDone) {
-      toast.success('Registration successful!');
+    if (registerMessage && !toastDisplayed.current) {
+      toast.success(`${registerMessage}`);
       router.push('/login');
+      toastDisplayed.current = true;
     }
-  }, [isRegisterDone]);
+  }, [registerMessage]);
 
   useEffect(() => {
     if (isRegisterError) {
@@ -208,6 +210,7 @@ const RegisterForm = () => {
                   label="address"
                   name="address"
                   value={formData.address}
+                  onChange={handleOnChange}
                   autoComplete="address"
                   InputLabelProps={{
                     shrink: true,

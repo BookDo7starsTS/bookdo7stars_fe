@@ -1,5 +1,5 @@
 import '@testing-library/jest-dom';
-import { loginFailure, loginRequest, LoginRequestAction, loginSuccess } from '@/app/actions';
+import { loginFailure, loginRequest, LoginRequestAction, loginSuccess } from '@/app/actions/constants';
 import LoginForm from '@/app/components/LoginForm';
 import rootReducer from '@/app/reducers';
 import rootSaga from '@/app/sagas';
