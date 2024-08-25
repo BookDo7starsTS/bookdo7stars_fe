@@ -133,7 +133,7 @@ const Header = () => {
           textAlign: 'center',
         }}>
         <Typography sx={{ margin: 0, color: '#fff', fontSize: isMobile ? '0.875rem' : '1rem' }}>
-          10만원 이상 주문 시 모든 주문 무료 배송 (Standard Shipping)
+          Free shipping on all orders over $100. (Standard Shipping)
         </Typography>
       </Box>
       <Box sx={{ flexGrow: 1, display: 'flex', alignItems: 'center', marginTop: 2 }}>
@@ -213,6 +213,7 @@ const Header = () => {
           </Toolbar>
         </AppBar>
       </Box>
+      <CategoryBar />
     </Box>
   );
 };
