@@ -1,17 +1,11 @@
 import MenuIcon from '@mui/icons-material/Menu';
 import { AppBar, Toolbar, Typography, MenuItem, Box, IconButton, useTheme, useMediaQuery } from '@mui/material';
-// import { useRouter } from 'next/router';
 
 import CategoryPopOver from './CategoryPopOver';
 import { useRouter } from 'next/navigation';
 import { QueryTypes, bookGroups, getBooksPageURL } from '../books/constants';
 
-// Props 타입 정의
-interface CategoryBarProps {
-  bookList: { categoryName: string }[];
-}
-
-const CategoryBar: React.FC<CategoryBarProps> = ({ bookList }) => {
+const CategoryBar = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const router = useRouter();
@@ -24,7 +18,14 @@ const CategoryBar: React.FC<CategoryBarProps> = ({ bookList }) => {
     // 팝오버 닫기 로직 추가
   };
 
-  const queryTypes: QueryTypes[] = [QueryTypes.All, QueryTypes.ItemNewAll, QueryTypes.ItemNewSpecial, QueryTypes.BestSeller, QueryTypes.BlogBest];
+  const queryTypes: QueryTypes[] = [
+    QueryTypes.All,
+    QueryTypes.ItemNewAll,
+    QueryTypes.ItemNewSpecial,
+    QueryTypes.BestSeller,
+    QueryTypes.BlogBest,
+    QueryTypes.EditorRecommended,
+  ];
 
   const getGroups = (queryTypes: QueryTypes[], bookGroups: Record<string, string>): string[] => {
     const groups: string[] = [];
@@ -38,7 +39,7 @@ const CategoryBar: React.FC<CategoryBarProps> = ({ bookList }) => {
 
   const groups = getGroups(queryTypes, bookGroups);
 
-  const goToAllBooksOfGroup = (group: string) => {
+  const goToBookGroupPage = (group: string) => {
     router.push(getBooksPageURL(group));
   };
 
@@ -68,7 +69,7 @@ const CategoryBar: React.FC<CategoryBarProps> = ({ bookList }) => {
                 width: '100%',
               }}>
               {groups.map((group, index) => (
-                <MenuItem key={index} onClick={() => goToAllBooksOfGroup(group)}>
+                <MenuItem key={index} onClick={() => goToBookGroupPage(group)}>
                   <Typography
                     sx={{
                       fontSize: { xs: '0.7rem', sm: '0.9rem' },

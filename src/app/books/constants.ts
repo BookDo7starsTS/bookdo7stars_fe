@@ -4,6 +4,7 @@ export enum QueryTypes {
   ItemNewSpecial = 'ItemNewSpecial',
   BestSeller = 'BestSeller',
   BlogBest = 'BlogBest',
+  EditorRecommended = 'EditorRecommended',
 }
 
 export const bookGroups: Record<QueryTypes, string> = {
@@ -12,6 +13,7 @@ export const bookGroups: Record<QueryTypes, string> = {
   [QueryTypes.ItemNewSpecial]: '화제의 신간',
   [QueryTypes.BestSeller]: '베스트 셀러',
   [QueryTypes.BlogBest]: '블로그 베스트',
+  [QueryTypes.EditorRecommended]: '에디터 추천',
 };
 
 export const getBooksPageURL = (query: string) => {
@@ -31,6 +33,9 @@ export const getBooksPageURL = (query: string) => {
     }
     case '블로그 베스트': {
       return baseUrl + '/blogBest';
+    }
+    case '에디터 추천': {
+      return baseUrl + '/editor-recommended';
     }
     default:
       return baseUrl;
