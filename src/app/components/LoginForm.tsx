@@ -1,6 +1,6 @@
 'use client';
 
-import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
 
 import { Container, Box, Grid, Typography, TextField, Button } from '@mui/material';
 import Image from 'next/image';
@@ -8,7 +8,7 @@ import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
-import { loginRequest } from '../actions/constants';
+import { loginRequest, resetLoginState } from '../actions/types';
 import { AppDispatch, AppState } from '../store/store';
 
 type FormData = {
@@ -17,26 +17,25 @@ type FormData = {
 };
 
 const LoginForm = () => {
-  const toastDisplayed = useRef(false);
   const dispatch = useDispatch<AppDispatch>();
   const { isLoginDone, isLoginError, user } = useSelector((store: AppState) => store.user);
   const router = useRouter();
 
   useEffect(() => {
-    if (isLoginDone && user?.name && !toastDisplayed.current) {
+    if (isLoginDone && user?.name) {
       const welcomeMessage = `Login successful! Welcome, ${user.name}`;
       toast.success(welcomeMessage);
       router.push('/');
-      toastDisplayed.current = true;
+      dispatch(resetLoginState());
     }
-  }, [isLoginDone, user, toastDisplayed, router]);
+  }, [isLoginDone, user]);
 
   useEffect(() => {
-    if (isLoginError && !toastDisplayed.current) {
+    if (isLoginError) {
       toast.error(isLoginError);
-      toastDisplayed.current = true;
+      dispatch(resetLoginState());
     }
-  }, [isLoginError, toastDisplayed]);
+  }, [isLoginError]);
 
   const [formData, setFormData] = useState<FormData>({
     email: '',

@@ -6,14 +6,13 @@ import {
   REGISTER_REQUEST,
   REGISTER_SUCCESS,
   REGISTER_FAILURE,
-  RegisterRequestAction,
   LOGIN_REQUEST,
   LOGIN_SUCCESS,
   LOGIN_FAILURE,
-  LoginRequestAction,
   LOGOUT_SUCCESS,
   LOGOUT_REQUEST,
 } from '../actions/constants';
+import { LoginRequestAction, RegisterRequestAction } from '../actions/types';
 
 // Register API
 function registerAPI(data: RegisterRequestAction['data']) {
