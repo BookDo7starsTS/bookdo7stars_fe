@@ -1,8 +1,33 @@
+'use client';
+
+import { Typography } from '@mui/material';
+import { useDispatch, useSelector } from 'react-redux';
+
+import { getAllBooksRequest } from '../actions/types';
+import { RootState } from '../reducers';
+import { useEffect } from 'react';
+import { AppDispatch } from '../store/store';
+
 const Books = () => {
+  // load books from store
+  const { books } = useSelector((store: RootState) => store.book);
+  const dispatch = useDispatch<AppDispatch>();
+
+  useEffect(() => {
+    // 페이지가 렌더링될 때 마다 한 번 디스패치
+    dispatch(getAllBooksRequest());
+  }, []);
+
+  // action, type, reducers, sagas, store
+
   return (
     <>
-      <h1>Hier werden alle Bücher dargestellt</h1>
-      <h2>위의 말은 아마도 "전체도서"란 말인가봅니다.</h2>
+      <Typography variant="h3" component="div">
+        전체 도서
+      </Typography>
+      {books.map((book) => (
+        <div key={book.id}>{book.title}</div>
+      ))}
     </>
   );
 };
