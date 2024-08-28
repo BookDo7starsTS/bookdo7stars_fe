@@ -26,6 +26,7 @@ const RegisterForm = () => {
   const { registerMessage, isRegisterError } = useSelector((store: AppState) => store.user);
   const router = useRouter();
 
+  console.log(toastDisplayed);
   useEffect(() => {
     if (registerMessage && !toastDisplayed.current) {
       toast.success(`${registerMessage}`);
@@ -35,10 +36,11 @@ const RegisterForm = () => {
   }, [registerMessage]);
 
   useEffect(() => {
-    if (isRegisterError) {
+    if (isRegisterError && !toastDisplayed.current) {
       toast.error(isRegisterError);
+      toastDisplayed.current = true;
     }
-  }, [isRegisterError]);
+  }, [isRegisterError, toastDisplayed]);
 
   const [formData, setFormData] = useState<FormData>({
     name: '',

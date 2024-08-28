@@ -1,6 +1,6 @@
 'use client';
 
-import { ChangeEvent, FormEvent, useEffect, useState } from 'react';
+import { ChangeEvent, FormEvent, useEffect, useRef, useState } from 'react';
 
 import { Container, Box, Grid, Typography, TextField, Button } from '@mui/material';
 import Image from 'next/image';
@@ -17,23 +17,26 @@ type FormData = {
 };
 
 const LoginForm = () => {
+  const toastDisplayed = useRef(false);
   const dispatch = useDispatch<AppDispatch>();
   const { isLoginDone, isLoginError, user } = useSelector((store: AppState) => store.user);
   const router = useRouter();
 
   useEffect(() => {
-    if (isLoginDone && user?.name) {
+    if (isLoginDone && user?.name && !toastDisplayed.current) {
       const welcomeMessage = `Login successful! Welcome, ${user.name}`;
       toast.success(welcomeMessage);
       router.push('/');
+      toastDisplayed.current = true;
     }
-  }, [isLoginDone, user]);
+  }, [isLoginDone, user, toastDisplayed, router]);
 
   useEffect(() => {
-    if (isLoginError) {
+    if (isLoginError && !toastDisplayed.current) {
       toast.error(isLoginError);
+      toastDisplayed.current = true;
     }
-  }, [isLoginError]);
+  }, [isLoginError, toastDisplayed]);
 
   const [formData, setFormData] = useState<FormData>({
     email: '',
