@@ -1,33 +1,28 @@
 'use client';
+import { useEffect } from 'react';
 
-import { Typography } from '@mui/material';
-import { useDispatch, useSelector } from 'react-redux';
+import { Container, Typography } from '@mui/material';
+import { useDispatch } from 'react-redux';
 
 import { getAllBooksRequest } from '../actions/types';
-import { RootState } from '../reducers';
-import { useEffect } from 'react';
+import BooksContainer from '../components/Book/BooksContainer';
 import { AppDispatch } from '../store/store';
 
 const Books = () => {
-  // load books from store
-  const { books } = useSelector((store: RootState) => store.book);
   const dispatch = useDispatch<AppDispatch>();
 
   useEffect(() => {
-    // 페이지가 렌더링될 때 마다 한 번 디스패치
     dispatch(getAllBooksRequest());
   }, []);
-
-  // action, type, reducers, sagas, store
 
   return (
     <>
       <Typography variant="h3" component="div">
-        전체 도서
+        All books
       </Typography>
-      {books.map((book) => (
-        <div key={book.id}>{book.title}</div>
-      ))}
+      <Container sx={{ width: '100vw', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        <BooksContainer />
+      </Container>
     </>
   );
 };
