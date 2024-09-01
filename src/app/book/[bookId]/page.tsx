@@ -1,21 +1,32 @@
 'use client';
 import { useEffect } from 'react';
 
+import { useParams } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 
-import { getAllBooksRequest } from '../../actions/types';
+import { getAllBooksRequest, getBookRequest } from '../../actions/types';
 import BookDetailContainer from '../../components/BookDetail/BookDetailContainer';
 import { AppDispatch } from '../../store/store';
 
 const BookDetailPage = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const { bookId } = useParams<{ bookId: string }>();
+  console.log('디테일 페이지 대왕부모에서 bookId: ', bookId);
+
   useEffect(() => {
     dispatch(getAllBooksRequest());
-  }, []);
+  }, [dispatch]);
+
+  useEffect(() => {
+    if (bookId) {
+      console.log('bookId는 문자열이다: ', bookId);
+      dispatch(getBookRequest(bookId));
+    }
+  }, [bookId, dispatch]);
 
   return (
     <div>
-      왜 뭔가 나왔어야 했는데 안 나왔을까?
+      여기는 북 디테일페이지다.
       <BookDetailContainer />
     </div>
   );
