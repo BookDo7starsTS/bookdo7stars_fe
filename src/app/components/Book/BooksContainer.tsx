@@ -7,7 +7,11 @@ import { useSelector } from 'react-redux';
 
 import BookCard from './BookCard';
 
-const BooksContainer = ({ title }) => {
+interface BookContainerProps {
+  title: string;
+}
+
+const BooksContainer: React.FC<BookContainerProps> = ({ title }) => {
   const [page, setPage] = useState(1);
   // const books = mockBooks;
   const { books } = useSelector((store: RootState) => store.book);
@@ -15,7 +19,7 @@ const BooksContainer = ({ title }) => {
   const booksPerPage = 8; //한페이지에 표시할 책의 수
   const pageCount = Math.ceil(books.length / booksPerPage);
 
-  const handlePageChange = (event, value) => {
+  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
 

@@ -7,7 +7,6 @@ import { useDispatch } from 'react-redux';
 import { getAllBooksRequest, getBookRequest } from '../../actions/types';
 import BookDetailContainer from '../../components/BookDetail/BookDetailContainer';
 import { AppDispatch } from '../../store/store';
-
 const BookDetailPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { bookId } = useParams<{ bookId: string }>();
@@ -26,7 +25,6 @@ const BookDetailPage = () => {
 
   return (
     <div>
-      여기는 북 디테일페이지다.
       <BookDetailContainer />
     </div>
   );

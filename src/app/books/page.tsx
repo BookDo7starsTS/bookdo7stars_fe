@@ -1,7 +1,7 @@
 'use client';
 import { useEffect } from 'react';
 
-import { Container, Typography } from '@mui/material';
+import { Container } from '@mui/material';
 import { useDispatch } from 'react-redux';
 
 import { getAllBooksRequest } from '../actions/types';
@@ -18,7 +18,7 @@ const Books = () => {
   return (
     <>
       <Container sx={{ width: '100vw', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-        <BooksContainer title="전체 도서" />
+        <BooksContainer title="All Books" />
       </Container>
     </>
   );
