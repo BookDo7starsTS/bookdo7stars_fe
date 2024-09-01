@@ -17,11 +17,8 @@ const Books = () => {
 
   return (
     <>
-      <Typography variant="h3" component="div">
-        All books
-      </Typography>
       <Container sx={{ width: '100vw', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-        <BooksContainer />
+        <BooksContainer title="전체 도서" />
       </Container>
     </>
   );
