@@ -7,6 +7,7 @@ export interface Book {
   cover: string;
   stockStatus: string;
   categoryId: string;
+  categoryName: string;
   mileage: number;
   publisher: string;
   adult: boolean;
