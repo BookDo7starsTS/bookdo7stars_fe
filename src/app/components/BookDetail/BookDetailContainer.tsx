@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux';
 
 import BookBasicInfo from './BookDetailComponents/BookBasicInfo';
 import BookCover from './BookDetailComponents/BookCover';
-import BookToCart from './BookDetailComponents/BookToCart';
+import BookToCartButton from './BookDetailComponents/BookToCartButton';
 
 // 타입을 명시적으로 지정 (예시)
 interface Book {
@@ -33,7 +33,7 @@ const BookDetailContainer = () => {
             ) : (
               <p>책 정보를 읽어오지 못했습니다.</p>
             )}
-            <BookToCart book={book} />
+            <BookToCartButton book={book} />
           </Grid>
         </Grid>
       </Container>
