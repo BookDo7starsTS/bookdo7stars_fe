@@ -1,20 +1,17 @@
 import { useState } from 'react';
 
-// import { mockBooks } from '@/app/models/book';
-import { RootState } from '@/app/reducers';
 import { Container, Typography, Grid, Box, Pagination } from '@mui/material';
-import { useSelector } from 'react-redux';
 
 import BookCard from './BookCard';
+import { Book } from '../../models/book';
 
 interface BookContainerProps {
+  books: Book[];
   title: string;
 }
 
-const BooksContainer: React.FC<BookContainerProps> = ({ title }) => {
+const BooksContainer: React.FC<BookContainerProps> = ({ books, title }) => {
   const [page, setPage] = useState(1);
-  // const books = mockBooks;
-  const { books } = useSelector((store: RootState) => store.book);
 
   const booksPerPage = 8; //한페이지에 표시할 책의 수
   const pageCount = Math.ceil(books.length / booksPerPage);
@@ -22,12 +19,7 @@ const BooksContainer: React.FC<BookContainerProps> = ({ title }) => {
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
-
-  console.log('Books:', books);
-  console.log('Page Count:', pageCount);
-
   const displayedBooks = books.slice((page - 1) * booksPerPage, page * booksPerPage);
-  console.log('디스플레이되는 책들: ', displayedBooks);
 
   return (
     <Container

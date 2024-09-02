@@ -1,25 +1,19 @@
-import { RootState } from '@/app/reducers';
 import { Box, Container, Grid } from '@mui/material';
-import { useSelector } from 'react-redux';
 
 import BookBasicInfo from './BookDetailComponents/BookBasicInfo';
 import BookCover from './BookDetailComponents/BookCover';
 import BookToCartButton from './BookDetailComponents/BookToCartButton';
+import { Book } from '../../models/book';
 
 // 타입을 명시적으로 지정 (예시)
-interface Book {
-  title: string;
-  author: string;
-  priceStandard: number;
-  cover: string;
-  publisher: string;
+interface BookDetailContaineProps {
+  book: Book | null;
 }
 
-const BookDetailContainer = () => {
-  const book: Book | null = useSelector((store: RootState) => store.book.book);
-
-  console.log('북:', book);
-
+const BookDetailContainer: React.FC<BookDetailContaineProps> = ({ book }) => {
+  if (!book) {
+    return <p>책 정보를 읽어오지 못했습니다.</p>;
+  }
   return (
     <Box sx={{ mt: { xs: 8, md: 16 } }}>
       <Container sx={{ mb: 4 }}>
