@@ -8,7 +8,7 @@ function getAllBooksAPI() {
   return axios.get('/book');
 }
 
-function* getAllBooks(): SagaIterator {
+export function* getAllBooks(): SagaIterator {
   try {
     const response: any = yield call(getAllBooksAPI);
     yield put({
@@ -18,7 +18,7 @@ function* getAllBooks(): SagaIterator {
   } catch (err: any) {
     yield put({
       type: GET_ALL_BOOKS_FAILURE,
-      payload: err.response.data.message,
+      error: err.response.data.message,
     });
   }
 }
