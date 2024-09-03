@@ -19,15 +19,22 @@ const store = mockStore({
   reducer: rootReducer,
 });
 const mockDispatch = jest.fn();
-const mockUseSelector = jest.fn();
+const mockRouter = jest.fn();
 
 jest.mock('react-redux', () => ({
   ...jest.requireActual('react-redux'),
   useDispatch: () => mockDispatch,
-  useSelector: () => mockUseSelector,
+  useSelector: jest.fn(
+    (selector) => selector({ book: { books: mockBooks } }), // mockBooks를 반환
+  ),
 }));
 
 sagaMiddleware.run(rootSaga);
+
+jest.mock('next/navigation', () => ({
+  ...jest.requireActual('next/navigation'),
+  useRouter: () => mockRouter,
+}));
 
 jest.mock('axios');
 
@@ -111,7 +118,7 @@ describe('BooksContainer', () => {
 
     render(
       <Provider store={store}>
-        <BooksContainer books={mockBooks} />
+        <BooksContainer books={mockBooks} title="All Books" />
       </Provider>,
     );
   });
