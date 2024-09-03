@@ -15,7 +15,7 @@ const Books = () => {
 
   useEffect(() => {
     dispatch(getAllBooksRequest());
-  }, [dispatch]);
+  }, []);
 
   return (
     <>
@@ -23,7 +23,7 @@ const Books = () => {
         All books
       </Typography>
       <Container data-testid="books-container" sx={{ width: '100vw', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-        <BooksContainer books={books} />
+        <BooksContainer books={books} title={'All Books'} />
       </Container>
     </>
   );
