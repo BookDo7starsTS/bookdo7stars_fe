@@ -12,7 +12,6 @@ interface BookCardProps {
   book: Book;
 }
 
-//styled Components
 const StyledTypography = styled(Typography)`
   text-overflow: ellipsis;
   overflow: hidden;
