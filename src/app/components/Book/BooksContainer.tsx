@@ -40,7 +40,15 @@ const BooksContainer: React.FC<BookContainerProps> = ({ books, title }) => {
       <Box>
         <Grid container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
           {displayedBooks.map((book, index) => (
-            <Grid key={index} item xs={12} sm={6} md={4} lg={3} sx={{ paddingY: '30px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            <Grid
+              data-testid="book-card"
+              key={index}
+              item
+              xs={12}
+              sm={6}
+              md={4}
+              lg={3}
+              sx={{ paddingY: '30px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <BookCard key={index} book={book} />
             </Grid>
           ))}
