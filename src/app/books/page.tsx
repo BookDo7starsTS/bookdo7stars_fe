@@ -1,7 +1,7 @@
 'use client';
 import { useEffect } from 'react';
 
-import { Container, Typography } from '@mui/material';
+import { Container } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getAllBooksRequest } from '../actions/types';
@@ -19,9 +19,6 @@ const Books = () => {
 
   return (
     <>
-      <Typography variant="h3" component="div">
-        All books
-      </Typography>
       <Container data-testid="books-container" sx={{ width: '100vw', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
         <BooksContainer books={books} title={'All Books'} />
       </Container>
