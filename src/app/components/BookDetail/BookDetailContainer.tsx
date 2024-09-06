@@ -9,11 +9,11 @@ import AddressChange from '../../../utils/AddressChange';
 import DeliveryEstimate from '../../../utils/DeliveryEstimate';
 import { Book } from '../../models/book';
 // 타입을 명시적으로 지정 (예시)
-interface BookDetailContaineProps {
+interface BookDetailContainerProps {
   book: Book | null;
 }
 
-const BookDetailContainer: React.FC<BookDetailContaineProps> = ({ book }) => {
+const BookDetailContainer: React.FC<BookDetailContainerProps> = ({ book }) => {
   const [address, setAddress] = useState('Select your region');
   if (!book) {
     return <p>책 정보를 읽어오지 못했습니다.</p>;

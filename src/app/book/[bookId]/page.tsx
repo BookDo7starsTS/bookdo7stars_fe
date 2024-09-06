@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { getBookRequest } from '../../actions/types';
 import BookDetailContainer from '../../components/BookDetail/BookDetailContainer';
+import BookDetailContainer2 from '../../components/BookDetail/BookDetailContainer2';
 import { AppDispatch } from '../../store/store';
 
 const BookDetailPage = () => {
@@ -24,6 +25,7 @@ const BookDetailPage = () => {
   return (
     <div>
       <BookDetailContainer book={validBook} />
+      <BookDetailContainer2 book={validBook} />
     </div>
   );
 };
