@@ -19,7 +19,7 @@ const BookDetails: React.FC<BookDetailsProps> = ({ book }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 
-  const section = searchParams.get('section') || activeTab;
+  const section = searchParams.get('section') || 'bookIntro';
 
   useEffect(() => {
     console.log('되냐?');
@@ -30,7 +30,10 @@ const BookDetails: React.FC<BookDetailsProps> = ({ book }) => {
     }
   }, [section, activeTab]);
 
-  const handleTabChange = (newValue: string) => {
+  const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
+    setActiveTab(newValue);
+    console.log(newValue);
+
     const params = new URLSearchParams(window.location.search);
     params.set('section', newValue);
     router.push(`?${params.toString()}`);
@@ -50,7 +53,7 @@ const BookDetails: React.FC<BookDetailsProps> = ({ book }) => {
       <Container sx={{ mt: 5, mb: 4 }}>
         <Tabs
           value={activeTab}
-          onChange={() => handleTabChange(activeTab)}
+          onChange={handleTabChange}
           // centered
           indicatorColor="primary"
           textColor="primary"
