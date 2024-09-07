@@ -3,10 +3,10 @@ import { useState, useEffect } from 'react';
 import { Box, Container, Tabs, Tab, Typography, Paper } from '@mui/material';
 import { useRouter } from 'next/navigation';
 
-import BookDetailBookInfo from './BookDetailBookInfo';
-import BookDetailOtherByAuthor from './BookDetailOtherByAuthor';
-import BookDetailReview from './BookDetailReview';
-import BookDetailShippingPolicy from './BookDetailShippingPolicy';
+import BookDetailBookInfo from './BookDetailComponents/BookDetailBookInfo';
+import BookDetailOtherByAuthor from './BookDetailComponents/BookDetailOtherByAuthor';
+import BookDetailReview from './BookDetailComponents/BookDetailReview';
+import BookDetailShippingPolicy from './BookDetailComponents/BookDetailShippingPolicy';
 import { Book } from '../../models/book';
 
 interface BookDetailContainer2Props {

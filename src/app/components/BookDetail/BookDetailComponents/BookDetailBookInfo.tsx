@@ -1,6 +1,6 @@
 import { Paper, Container, Box, Typography, Table, TableRow, TableCell, TableContainer, TableBody } from '@mui/material';
 
-import Book from '../../models/book';
+import Book from '../../../models/book';
 
 interface BookDetailBookInfoProps {
   book: Book | null;
@@ -18,11 +18,11 @@ const BookDetailBookInfo: REACT.FC<BookDetailBookInfoProps> = ({ book }) => {
                 <TableCell sx={{ outline: '1px solid #DFE4DF', width: '85%' }}>{book.isbn}</TableCell>
               </TableRow>
               <TableRow sx={{ outline: '1px solid #DFE4DF' }}>
-                <TableCell sx={{ outline: '1px solid #DFE4DF', backgroundColor: '#DADFDA', width: '15%' }}>출판날짜</TableCell>
-                <TableCell sx={{ outline: '1px solid #DFE4DF', width: '85%' }}>{book.pubDate} 백엔드에 데이타 넣기</TableCell>
+                <TableCell sx={{ outline: '1px solid #DFE4DF', backgroundColor: '#DADFDA', width: '15%' }}>Publication Date</TableCell>
+                <TableCell sx={{ outline: '1px solid #DFE4DF', width: '85%' }}>{book.pubDate}</TableCell>
               </TableRow>
               <TableRow sx={{ outline: '1px solid #DFE4DF' }}>
-                <TableCell sx={{ outline: '1px solid #DFE4DF', backgroundColor: '#DADFDA', width: '15%' }}>카테고리</TableCell>
+                <TableCell sx={{ outline: '1px solid #DFE4DF', backgroundColor: '#DADFDA', width: '15%' }}>Category</TableCell>
                 <TableCell sx={{ outline: '1px solid #DFE4DF', width: '85%' }}>{book.categoryName}</TableCell>
               </TableRow>
             </TableBody>
