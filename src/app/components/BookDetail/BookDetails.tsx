@@ -22,17 +22,13 @@ const BookDetails: React.FC<BookDetailsProps> = ({ book }) => {
   const section = searchParams.get('section') || 'bookIntro';
 
   useEffect(() => {
-    console.log('되냐?');
-
     if (section && section !== activeTab) {
       setActiveTab(section as string);
-      console.log('ssss: ', section);
     }
   }, [section, activeTab]);
 
   const handleTabChange = (event: React.SyntheticEvent, newValue: string) => {
     setActiveTab(newValue);
-    console.log(newValue);
 
     const params = new URLSearchParams(window.location.search);
     params.set('section', newValue);
