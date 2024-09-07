@@ -1,7 +1,8 @@
-import { useState, useEffect } from 'react';
+'use client';
+import { useEffect, useState } from 'react';
 
 import { Box, Container, Tabs, Tab, Typography, Paper } from '@mui/material';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 
 import BookDetailBookInfo from './BookDetailComponents/BookDetailBookInfo';
 import BookDetailOtherByAuthor from './BookDetailComponents/BookDetailOtherByAuthor';
@@ -9,15 +10,37 @@ import BookDetailReview from './BookDetailComponents/BookDetailReview';
 import BookDetailShippingPolicy from './BookDetailComponents/BookDetailShippingPolicy';
 import { Book } from '../../models/book';
 
-interface BookDetailContainer2Props {
+interface BookDetailsProps {
   book: Book | null;
 }
 
-const BookDetailContainer2: React.FC<BookDetailContainer2Props> = ({ book }) => {
+const BookDetails: React.FC<BookDetailsProps> = ({ book }) => {
   const [activeTab, setActiveTab] = useState<string>('bookIntro');
   const router = useRouter();
+  const searchParams = useSearchParams();
 
-  const handleTabChange = () => {};
+  const section = searchParams.get('section') || activeTab;
+
+  useEffect(() => {
+    console.log('되냐?');
+
+    if (section && section !== activeTab) {
+      setActiveTab(section as string);
+      console.log('ssss: ', section);
+    }
+  }, [section, activeTab]);
+
+  const handleTabChange = (newValue: string) => {
+    const params = new URLSearchParams(window.location.search);
+    params.set('section', newValue);
+    router.push(`?${params.toString()}`);
+  };
+
+  // {
+  //   pathname: '/book/[bookId]',
+  //   query: { section: newValue },
+  // }
+
   if (!book) {
     return <p>책 정보를 읽어오지 못했습니다.</p>;
   }
@@ -27,8 +50,8 @@ const BookDetailContainer2: React.FC<BookDetailContainer2Props> = ({ book }) => 
       <Container sx={{ mt: 5, mb: 4 }}>
         <Tabs
           value={activeTab}
-          onChange={handleTabChange}
-          centered
+          onChange={() => handleTabChange(activeTab)}
+          // centered
           indicatorColor="primary"
           textColor="primary"
           scrollButtons="auto"
@@ -71,4 +94,4 @@ const BookDetailContainer2: React.FC<BookDetailContainer2Props> = ({ book }) => 
     </Box>
   );
 };
-export default BookDetailContainer2;
+export default BookDetails;
