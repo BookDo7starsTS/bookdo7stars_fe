@@ -1,4 +1,5 @@
 import {
+  RESET_BOOKS,
   GET_ALL_BOOKS_FAILURE,
   GET_ALL_BOOKS_REQUEST,
   GET_ALL_BOOKS_SUCCESS,
@@ -42,6 +43,8 @@ export const initialState: InitialState = {
 
 function bookReducer(state = initialState, action: BookActionTypes) {
   switch (action.type) {
+    case RESET_BOOKS:
+      return { ...state, isGetBooksGroupNameLoading: false, isGetBooksGroupNameDone: true, books: [] };
     case GET_ALL_BOOKS_REQUEST:
       return { ...state, isGetAllBooksLoading: true };
     case GET_ALL_BOOKS_SUCCESS:

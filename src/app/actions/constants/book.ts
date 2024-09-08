@@ -1,3 +1,5 @@
+export const RESET_BOOKS = 'RESET_BOOKS';
+
 //전체 도서
 export const GET_ALL_BOOKS_REQUEST = 'GET_ALL_BOOKS_REQUEST';
 export const GET_ALL_BOOKS_SUCCESS = 'GET_ALL_BOOKS_SUCCESS';

@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Container, Button } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getBooksByGroupNameRequest } from '../../actions/types';
+import { getBooksByGroupNameRequest, resetBooks } from '../../actions/types';
 import BooksContainerForGroupName from '../../components/Book/BooksContainerForGroupName';
 import { RootState } from '../../reducers';
 import { AppDispatch } from '../../store/store';
@@ -14,6 +14,7 @@ const ItemNewSpecial = () => {
   const [isVisible, setIsVisible] = useState<boolean>(true);
   const { books } = useSelector((store: RootState) => store.book);
   useEffect(() => {
+    dispatch(resetBooks());
     dispatch(getBooksByGroupNameRequest('ItemNewAll', 1, 20));
   }, []);
 

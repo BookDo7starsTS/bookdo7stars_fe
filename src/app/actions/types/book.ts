@@ -1,6 +1,7 @@
 import { Book } from '@/app/models/book';
 
 import {
+  RESET_BOOKS,
   GET_ALL_BOOKS_REQUEST,
   GET_ALL_BOOKS_SUCCESS,
   GET_ALL_BOOKS_FAILURE,
@@ -14,6 +15,10 @@ import {
 
 // Action type
 // We’ve decided to define request data as data:{}, response data as payload, and errors simply as error.
+
+export interface ResetBooksAction {
+  type: typeof RESET_BOOKS;
+}
 
 // All Books
 export interface GetAllBooksRequestAction {
@@ -66,6 +71,7 @@ export interface GetBooksByGroupNameFailureAction {
 
 //Union type
 export type BookActionTypes =
+  | ResetBooksAction
   | GetAllBooksRequestAction
   | GetAllBooksSuccessAction
   | GetAllBooksFailureAction
@@ -77,6 +83,9 @@ export type BookActionTypes =
   | GetBooksByGroupNameFailureAction;
 
 // Action creater
+export const resetBooks = (): ResetBooksAction => ({
+  type: RESET_BOOKS,
+});
 
 //All Books
 export const getAllBooksRequest = (): GetAllBooksRequestAction => ({
@@ -123,6 +132,6 @@ export const getBooksByGroupNameSuccess = (payload: GetBooksByGroupNameSuccessAc
 });
 
 export const getBooksByGroupNameFailure = (error: string): GetBooksByGroupNameFailureAction => ({
-  type: 'GET_BOOKS_GROUPNAME_FAILURE',
+  type: GET_BOOKS_GROUPNAME_FAILURE,
   error,
 });
