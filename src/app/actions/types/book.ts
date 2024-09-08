@@ -49,7 +49,9 @@ export interface GetBookFailureAction {
 // Books by Group Name
 export interface GetBooksByGroupNameRequestAction {
   type: typeof GET_BOOKS_GROUPNAME_REQUEST;
-  data: string;
+  groupName: string;
+  page: number;
+  pageSize: number;
 }
 
 export interface GetBooksByGroupNameSuccessAction {
@@ -108,9 +110,11 @@ export const getBookFailure = (error: string): GetBookFailureAction => ({
 });
 
 //All Books by Group Name
-export const getBooksByGroupNameRequest = (data: string): GetBooksByGroupNameRequestAction => ({
+export const getBooksByGroupNameRequest = (groupName: string, page: number, pageSize: number): GetBooksByGroupNameRequestAction => ({
   type: GET_BOOKS_GROUPNAME_REQUEST,
-  data,
+  groupName,
+  page,
+  pageSize,
 });
 
 export const getBooksByGroupNameSuccess = (payload: GetBooksByGroupNameSuccessAction['payload']): GetBooksByGroupNameSuccessAction => ({

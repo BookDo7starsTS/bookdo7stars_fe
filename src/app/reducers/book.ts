@@ -59,7 +59,7 @@ function bookReducer(state = initialState, action: BookActionTypes) {
     case GET_BOOKS_GROUPNAME_REQUEST:
       return { ...state, isGetBooksGroupNameLoading: true };
     case GET_BOOKS_GROUPNAME_SUCCESS:
-      return { ...state, isGetBooksGroupNameLoading: false, isGetBooksGroupNameDone: true, books: action.payload };
+      return { ...state, isGetBooksGroupNameLoading: false, isGetBooksGroupNameDone: true, books: [...state.books, ...action.payload] };
     case GET_BOOKS_GROUPNAME_FAILURE:
       return { ...state, isGetBooksGroupNameLoading: false, isGetBooksGroupNameDone: false, isGetBooksGroupNameError: action.error };
     default:

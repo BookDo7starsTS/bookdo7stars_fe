@@ -1,7 +1,7 @@
 'use client';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
-import { Container } from '@mui/material';
+import { Container, Button } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getBooksByGroupNameRequest } from '../../actions/types';
@@ -11,16 +11,26 @@ import { AppDispatch } from '../../store/store';
 
 const ItemNewSpecial = () => {
   const dispatch = useDispatch<AppDispatch>();
+  const [isVisible, setIsVisible] = useState<boolean>(true);
   const { books } = useSelector((store: RootState) => store.book);
-  console.log('books: ' + books);
   useEffect(() => {
-    dispatch(getBooksByGroupNameRequest('ItemNewAll'));
+    dispatch(getBooksByGroupNameRequest('ItemNewAll', 1, 20));
   }, []);
+
+  const handleClickMore = () => {
+    setIsVisible(false);
+    dispatch(getBooksByGroupNameRequest('ItemNewAll', 2, 20));
+  };
+
   return (
     <>
       <Container data-testid="books-container" sx={{ width: '100vw', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
         <BooksContainerForGroupName books={books} title={'Item New Special Books'} />
-        <button>more</button>
+        {isVisible && (
+          <Button size="large" onClick={handleClickMore}>
+            more
+          </Button>
+        )}
       </Container>
     </>
   );

@@ -13,7 +13,7 @@ import {
   GET_BOOKS_GROUPNAME_SUCCESS,
   GET_BOOKS_GROUPNAME_FAILURE,
 } from '../actions/constants';
-import { GetBookRequestAction } from '../actions/types';
+import { GetBookRequestAction, GetBooksByGroupNameRequestAction } from '../actions/types';
 
 function getAllBooksAPI() {
   return axios.get('/book');
@@ -53,13 +53,13 @@ export function* getBook(action: GetBookRequestAction): SagaIterator {
   }
 }
 
-function getBooksByGroupNameAPI(groupName: string) {
-  return axios.get(`/book/${groupName}`);
+function getBooksByGroupNameAPI(groupName: string, page: number, pageSize: number) {
+  return axios.get(`/book/${groupName}?page=${page}&pageSize=${pageSize}`);
 }
 
-export function* getBooksByGroupName(action: GetBookRequestAction): SagaIterator {
+export function* getBooksByGroupName(action: GetBooksByGroupNameRequestAction): SagaIterator {
   try {
-    const response: any = yield call(getBooksByGroupNameAPI, action.data);
+    const response: any = yield call(getBooksByGroupNameAPI, action.groupName, action.page, action.pageSize);
     yield put({
       type: GET_BOOKS_GROUPNAME_SUCCESS,
       payload: response.data.books,
