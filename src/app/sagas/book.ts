@@ -67,7 +67,7 @@ export function* getBooksByGroupName(action: GetBooksByGroupNameRequestAction): 
   } catch (err: any) {
     yield put({
       type: GET_BOOKS_GROUPNAME_FAILURE,
-      error: err.response.data.message,
+      error: err?.response?.data?.message,
     });
   }
 }

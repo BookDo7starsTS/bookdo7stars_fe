@@ -11,27 +11,26 @@ import { AppDispatch } from '../../store/store';
 
 const ItemNewSpecial = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const [isVisible, setIsVisible] = useState<boolean>(true);
   const { books } = useSelector((store: RootState) => store.book);
+  const [page, setPage] = useState<number>(1);
   useEffect(() => {
     dispatch(resetBooks());
-    dispatch(getBooksByGroupNameRequest('ItemNewAll', 1, 20));
+    dispatch(getBooksByGroupNameRequest('ItemNewAll', page, 20));
   }, []);
 
   const handleClickMore = () => {
-    setIsVisible(false);
-    dispatch(getBooksByGroupNameRequest('ItemNewAll', 2, 20));
+    const nextPage = page + 1;
+    setPage(nextPage);
+    dispatch(getBooksByGroupNameRequest('ItemNewAll', nextPage, 20));
   };
 
   return (
     <>
       <Container data-testid="books-container" sx={{ width: '100vw', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
         <BooksContainerForGroupName books={books} title={'Item New Special Books'} />
-        {isVisible && (
-          <Button size="large" onClick={handleClickMore}>
-            more
-          </Button>
-        )}
+        <Button size="large" onClick={handleClickMore}>
+          more
+        </Button>
       </Container>
     </>
   );
