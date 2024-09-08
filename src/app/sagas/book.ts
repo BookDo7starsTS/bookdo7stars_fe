@@ -9,6 +9,9 @@ import {
   GET_BOOK_REQUEST,
   GET_BOOK_SUCCESS,
   GET_BOOK_FAILURE,
+  GET_BOOKS_GROUPNAME_REQUEST,
+  GET_BOOKS_GROUPNAME_SUCCESS,
+  GET_BOOKS_GROUPNAME_FAILURE,
 } from '../actions/constants';
 import { GetBookRequestAction } from '../actions/types';
 
@@ -50,6 +53,25 @@ export function* getBook(action: GetBookRequestAction): SagaIterator {
   }
 }
 
+function getBooksByGroupNameAPI(groupName: string) {
+  return axios.get(`/book/${groupName}`);
+}
+
+export function* getBooksByGroupName(action: GetBookRequestAction): SagaIterator {
+  try {
+    const response: any = yield call(getBooksByGroupNameAPI, action.data);
+    yield put({
+      type: GET_BOOKS_GROUPNAME_SUCCESS,
+      payload: response.data.books,
+    });
+  } catch (err: any) {
+    yield put({
+      type: GET_BOOKS_GROUPNAME_FAILURE,
+      error: err.response.data.message,
+    });
+  }
+}
+
 function* watchGetAllBooks() {
   yield takeLatest(GET_ALL_BOOKS_REQUEST, getAllBooks);
 }
@@ -58,6 +80,10 @@ function* watchGetBook() {
   yield takeLatest(GET_BOOK_REQUEST, getBook);
 }
 
+function* watchGetBooksByGroupName() {
+  yield takeLatest(GET_BOOKS_GROUPNAME_REQUEST, getBooksByGroupName);
+}
+
 export default function* bookSaga() {
-  yield all([fork(watchGetAllBooks), fork(watchGetBook)]);
+  yield all([fork(watchGetAllBooks), fork(watchGetBook), fork(watchGetBooksByGroupName)]);
 }
