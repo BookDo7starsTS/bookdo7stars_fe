@@ -6,7 +6,8 @@ import { useParams } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getBookRequest } from '../../actions/types';
-import BookDetailContainer from '../../components/BookDetail/BookDetailContainer';
+import BookDetails from '../../components/BookDetail/BookDetails';
+import BookOverview from '../../components/BookDetail/BookOverview';
 import { AppDispatch } from '../../store/store';
 
 const BookDetailPage = () => {
@@ -23,7 +24,8 @@ const BookDetailPage = () => {
   const validBook = typeof book === 'string' || Array.isArray(book) ? null : book;
   return (
     <div>
-      <BookDetailContainer book={validBook} />
+      <BookOverview book={validBook} />
+      <BookDetails book={validBook} />
     </div>
   );
 };
