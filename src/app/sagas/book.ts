@@ -9,8 +9,11 @@ import {
   GET_BOOK_REQUEST,
   GET_BOOK_SUCCESS,
   GET_BOOK_FAILURE,
+  GET_BESTSELLER_BOOKS_REQUEST,
+  GET_BESTSELLER_BOOKS_SUCCESS,
+  GET_BESTSELLER_BOOKS_FAILURE,
 } from '../actions/constants';
-import { GetBookRequestAction } from '../actions/types';
+import { GetBookRequestAction, GetBestsellerRequestAction } from '../actions/types';
 
 function getAllBooksAPI() {
   return axios.get('/book');
@@ -50,6 +53,25 @@ export function* getBook(action: GetBookRequestAction): SagaIterator {
   }
 }
 
+function getBestsellerAPI(groupName: string, page: number, pageSize: number) {
+  return axios.get(`/book/${groupName}?page=${page}&pageSize=${pageSize}`);
+}
+
+export function* getBestseller(action: GetBestsellerRequestAction): SagaIterator {
+  try {
+    const response: any = yield call(getBestsellerAPI, action.groupName, action.page, action.pageSize);
+    yield put({
+      type: GET_BESTSELLER_BOOKS_SUCCESS,
+      payload: response.data.books,
+    });
+  } catch (err: any) {
+    yield put({
+      type: GET_BESTSELLER_BOOKS_FAILURE,
+      error: err.response.data.message,
+    });
+  }
+}
+
 function* watchGetAllBooks() {
   yield takeLatest(GET_ALL_BOOKS_REQUEST, getAllBooks);
 }
@@ -58,6 +80,10 @@ function* watchGetBook() {
   yield takeLatest(GET_BOOK_REQUEST, getBook);
 }
 
+function* watchGetBestseller() {
+  yield takeLatest(GET_BESTSELLER_BOOKS_REQUEST, getBestseller);
+}
+
 export default function* bookSaga() {
-  yield all([fork(watchGetAllBooks), fork(watchGetBook)]);
+  yield all([fork(watchGetAllBooks), fork(watchGetBook), fork(watchGetBestseller)]);
 }

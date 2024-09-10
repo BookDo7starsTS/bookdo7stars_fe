@@ -5,6 +5,10 @@ import {
   GET_BOOK_FAILURE,
   GET_BOOK_REQUEST,
   GET_BOOK_SUCCESS,
+  GET_BESTSELLER_BOOKS_FAILURE,
+  GET_BESTSELLER_BOOKS_REQUEST,
+  GET_BESTSELLER_BOOKS_SUCCESS,
+  RESET_BOOKS,
 } from '../actions/constants';
 import { BookActionTypes } from '../actions/types';
 import { Book } from '../models/book';
@@ -18,6 +22,9 @@ type InitialState = {
   isGetBookDone: boolean;
   isGetBookError: string;
   book: Book[];
+  isGetBestsellerLoading: boolean;
+  isGetBestsellerDone: boolean;
+  isGetBestsellerError: string;
 };
 
 export const initialState: InitialState = {
@@ -29,6 +36,9 @@ export const initialState: InitialState = {
   isGetBookDone: false,
   isGetBookError: '',
   book: [],
+  isGetBestsellerLoading: false,
+  isGetBestsellerDone: false,
+  isGetBestsellerError: '',
 };
 
 function bookReducer(state = initialState, action: BookActionTypes) {
@@ -46,6 +56,15 @@ function bookReducer(state = initialState, action: BookActionTypes) {
       return { ...state, isGetBookLoading: false, book: action.payload };
     case GET_BOOK_FAILURE:
       return { ...state, isGetBookLoading: false, book: [], isGetBookError: action.error };
+
+    case GET_BESTSELLER_BOOKS_REQUEST:
+      return { ...state, isGetBestsellerLoading: true };
+    case GET_BESTSELLER_BOOKS_SUCCESS:
+      return { ...state, isGetBestsellerLoading: false, isGetBestsellerDone: true, books: [...state.books, ...action.payload] };
+    case GET_BESTSELLER_BOOKS_FAILURE:
+      return { ...state, isGetBestsellerLoading: false, isGetBestsellerDone: false, isGetBestsellerError: action.error };
+    case RESET_BOOKS:
+      return { ...state, books: [] };
     default:
       return state;
   }
