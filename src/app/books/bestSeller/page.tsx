@@ -26,7 +26,12 @@ const BestSeller = () => {
   };
 
   return (
-    <Container>
+    <Container
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+      }}>
       <BestSellerContainer books={books} title={'Bestseller'} />
       <Button onClick={handleClick}>Load more</Button>
     </Container>
