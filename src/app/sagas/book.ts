@@ -9,8 +9,11 @@ import {
   GET_BOOK_REQUEST,
   GET_BOOK_SUCCESS,
   GET_BOOK_FAILURE,
+  GET_BOOKS_BY_GROUP_REQUEST,
+  GET_BOOKS_BY_GROUP_SUCCESS,
+  GET_BOOKS_BY_GROUP_FAILURE,
 } from '../actions/constants';
-import { GetBookRequestAction } from '../actions/types';
+import { GetBookRequestAction, GetBooksByGroupRequestAction } from '../actions/types';
 
 function getAllBooksAPI() {
   return axios.get('/book');
@@ -26,6 +29,25 @@ export function* getAllBooks(): SagaIterator {
   } catch (err: any) {
     yield put({
       type: GET_ALL_BOOKS_FAILURE,
+      error: err.response.data.message,
+    });
+  }
+}
+
+function getBooksByGroupAPI(data: GetBooksByGroupRequestAction['data']) {
+  return axios.get(`/book/${data.groupName}?page=${data.page}&pageSize=${data.pageSize}`);
+}
+
+export function* getBooksByGroup(action: GetBooksByGroupRequestAction): SagaIterator {
+  try {
+    const response: any = yield call(getBooksByGroupAPI, action.data);
+    yield put({
+      type: GET_BOOKS_BY_GROUP_SUCCESS,
+      payload: response.data.books,
+    });
+  } catch (err: any) {
+    yield put({
+      type: GET_BOOKS_BY_GROUP_FAILURE,
       error: err.response.data.message,
     });
   }
@@ -54,10 +76,14 @@ function* watchGetAllBooks() {
   yield takeLatest(GET_ALL_BOOKS_REQUEST, getAllBooks);
 }
 
+function* watchGetBooksByGroup() {
+  yield takeLatest(GET_BOOKS_BY_GROUP_REQUEST, getBooksByGroup);
+}
+
 function* watchGetBook() {
   yield takeLatest(GET_BOOK_REQUEST, getBook);
 }
 
 export default function* bookSaga() {
-  yield all([fork(watchGetAllBooks), fork(watchGetBook)]);
+  yield all([fork(watchGetAllBooks), fork(watchGetBook), fork(watchGetBooksByGroup)]);
 }
