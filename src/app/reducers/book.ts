@@ -8,6 +8,7 @@ import {
   GET_BOOKS_BY_GROUP_FAILURE,
   GET_BOOKS_BY_GROUP_REQUEST,
   GET_BOOKS_BY_GROUP_SUCCESS,
+  RESET_GROUP_BOOKS,
 } from '../actions/constants';
 import { BookActionTypes } from '../actions/types';
 import { Book } from '../models/book';
@@ -25,7 +26,7 @@ type InitialState = {
   isGetBookLoading: boolean;
   isGetBookDone: boolean;
   isGetBookError: string;
-  book: Book[];
+  book: Book | null;
   pageSize: number;
 };
 
@@ -42,7 +43,7 @@ export const initialState: InitialState = {
   isGetBookLoading: false,
   isGetBookDone: false,
   isGetBookError: '',
-  book: [],
+  book: null,
   pageSize: 20,
 };
 
@@ -68,6 +69,9 @@ function bookReducer(state = initialState, action: BookActionTypes) {
       return { ...state, isGetBookLoading: false, book: action.payload };
     case GET_BOOK_FAILURE:
       return { ...state, isGetBookLoading: false, book: [], isGetBookError: action.error };
+
+    case RESET_GROUP_BOOKS:
+      return { ...state, groupBooks: [] };
     default:
       return state;
   }

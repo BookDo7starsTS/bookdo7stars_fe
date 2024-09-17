@@ -10,6 +10,7 @@ import {
   GET_BOOKS_BY_GROUP_FAILURE,
   GET_BOOKS_BY_GROUP_REQUEST,
   GET_BOOKS_BY_GROUP_SUCCESS,
+  RESET_GROUP_BOOKS,
 } from '../constants';
 
 // Action type
@@ -64,6 +65,10 @@ export interface GetBookFailureAction {
   error: string;
 }
 
+export interface ResetGroupBooksAction {
+  type: typeof RESET_GROUP_BOOKS;
+}
+
 //Union type
 export type BookActionTypes =
   | GetAllBooksRequestAction
@@ -74,7 +79,8 @@ export type BookActionTypes =
   | GetBooksByGroupFailureAction
   | GetBookRequestAction
   | GetBookSuccessAction
-  | GetBookFailureAction;
+  | GetBookFailureAction
+  | ResetGroupBooksAction;
 
 // Action creater
 
@@ -126,4 +132,8 @@ export const getBookSuccess = (payload: GetBookSuccessAction['payload']): GetBoo
 export const getBookFailure = (error: string): GetBookFailureAction => ({
   type: GET_BOOK_FAILURE,
   error,
+});
+
+export const resetGroupBooks = (): ResetGroupBooksAction => ({
+  type: RESET_GROUP_BOOKS,
 });
