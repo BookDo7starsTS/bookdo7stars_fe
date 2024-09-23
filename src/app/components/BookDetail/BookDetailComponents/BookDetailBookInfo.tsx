@@ -1,12 +1,12 @@
-import { Paper, Container, Box, Typography, Table, TableRow, TableCell, TableContainer, TableBody } from '@mui/material';
+import { Paper, Container, Box, Table, TableRow, TableCell, TableContainer, TableBody } from '@mui/material';
 
-import Book from '../../../models/book';
+import { Book } from '../../../models/book';
 
 interface BookDetailBookInfoProps {
   book: Book | null;
 }
 
-const BookDetailBookInfo: REACT.FC<BookDetailBookInfoProps> = ({ book }) => {
+const BookDetailBookInfo: React.FC<BookDetailBookInfoProps> = ({ book }) => {
   return (
     <Container>
       <Box>

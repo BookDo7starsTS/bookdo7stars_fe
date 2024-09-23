@@ -17,7 +17,7 @@ type InitialState = {
   isGetBookLoading: boolean;
   isGetBookDone: boolean;
   isGetBookError: string;
-  book: Book[];
+  book: Book | null;
 };
 
 export const initialState: InitialState = {
@@ -28,7 +28,7 @@ export const initialState: InitialState = {
   isGetBookLoading: false,
   isGetBookDone: false,
   isGetBookError: '',
-  book: [],
+  book: null,
 };
 
 function bookReducer(state = initialState, action: BookActionTypes) {
@@ -41,11 +41,11 @@ function bookReducer(state = initialState, action: BookActionTypes) {
       return { ...state, isGetAllBooksLoading: false, isGetAllBooksDone: false, isGetAllBooksError: action.error };
 
     case GET_BOOK_REQUEST:
-      return { ...state, isGetBookLoaing: true };
+      return { ...state, isGetBookLoading: true };
     case GET_BOOK_SUCCESS:
-      return { ...state, isGetBookLoading: false, book: action.payload };
+      return { ...state, isGetBookLoading: false, isGetBookDone: true, book: action.payload };
     case GET_BOOK_FAILURE:
-      return { ...state, isGetBookLoading: false, book: [], isGetBookError: action.error };
+      return { ...state, isGetBookLoading: false, isGetBookDone: false, book: null, isGetBookError: action.error };
     default:
       return state;
   }

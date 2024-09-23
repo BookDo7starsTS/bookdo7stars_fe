@@ -28,7 +28,7 @@ export interface GetBookRequestAction {
 
 export interface GetBookSuccessAction {
   type: typeof GET_BOOK_SUCCESS;
-  payload: string;
+  payload: Book;
 }
 
 export interface GetBookFailureAction {
