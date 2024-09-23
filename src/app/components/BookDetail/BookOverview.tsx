@@ -15,9 +15,7 @@ interface BookOverviewProps {
 
 const BookOverview: React.FC<BookOverviewProps> = ({ book }) => {
   const [address, setAddress] = useState('Select your region');
-  if (!book) {
-    return <p>책 정보를 읽어오지 못했습니다.</p>;
-  }
+
   return (
     <Box data-testid="book-overview-box" sx={{ mt: { xs: 8, md: 16 } }}>
       <Container sx={{ mb: 4 }}>
