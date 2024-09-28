@@ -91,7 +91,7 @@ export const getAllBooksRequest = (page: number, pageSize: number): GetAllBooksR
   pageSize,
 });
 
-export const getAllBooksSuccess = (payload: GetAllBooksSuccessAction['payload'], count: GetAllBooksSuccessAction['count'] ): GetAllBooksSuccessAction => ({
+export const getAllBooksSuccess = (payload: GetAllBooksSuccessAction['payload'], count: GetAllBooksSuccessAction['count']): GetAllBooksSuccessAction => ({
   type: GET_ALL_BOOKS_SUCCESS,
   payload,
   count,

@@ -17,6 +17,7 @@ type InitialState = {
   books: Book[];
   count: number;
   groupBooks: Book[];
+  count: number;
   isGetAllBooksLoading: boolean;
   isGetAllBooksDone: boolean;
   isGetAllBooksError: string;
@@ -34,6 +35,7 @@ export const initialState: InitialState = {
   books: [],
   count: 0,
   groupBooks: [],
+  count: 0,
   isGetAllBooksLoading: false,
   isGetAllBooksDone: false,
   isGetAllBooksError: '',
