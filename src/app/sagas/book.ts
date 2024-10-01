@@ -13,18 +13,20 @@ import {
   GET_BOOKS_BY_GROUP_SUCCESS,
   GET_BOOKS_BY_GROUP_FAILURE,
 } from '../actions/constants';
-import { GetBookRequestAction, GetBooksByGroupRequestAction } from '../actions/types';
 
-function getAllBooksAPI() {
-  return axios.get('/book');
+import { GetAllBooksRequestAction, GetBookRequestAction, GetBooksByGroupRequestAction } from '../actions/types';
+
+function getAllBooksAPI(page: number, pageSize: number) {
+  return axios.get(`/book?page=${page}&pageSize=${pageSize}`);
 }
 
-export function* getAllBooks(): SagaIterator {
+export function* getAllBooks(action: GetAllBooksRequestAction): SagaIterator {
   try {
-    const response: any = yield call(getAllBooksAPI);
+    const response: any = yield call(getAllBooksAPI, action.page, action.pageSize);
     yield put({
       type: GET_ALL_BOOKS_SUCCESS,
       payload: response.data.books,
+      count: response.data.count,
     });
   } catch (err: any) {
     yield put({

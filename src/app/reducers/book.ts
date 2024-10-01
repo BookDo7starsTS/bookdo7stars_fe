@@ -15,6 +15,7 @@ import { Book } from '../models/book';
 
 type InitialState = {
   books: Book[];
+  count: number;
   groupBooks: Book[];
   isGetAllBooksLoading: boolean;
   isGetAllBooksDone: boolean;
@@ -31,6 +32,7 @@ type InitialState = {
 
 export const initialState: InitialState = {
   books: [],
+  count: 0,
   groupBooks: [],
   isGetAllBooksLoading: false,
   isGetAllBooksDone: false,
@@ -50,7 +52,7 @@ function bookReducer(state = initialState, action: BookActionTypes) {
     case GET_ALL_BOOKS_REQUEST:
       return { ...state, isGetAllBooksLoading: true };
     case GET_ALL_BOOKS_SUCCESS:
-      return { ...state, isGetAllBooksLoading: false, isGetAllBooksDone: true, books: action.payload };
+      return { ...state, isGetAllBooksLoading: false, isGetAllBooksDone: true, books: action.payload, count: action.count };
     case GET_ALL_BOOKS_FAILURE:
       return { ...state, isGetAllBooksLoading: false, isGetAllBooksDone: false, isGetAllBooksError: action.error };
 

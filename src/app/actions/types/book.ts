@@ -19,11 +19,14 @@ import {
 // All Books
 export interface GetAllBooksRequestAction {
   type: typeof GET_ALL_BOOKS_REQUEST;
+  page: number;
+  pageSize: number;
 }
 
 export interface GetAllBooksSuccessAction {
   type: typeof GET_ALL_BOOKS_SUCCESS;
   payload: Book[];
+  count: number;
 }
 
 export interface GetAllBooksFailureAction {
@@ -82,13 +85,16 @@ export type BookActionTypes =
 // Action creater
 
 //All Books
-export const getAllBooksRequest = (): GetAllBooksRequestAction => ({
+export const getAllBooksRequest = (page: number, pageSize: number): GetAllBooksRequestAction => ({
   type: GET_ALL_BOOKS_REQUEST,
+  page,
+  pageSize,
 });
 
-export const getAllBooksSuccess = (payload: GetAllBooksSuccessAction['payload']): GetAllBooksSuccessAction => ({
+export const getAllBooksSuccess = (payload: GetAllBooksSuccessAction['payload'], count: GetAllBooksSuccessAction['count']): GetAllBooksSuccessAction => ({
   type: GET_ALL_BOOKS_SUCCESS,
   payload,
+  count,
 });
 
 export const getAllBooksFailure = (error: string): GetAllBooksFailureAction => ({

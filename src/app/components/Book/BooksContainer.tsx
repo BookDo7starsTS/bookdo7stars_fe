@@ -8,19 +8,10 @@ import { Book } from '../../models/book';
 interface BookContainerProps {
   books: Book[];
   title: string;
+  booksPerPage: number;
 }
 
-const BooksContainer: React.FC<BookContainerProps> = ({ books, title }) => {
-  const [page, setPage] = useState(1);
-
-  const booksPerPage = 8;
-  const pageCount = Math.ceil(books.length / booksPerPage);
-
-  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value);
-  };
-  const displayedBooks = books.slice((page - 1) * booksPerPage, page * booksPerPage);
-
+const BooksContainer: React.FC<BookContainerProps> = ({ books, title, booksPerPage }) => {
   return (
     <Container
       sx={{
@@ -39,7 +30,7 @@ const BooksContainer: React.FC<BookContainerProps> = ({ books, title }) => {
       </Box>
       <Box>
         <Grid container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-          {displayedBooks.map((book, index) => (
+          {books.map((book, index) => (
             <Grid
               data-testid="book-card"
               key={index}
@@ -53,26 +44,6 @@ const BooksContainer: React.FC<BookContainerProps> = ({ books, title }) => {
             </Grid>
           ))}
         </Grid>
-        <Box sx={{ display: 'flex', justifyContent: 'center', mb: '20px' }}>
-          <Pagination
-            count={pageCount}
-            page={page}
-            onChange={handlePageChange}
-            color="primary"
-            showFirstButton
-            showLastButton
-            sx={{
-              justifyContent: 'center',
-              '& .MuiPagination-ul': {
-                flexWrap: 'nowrap',
-              },
-              '& .MuiPaginationItem-root': {
-                minWidth: '32px',
-                height: '32px',
-              },
-            }}
-          />
-        </Box>
       </Box>
     </Container>
   );
