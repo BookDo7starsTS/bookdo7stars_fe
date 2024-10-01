@@ -68,7 +68,7 @@ function bookReducer(state = initialState, action: BookActionTypes) {
     case GET_BOOK_SUCCESS:
       return { ...state, isGetBookLoading: false, book: action.payload };
     case GET_BOOK_FAILURE:
-      return { ...state, isGetBookLoading: false, book: [], isGetBookError: action.error };
+      return { ...state, isGetBookLoading: false, book: null, isGetBookError: action.error };
 
     case RESET_GROUP_BOOKS:
       return { ...state, groupBooks: [] };
