@@ -40,7 +40,7 @@ const SearchPage = () => {
     endMonth: '',
   });
 
-  console.log("ddd", formData)
+  console.log('ddd', formData);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement> | SelectChangeEvent) => {
     const targetName = e.target.name;
