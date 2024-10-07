@@ -192,7 +192,7 @@ const Header = () => {
                 ),
                 style: isMobile ? { fontSize: '0.75rem' } : {}, // 모바일에서 글자 크기 조정
               }}></StyledSearchField>
-            <StyledButtonSearch>Search</StyledButtonSearch>
+            <StyledButtonSearch sx={{ marginRight: '-1px' }}>Search</StyledButtonSearch>
             <StyledButtonDetailSearch disableRipple onClick={handleDetailSearch}>
               상세검색
               <ArrowRightIcon fontSize="small" sx={{ marginLeft: '-5px' }} />
