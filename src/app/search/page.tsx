@@ -1,9 +1,22 @@
 'use client';
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect, ChangeEvent } from 'react';
 
 import { RootState } from '@/app/reducers';
 import SearchIcon from '@mui/icons-material/Search';
-import { Box, Button, Container, Paper, TextField, Typography, ToggleButtonGroup, ToggleButton, MenuItem, Select, Divider } from '@mui/material';
+import {
+  Box,
+  Button,
+  Container,
+  Paper,
+  TextField,
+  Typography,
+  ToggleButtonGroup,
+  ToggleButton,
+  MenuItem,
+  Select,
+  Divider,
+  SelectChangeEvent,
+} from '@mui/material';
 import { useParams } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -12,19 +25,6 @@ import { AppDispatch } from '../../store/store';
 const SearchPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {}, []);
-
-  // const [title, setTitle] = useState('');
-  // const [author, setAuthor] = useState('');
-  // const [publisher, setPublisher] = useState('');
-  // const [dateRange, setDateRange] = useState('all');
-  // const [sortOrder, setSortOrder] = useState('');
-  // const [isbn, setIsbn] = useState('');
-
-  // const [customDate, setCustomDate] = useState(false);
-  // const [startYear, setStartYear] = useState('');
-  // const [startMonth, setStartMonth] = useState('');
-  // const [endYear, setEndYear] = useState('');
-  // const [endMonth, setEndMonth] = useState('');
 
   const [formData, setFormData] = useState({
     title: '',
@@ -40,10 +40,17 @@ const SearchPage = () => {
     endMonth: '',
   });
 
+  console.log("ddd", formData)
 
-  const handleChange = (e:HTMLInputElement) => {
-    const targetName = e.target.name
-  }
+  const handleChange = (e: ChangeEvent<HTMLInputElement> | SelectChangeEvent) => {
+    const targetName = e.target.name;
+    const targetValue = e.target.value;
+
+    setFormData((prevState) => ({
+      ...prevState,
+      [targetName]: targetValue,
+    }));
+  };
 
   return (
     <div>
@@ -66,7 +73,7 @@ const SearchPage = () => {
                   placeholder="복합명사는 띄어쓰기 해보세요."
                   variant="outlined"
                   value={formData.title}
-                  onChange={(e)=>handleChange(e)}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e)}
                   sx={{ flex: 1 }}
                 />
               </Box>
@@ -75,14 +82,26 @@ const SearchPage = () => {
                 <Typography variant="subtitle1" sx={{ width: '80px', ml: 3 }}>
                   저자
                 </Typography>
-                <TextField name="author" variant="outlined" value={formData.author} onChange={handleChange('author')} sx={{ flex: 1 }} />
+                <TextField
+                  name="author"
+                  variant="outlined"
+                  value={formData.author}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e)}
+                  sx={{ flex: 1 }}
+                />
               </Box>
 
               <Box display="flex" alignItems="center" mb={2}>
                 <Typography variant="subtitle1" sx={{ width: '80px', ml: 3 }}>
                   출판사
                 </Typography>
-                <TextField name="publisher" variant="outlined" value={formData.publisher} onChange={handleChange('publisher')} sx={{ flex: 1 }} />
+                <TextField
+                  name="publisher"
+                  variant="outlined"
+                  value={formData.publisher}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e)}
+                  sx={{ flex: 1 }}
+                />
               </Box>
 
               <Box display="flex" alignItems="center" mb={2}>
@@ -146,7 +165,7 @@ const SearchPage = () => {
                 <Typography variant="subtitle1" sx={{ width: '80px', ml: 3 }}>
                   정렬순서
                 </Typography>
-                <Select name="sortOrder" value={formData.sortOrder} onChange={handleChange('sortOrder')} displayEmpty sx={{ flex: 1 }}>
+                <Select name="sortOrder" value={formData.sortOrder} onChange={(e: SelectChangeEvent) => handleChange(e)} displayEmpty sx={{ flex: 1 }}>
                   <MenuItem value="" disabled>
                     정렬순서
                   </MenuItem>
@@ -188,7 +207,7 @@ const SearchPage = () => {
                   placeholder="-없이 숫자만 입력하세요."
                   variant="outlined"
                   value={formData.isbn}
-                  onChange={handleChange('isbn')}
+                  onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e)}
                   sx={{ mr: 1 }}
                 />
                 <Button
