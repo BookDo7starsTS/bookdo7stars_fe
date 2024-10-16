@@ -81,6 +81,7 @@ const StyledButtonDetailSearch = styled(Button)(({ theme }) => ({
   backgroundColor: 'transparent',
   marginLeft: 0,
   height: '40px',
+  whiteSpace: 'nowrap', //텍스트 한 줄로 유지
   '&:hover': {
     backgroundColor: 'transparent', // 호버 시 배경색 제거
     boxShadow: 'none', // 호버 시 그림자 제거
@@ -143,6 +144,8 @@ const Header = () => {
     router.push('/search');
   };
 
+  console.log('isMobile:', isMobile);
+
   return (
     <Box>
       <Box
@@ -193,10 +196,16 @@ const Header = () => {
                 style: isMobile ? { fontSize: '0.75rem' } : {}, // 모바일에서 글자 크기 조정
               }}></StyledSearchField>
             <StyledButtonSearch sx={{ marginRight: '-1px' }}>Search</StyledButtonSearch>
-            <StyledButtonDetailSearch disableRipple onClick={handleDetailSearch}>
-              상세검색
-              <ArrowRightIcon fontSize="small" sx={{ marginLeft: '-5px' }} />
-            </StyledButtonDetailSearch>
+            {isMobile ? (
+              <IconButton onClick={handleDetailSearch} sx={{ marginLeft: '6px', width: '20px', height: '20px', color: 'black' }} aria-label="상세검색">
+                <SearchIcon sx={{ fontSize: '24px', color: 'black' }} />
+              </IconButton>
+            ) : (
+              <StyledButtonDetailSearch disableRipple onClick={handleDetailSearch}>
+                상세검색
+                <ArrowRightIcon fontSize="small" sx={{ marginLeft: '-5px' }} />
+              </StyledButtonDetailSearch>
+            )}
             <Box sx={{ flexGrow: 0.7 }} />
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
               {!user ? (
