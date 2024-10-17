@@ -17,6 +17,7 @@ import {
   Divider,
   SelectChangeEvent,
 } from '@mui/material';
+import { format, subMonths } from 'date-fns';
 import { useParams } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -25,19 +26,15 @@ import { AppDispatch } from '../../store/store';
 const SearchPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {}, []);
-
+  const [dateRange, setDateRange] = useState('all');
+  const [startDate, setStartDate] = useState('');
   const [formData, setFormData] = useState({
     title: '',
     author: '',
     publisher: '',
-    dateRange: 'all',
     sortOrder: '',
-    isbn: '',
-    customDate: false,
-    startYear: '',
-    startMonth: '',
-    endYear: '',
-    endMonth: '',
+    startDate: '',
+    endDate: '',
   });
 
   console.log('ddd', formData);
@@ -50,6 +47,38 @@ const SearchPage = () => {
       ...prevState,
       [targetName]: targetValue,
     }));
+  };
+
+  const handleDateRange = (e: React.MouseEvent<HTMLElement>, newValue: string) => {
+    setDateRange(newValue);
+    findStartDate(newValue);
+  };
+
+  const findStartDate = (dateRange: string) => {
+    const currentDate = new Date();
+    let newStartDate: Date;
+    switch (dateRange) {
+      case 'all':
+        break;
+      case '3':
+        newStartDate = format(subMonths(currentDate, 3), 'yyyy-MM-dd');
+        break;
+      case '6':
+        newStartDate = format(subMonths(currentDate, 6), 'yyyy-MM-dd');
+        break;
+      case '9':
+        newStartDate = format(subMonths(currentDate, 9), 'yyyy-MM-dd');
+        break;
+      case '24':
+        newStartDate = format(subMonths(currentDate, 24), 'yyyy-MM-dd');
+        break;
+      default:
+        newStartDate = '';
+    }
+    setStartDate(newStartDate);
+    console.log('newStartDate: ', newStartDate);
+
+    setFormData()
   };
 
   return (
@@ -108,20 +137,20 @@ const SearchPage = () => {
                 <Typography variant="subtitle1" sx={{ width: '80px', ml: 3 }}>
                   출간일
                 </Typography>
-                <ToggleButtonGroup value={formData.dateRange} exclusive>
+                <ToggleButtonGroup value={dateRange} exclusive onChange={handleDateRange}>
                   <ToggleButton disableRipple value="all">
                     전체
                   </ToggleButton>
-                  <ToggleButton disableRipple value="3months">
+                  <ToggleButton disableRipple value="3">
                     3개월
                   </ToggleButton>
-                  <ToggleButton disableRipple value="6months">
+                  <ToggleButton disableRipple value="6">
                     6개월
                   </ToggleButton>
-                  <ToggleButton disableRipple value="9months">
+                  <ToggleButton disableRipple value="9">
                     9개월
                   </ToggleButton>
-                  <ToggleButton disableRipple value="24months">
+                  <ToggleButton disableRipple value="24">
                     24개월
                   </ToggleButton>
                   <ToggleButton disableRipple value="custom">
@@ -174,7 +203,7 @@ const SearchPage = () => {
                   <MenuItem value="publication">출간일순</MenuItem>
                   <MenuItem value="name">상품명순</MenuItem>
                   <MenuItem value="rating">평점순</MenuItem>
-                  <MenuItem value="reviews">리뷰순</MenuItem>
+                  {/* <MenuItem value="reviews">리뷰순</MenuItem> */}
                   <MenuItem value="lowPrice">저가격순</MenuItem>
                 </Select>
               </Box>
