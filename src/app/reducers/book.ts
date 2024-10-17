@@ -8,6 +8,9 @@ import {
   GET_BOOKS_BY_GROUP_FAILURE,
   GET_BOOKS_BY_GROUP_REQUEST,
   GET_BOOKS_BY_GROUP_SUCCESS,
+  GET_BOOKS_SEARCH_REQUEST,
+  GET_BOOKS_SEARCH_SUCCESS,
+  GET_BOOKS_SEARCH_FAILURE,
   RESET_GROUP_BOOKS,
 } from '../actions/constants';
 import { BookActionTypes } from '../actions/types';
@@ -23,6 +26,9 @@ type InitialState = {
   isGetBooksByGroupLoading: boolean;
   isGetBooksByGroupDone: boolean;
   isGetBooksByGroupError: string;
+  isGetBooksSearchLoading: boolean;
+  isGetBooksSearchDone: boolean;
+  isGetBooksSearchError: string;
   isGetBookLoading: boolean;
   isGetBookDone: boolean;
   isGetBookError: string;
@@ -40,6 +46,9 @@ export const initialState: InitialState = {
   isGetBooksByGroupLoading: false,
   isGetBooksByGroupDone: false,
   isGetBooksByGroupError: '',
+  isGetBooksSearchLoading: false,
+  isGetBooksSearchDone: false,
+  isGetBooksSearchError: '',
   isGetBookLoading: false,
   isGetBookDone: false,
   isGetBookError: '',
@@ -62,6 +71,13 @@ function bookReducer(state = initialState, action: BookActionTypes) {
       return { ...state, isGetBooksByGroupLoading: false, isGetBooksByGroupDone: true, groupBooks: state.groupBooks.concat(action.payload) };
     case GET_BOOKS_BY_GROUP_FAILURE:
       return { ...state, isGetBooksByGroupLoading: false, isGetBooksByGroupDone: false, isGetBooksByGroupError: action.error };
+
+    case GET_BOOKS_SEARCH_REQUEST:
+      return { ...state, isGetAllBooksLoading: true };
+    case GET_BOOKS_SEARCH_SUCCESS:
+      return { ...state, isGetAllBooksLoading: false, isGetAllBooksDone: true, books: action.payload, count: action.count };
+    case GET_BOOKS_SEARCH_FAILURE:
+      return { ...state, isGetAllBooksLoading: false, isGetAllBooksDone: false, isGetAllBooksError: action.error };
 
     case GET_BOOK_REQUEST:
       return { ...state, isGetBookLoaing: true };
