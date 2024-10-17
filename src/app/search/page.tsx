@@ -3,6 +3,7 @@ import React, { useState, useEffect, ChangeEvent } from 'react';
 
 import { RootState } from '@/app/reducers';
 import SearchIcon from '@mui/icons-material/Search';
+import {SearchType} from './types/searchType';
 import {
   Box,
   Button,
@@ -28,7 +29,7 @@ const SearchPage = () => {
   useEffect(() => {}, []);
   const [dateRange, setDateRange] = useState('all');
   const [startDate, setStartDate] = useState('');
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<SearchType>({
     title: '',
     author: '',
     publisher: '',
@@ -56,30 +57,36 @@ const SearchPage = () => {
 
   const findStartDate = (dateRange: string) => {
     const currentDate = new Date();
-    let newStartDate: Date;
+    let start_date: Date;
     switch (dateRange) {
       case 'all':
         break;
       case '3':
-        newStartDate = format(subMonths(currentDate, 3), 'yyyy-MM-dd');
+        start_date = format(subMonths(currentDate, 3), 'yyyy-MM-dd');
         break;
       case '6':
-        newStartDate = format(subMonths(currentDate, 6), 'yyyy-MM-dd');
+        start_date = format(subMonths(currentDate, 6), 'yyyy-MM-dd');
         break;
       case '9':
-        newStartDate = format(subMonths(currentDate, 9), 'yyyy-MM-dd');
+        start_date = format(subMonths(currentDate, 9), 'yyyy-MM-dd');
         break;
       case '24':
-        newStartDate = format(subMonths(currentDate, 24), 'yyyy-MM-dd');
+        start_date = format(subMonths(currentDate, 24), 'yyyy-MM-dd');
         break;
       default:
-        newStartDate = '';
+        break;
     }
-    setStartDate(newStartDate);
-    console.log('newStartDate: ', newStartDate);
-
-    setFormData()
   };
+
+  const start_date = findStartDate(dateRange);
+  useEffect(()=>{
+    if(start_date){
+      setFormData((prevState)=> ({
+        ...prevState,
+        startDate: newStartDate,
+      }))
+    }
+  }, [start_date])
 
   return (
     <div>
@@ -235,7 +242,7 @@ const SearchPage = () => {
                   fullWidth
                   placeholder="-없이 숫자만 입력하세요."
                   variant="outlined"
-                  value={formData.isbn}
+                  // value={}
                   onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e)}
                   sx={{ mr: 1 }}
                 />
