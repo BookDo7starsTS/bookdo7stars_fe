@@ -3,7 +3,6 @@ import React, { useState, useEffect, ChangeEvent } from 'react';
 
 import { RootState } from '@/app/reducers';
 import SearchIcon from '@mui/icons-material/Search';
-import {SearchType} from './types/searchType';
 import {
   Box,
   Button,
@@ -22,6 +21,7 @@ import { format, subMonths } from 'date-fns';
 import { useParams } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { SearchType } from './types/searchType';
 import { AppDispatch } from '../../store/store';
 
 const SearchPage = () => {
@@ -79,14 +79,14 @@ const SearchPage = () => {
   };
 
   const start_date = findStartDate(dateRange);
-  useEffect(()=>{
-    if(start_date){
-      setFormData((prevState)=> ({
+  useEffect(() => {
+    if (start_date) {
+      setFormData((prevState) => ({
         ...prevState,
         startDate: newStartDate,
-      }))
+      }));
     }
-  }, [start_date])
+  }, [start_date]);
 
   return (
     <div>
