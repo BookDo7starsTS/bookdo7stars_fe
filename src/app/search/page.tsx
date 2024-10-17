@@ -57,7 +57,7 @@ const SearchPage = () => {
 
   const findStartDate = (dateRange: string) => {
     const currentDate = new Date();
-    let start_date: Date;
+    let start_date: string | undefined;
     switch (dateRange) {
       case 'all':
         break;
@@ -76,6 +76,7 @@ const SearchPage = () => {
       default:
         break;
     }
+    return start_date;
   };
 
   const start_date = findStartDate(dateRange);
@@ -83,7 +84,7 @@ const SearchPage = () => {
     if (start_date) {
       setFormData((prevState) => ({
         ...prevState,
-        startDate: newStartDate,
+        startDate: start_date,
       }));
     }
   }, [start_date]);
