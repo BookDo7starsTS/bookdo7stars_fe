@@ -28,6 +28,12 @@ const SearchPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   useEffect(() => {}, []);
   const [dateRange, setDateRange] = useState('all');
+  const [startYear, setStartYear] = useState('');
+  const [endYear, setEndYear] = useState('');
+  const [startMonth, setStartMonth] = useState('');
+  const [endMonth, setEndMonth] = useState('');
+  const months = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
+
   const [startDate, setStartDate] = useState('');
   const [formData, setFormData] = useState<SearchType>({
     title: '',
@@ -35,7 +41,7 @@ const SearchPage = () => {
     publisher: '',
     sortOrder: '',
     startDate: '',
-    endDate: '',
+    endDate: format(new Date(), 'yyyy-MM-dd'),
   });
 
   console.log('ddd', formData);
@@ -48,6 +54,28 @@ const SearchPage = () => {
       ...prevState,
       [targetName]: targetValue,
     }));
+  };
+  console.log(startYear, startMonth, endYear, endMonth);
+  const handleChangeDateRange = (event: ChangeEvent<HTMLInputElement> | SelectChangeEvent) => {
+    const targetName = event.target.name;
+    switch (targetName) {
+      case 'startYear': {
+        setStartYear(event.target.value);
+        break;
+      }
+      case 'endYear': {
+        setEndYear(event.target.value);
+        break;
+      }
+      case 'startMonth': {
+        setStartMonth(event.target.value);
+        break;
+      }
+      case 'endMonth': {
+        setEndMonth(event.target.value);
+        break;
+      }
+    }
   };
 
   const handleDateRange = (e: React.MouseEvent<HTMLElement>, newValue: string) => {
@@ -114,7 +142,6 @@ const SearchPage = () => {
                   sx={{ flex: 1 }}
                 />
               </Box>
-
               <Box display="flex" alignItems="center" mb={2}>
                 <Typography variant="subtitle1" sx={{ width: '80px', ml: 3 }}>
                   저자
@@ -127,7 +154,6 @@ const SearchPage = () => {
                   sx={{ flex: 1 }}
                 />
               </Box>
-
               <Box display="flex" alignItems="center" mb={2}>
                 <Typography variant="subtitle1" sx={{ width: '80px', ml: 3 }}>
                   출판사
@@ -140,7 +166,6 @@ const SearchPage = () => {
                   sx={{ flex: 1 }}
                 />
               </Box>
-
               <Box display="flex" alignItems="center" mb={2}>
                 <Typography variant="subtitle1" sx={{ width: '80px', ml: 3 }}>
                   출간일
@@ -167,37 +192,48 @@ const SearchPage = () => {
                 </ToggleButtonGroup>
               </Box>
 
-              {/* 직접설정 선택 시 나타나는 인터벌
-              {customDate && (
+              {/* 직접설정 선택 시 나타나는 인터벌 */}
+              {dateRange === 'custom' && (
                 <Box display="flex" alignItems="center" mb={2} sx={{ ml: '101px' }}>
-                  <TextField name="startYear" label="년" value={formData.startYear} onChange={handleChange('startYear')} sx={{ width: '100px', mr: 1 }} />
-                  <Select name="startMonth" value={formData.startMonth} onChange={handleChange('startMonth')} displayEmpty sx={{ width: '80px', mr: 2 }}>
+                  <TextField
+                    name="startYear"
+                    label="년"
+                    value={startYear}
+                    sx={{ width: '100px', mr: 1 }}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => handleChangeDateRange(e)}
+                  />
+                  <Select name="startMonth" value={startMonth} onChange={handleChangeDateRange} displayEmpty sx={{ width: '80px', mr: 2 }}>
                     <MenuItem value="" disabled>
                       월
                     </MenuItem>
-                    {[...Array(12).keys()].map((month) => (
-                      <MenuItem key={month + 1} value={month + 1}>
-                        {String(month + 1).padStart(2, '0')}
+                    {months.map((month) => (
+                      <MenuItem key={month} value={month}>
+                        {month}
                       </MenuItem>
                     ))}
                   </Select>
                   <Typography variant="body2">월부터</Typography>
 
-                  <TextField name="endYear" label="년" value={formData.endYear} onChange={handleChange('endYear')} sx={{ width: '100px', ml: 2, mr: 1 }} />
-                  <Select name="endMonth" value={formData.endMonth} onChange={handleChange('endMonth')} displayEmpty sx={{ width: '80px', mr: 1 }}>
+                  <TextField
+                    name="endYear"
+                    label="년"
+                    value={endYear}
+                    sx={{ width: '100px', ml: 2, mr: 1 }}
+                    onChange={(e: ChangeEvent<HTMLInputElement>) => handleChangeDateRange(e)}
+                  />
+                  <Select name="endMonth" value={endMonth} onChange={handleChangeDateRange} displayEmpty sx={{ width: '80px', mr: 2 }}>
                     <MenuItem value="" disabled>
                       월
                     </MenuItem>
-                    {[...Array(12).keys()].map((month) => (
-                      <MenuItem key={month + 1} value={month + 1}>
-                        {String(month + 1).padStart(2, '0')}
+                    {months.map((month) => (
+                      <MenuItem key={month} value={month}>
+                        {month}
                       </MenuItem>
                     ))}
                   </Select>
                   <Typography variant="body2">월까지</Typography>
                 </Box>
-              )} */}
-
+              )}
               <Box display="flex" alignItems="center" mb={2}>
                 <Typography variant="subtitle1" sx={{ width: '80px', ml: 3 }}>
                   정렬순서
@@ -215,7 +251,6 @@ const SearchPage = () => {
                   <MenuItem value="lowPrice">저가격순</MenuItem>
                 </Select>
               </Box>
-
               <Box display="flex" justifyContent="center" mt={2}>
                 <Button
                   disableRipple
@@ -231,9 +266,7 @@ const SearchPage = () => {
                   찾기
                 </Button>
               </Box>
-
               <Divider sx={{ my: 4 }} />
-
               <Box display="flex" alignItems="center" mb={2}>
                 <Typography variant="subtitle1" gutterBottom sx={{ width: '90px', ml: 3 }}>
                   ISBN 검색
