@@ -32,19 +32,15 @@ const SearchPage = () => {
   const [endYear, setEndYear] = useState('');
   const [startMonth, setStartMonth] = useState('');
   const [endMonth, setEndMonth] = useState('');
-  const months = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
-
-  const [startDate, setStartDate] = useState('');
+  const months = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12']; //optimize 
   const [formData, setFormData] = useState<SearchType>({
     title: '',
     author: '',
     publisher: '',
-    sortOrder: '',
+    sortOrder: 'sales',
     startDate: '',
-    endDate: format(new Date(), 'yyyy-MM-dd'),
+    endDate: '',
   });
-
-  console.log('ddd', formData);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement> | SelectChangeEvent) => {
     const targetName = e.target.name;
@@ -55,7 +51,7 @@ const SearchPage = () => {
       [targetName]: targetValue,
     }));
   };
-  console.log(startYear, startMonth, endYear, endMonth);
+
   const handleChangeDateRange = (event: ChangeEvent<HTMLInputElement> | SelectChangeEvent) => {
     const targetName = event.target.name;
     switch (targetName) {
@@ -81,6 +77,10 @@ const SearchPage = () => {
   const handleDateRange = (e: React.MouseEvent<HTMLElement>, newValue: string) => {
     setDateRange(newValue);
     findStartDate(newValue);
+    setStartMonth('');
+    setStartYear('');
+    setEndMonth('');
+    setEndYear('');
   };
 
   const findStartDate = (dateRange: string) => {
@@ -108,14 +108,57 @@ const SearchPage = () => {
   };
 
   const start_date = findStartDate(dateRange);
+
+  const getCustomDateInterval = (startYear: string, startMonth: string, endYear: string, endMonth: string): { start: string; end: string } | undefined => {
+    const customStartDate = format(new Date(parseInt(startYear), parseInt(startMonth) - 1, 1), 'yyyy-MM-dd');
+    const customEndDate = format(new Date(parseInt(endYear), parseInt(endMonth) - 1, 1), 'yyyy-MM-dd');
+    return { start: customStartDate, end: customEndDate };
+  };
+
+  let customDate: { start: string; end: string } | undefined;
+  if (dateRange === 'custom') {
+    if (startYear && startMonth && endYear && endMonth) {
+      customDate = getCustomDateInterval(startYear, startMonth, endYear, endMonth);
+    } else {
+      customDate = undefined;
+    }
+  }
+
   useEffect(() => {
-    if (start_date) {
+    const currentEndDate = format(new Date(), 'yyyy-MM-dd');
+    if (start_date && !customDate) {
       setFormData((prevState) => ({
         ...prevState,
         startDate: start_date,
+        endDate: currentEndDate,
       }));
     }
-  }, [start_date]);
+    if (customDate) {
+      if (formData.startDate != customDate.start || formData.endDate != customDate.end) {
+        setFormData((prevState: any) => ({
+          ...prevState,
+          startDate: customDate.start,
+          endDate: customDate.end,
+        }));
+      }
+    }
+  }, [start_date, customDate, formData.startDate, formData.endDate]);
+
+  const handleSearch = () => {
+    console.log('formDataaaa: ', formData);
+    setStartMonth('');
+    setStartYear('');
+    setEndMonth('');
+    setEndYear('');
+    setFormData({
+      title: '',
+      author: '',
+      publisher: '',
+      sortOrder: '',
+      startDate: '',
+      endDate: '',
+    });
+  };
 
   return (
     <div>
@@ -246,8 +289,7 @@ const SearchPage = () => {
                   <MenuItem value="sales">판매량순</MenuItem>
                   <MenuItem value="publication">출간일순</MenuItem>
                   <MenuItem value="name">상품명순</MenuItem>
-                  <MenuItem value="rating">평점순</MenuItem>
-                  {/* <MenuItem value="reviews">리뷰순</MenuItem> */}
+                  <MenuItem value="rank">평점순</MenuItem>
                   <MenuItem value="lowPrice">저가격순</MenuItem>
                 </Select>
               </Box>
@@ -256,7 +298,7 @@ const SearchPage = () => {
                   disableRipple
                   variant="contained"
                   color="success"
-                  // onClick={handleSearchClick}
+                  onClick={handleSearch}
                   sx={{
                     backgroundColor: (theme) => theme.palette.primary.main,
                     '&:hover': {
