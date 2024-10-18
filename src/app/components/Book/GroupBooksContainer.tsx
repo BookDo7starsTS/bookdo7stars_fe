@@ -1,17 +1,17 @@
-import { useState } from 'react';
-
-import { Container, Typography, Grid, Box, Pagination } from '@mui/material';
+import LoadingButton from '@mui/lab/LoadingButton';
+import { Container, Typography, Grid, Box } from '@mui/material';
 
 import BookCard from './BookCard';
 import { Book } from '../../models/book';
 
-interface BookContainerProps {
+interface GroupBooksContainerProps {
   books: Book[];
   title: string;
-  booksPerPage: number;
+  handleSeeMore: () => void;
+  isGetBooksByGroupLoading: boolean;
 }
 
-const BooksContainer: React.FC<BookContainerProps> = ({ books, title, booksPerPage }) => {
+const GroupBooksContainer: React.FC<GroupBooksContainerProps> = ({ books, title, handleSeeMore, isGetBooksByGroupLoading }) => {
   return (
     <Container
       sx={{
@@ -45,8 +45,18 @@ const BooksContainer: React.FC<BookContainerProps> = ({ books, title, booksPerPa
           ))}
         </Grid>
       </Box>
+      <Box sx={{ display: 'flex', justifyContent: 'center', marginBottom: '20px' }}>
+        <LoadingButton
+          loading={isGetBooksByGroupLoading}
+          loadingPosition="start"
+          onClick={handleSeeMore}
+          variant="contained"
+          sx={{ '& .MuiLoadingButton-startIcon': { marginRight: '8px' } }}>
+          See more
+        </LoadingButton>
+      </Box>
     </Container>
   );
 };
 
-export default BooksContainer;
+export default GroupBooksContainer;
