@@ -1,13 +1,14 @@
 import '@testing-library/jest-dom';
 import { getBookRequest } from '@/app/actions/types';
 import Book from '@/app/book/[bookId]/page';
+import BookOverview from '@/app/components/BookDetail/BookOverview';
 import rootReducer from '@/app/reducers';
 import rootSaga from '@/app/sagas';
 import { render, screen, waitFor } from '@testing-library/react';
 import { useParams } from 'next/navigation';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
-import createSagaMiddleware, { runSaga } from 'redux-saga';
+import createSagaMiddleware from 'redux-saga';
 
 import { mockBooks } from './mocks/Books';
 
@@ -73,5 +74,28 @@ describe('Book', () => {
 
     const dispatchedAction = mockDispatch.mock.calls[0][0];
     expect(dispatchedAction).toEqual(getBookRequest('123'));
+  });
+});
+
+describe('BookOverview', () => {
+  // 테스트 해야할 것
+  // 1. 책이 있으면 BookBasicInfo가 렌더되어야한다.
+  // 2. 책이 없으면 에러메세지를 내야한다.
+
+  it('should render BookBasicInfo when book is provided', () => {
+    const mockBook = mockBooks[0];
+    render(<BookOverview book={mockBook} />);
+
+    //책 정보가 화면에 표시되는지 확인
+    expect(screen.getByText(mockBook.title)).toBeInTheDocument();
+    expect(screen.getByText(mockBook.author)).toBeInTheDocument();
+    expect(screen.getByText(mockBook.publisher)).toBeInTheDocument();
+    expect(screen.getByText(/100/)).toBeInTheDocument();
+  });
+
+  it('should show error message when book is not provided', () => {
+    render(<BookOverview book={null} />);
+
+    expect(screen.getByText('책 정보를 읽어오지 못했습니다.')).toBeInTheDocument();
   });
 });
