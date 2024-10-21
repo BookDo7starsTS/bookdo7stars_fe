@@ -20,15 +20,16 @@ import {
   useTheme,
 } from '@mui/material';
 import { format, subMonths } from 'date-fns';
-import { useParams } from 'next/navigation';
+import { useRouter, useParams } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { SearchType } from './types/searchType';
 import { AppDispatch } from '../../store/store';
+import { getBooksSearchRequest } from '../actions/types';
 
 const SearchPage = () => {
   const dispatch = useDispatch<AppDispatch>();
-  useEffect(() => {}, []);
+  const router = useRouter();
 
   const [dateRange, setDateRange] = useState('all');
   const [startYear, setStartYear] = useState('');
@@ -84,7 +85,6 @@ const SearchPage = () => {
   };
 
   const handleDateRange = (e: React.MouseEvent<HTMLElement>, newValue: string) => {
-    console.log('New date range selected:', newValue);
     setDateRange(newValue);
     findStartDate(newValue);
     setStartMonth('');
@@ -119,9 +119,20 @@ const SearchPage = () => {
 
   const start_date = findStartDate(dateRange);
 
-  const getCustomDateInterval = (startYear: string, startMonth: string, endYear: string, endMonth: string): { start: string; end: string } | undefined => {
-    const customStartDate = format(new Date(parseInt(startYear), parseInt(startMonth) - 1, 1), 'yyyy-MM-dd');
-    const customEndDate = format(new Date(parseInt(endYear), parseInt(endMonth) - 1, 1), 'yyyy-MM-dd');
+  const getCustomDateInterval = (
+    startYear: string,
+    startMonth: string,
+    endYear: string,
+    endMonth: string,
+  ): { start: string; end: string } | undefined => {
+    const customStartDate = format(
+      new Date(parseInt(startYear), parseInt(startMonth) - 1, 1),
+      'yyyy-MM-dd',
+    );
+    const customEndDate = format(
+      new Date(parseInt(endYear), parseInt(endMonth) - 1, 1),
+      'yyyy-MM-dd',
+    );
     return { start: customStartDate, end: customEndDate };
   };
 
@@ -155,6 +166,11 @@ const SearchPage = () => {
   }, [start_date, customDate, formData.startDate, formData.endDate]);
 
   const handleSearch = () => {
+    dispatch(getBooksSearchRequest(formData));
+    console.log('라우팅 경로: ', '/search/result', formData);
+
+    router.push('/search/result');
+
     setStartMonth('');
     setStartYear('');
     setEndMonth('');
@@ -185,7 +201,9 @@ const SearchPage = () => {
               }}>
               <ManageSearchIcon sx={{ fontSize: 40, ml: isMobile ? 0 : 2, mr: isMobile ? 0 : 1 }} />
               {!isMobile && (
-                <Typography variant="h5" sx={{ mt: 1.5, mb: 1.5, p: 0, minWidth: '50px', whiteSpace: 'nowrap' }}>
+                <Typography
+                  variant="h5"
+                  sx={{ mt: 1.5, mb: 1.5, p: 0, minWidth: '50px', whiteSpace: 'nowrap' }}>
                   상세검색
                 </Typography>
               )}
@@ -236,7 +254,9 @@ const SearchPage = () => {
 
                   <Box display="flex" alignItems="center" mb={2}>
                     <Box display="flex" alignItems="center" mb={2}>
-                      <Typography variant="subtitle1" sx={{ width: '80px', ml: 3, minWidth: '20px', whiteSpace: 'nowrap' }}>
+                      <Typography
+                        variant="subtitle1"
+                        sx={{ width: '80px', ml: 3, minWidth: '20px', whiteSpace: 'nowrap' }}>
                         출간일
                       </Typography>
                     </Box>
@@ -321,11 +341,14 @@ const SearchPage = () => {
                       display="flex"
                       flexDirection={isMobile ? 'column' : 'row'}
                       alignItems="center"
-                      flexWrap={isMobile ? 'wrap' : 'nowrap'} // 모바일에서는 줄바꿈 허용
+                      flexWrap={isMobile ? 'wrap' : 'nowrap'}
                       mb={2}
-                      sx={{ ml: isMobile ? '0px' : '101px', width: '100%' }} // 모바일에서는 좌측 여백 제거
-                    >
-                      <Box display="flex" flexWrap="wrap" alignItems="center" mb={isMobile ? 2 : 0} sx={{ width: isMobile ? '100%' : 'auto' }}>
+                      sx={{ ml: isMobile ? '103px' : '101px', width: '80%' }}>
+                      <Box
+                        display="flex"
+                        alignItems="center"
+                        mb={isMobile ? 2 : 0}
+                        sx={{ width: isMobile ? '100%' : 'auto' }}>
                         <TextField
                           name="startYear"
                           label="년"
@@ -348,17 +371,17 @@ const SearchPage = () => {
                             </MenuItem>
                           ))}
                         </Select>
-                        <Typography variant="body2" sx={{ minWidth: '50px', whiteSpace: 'nowrap', ml: isMobile ? 0 : 2 }}>
+                        <Typography
+                          variant="body2"
+                          sx={{ minWidth: '50px', whiteSpace: 'nowrap', ml: isMobile ? 0 : 2 }}>
                           월부터
                         </Typography>
                       </Box>
 
                       <Box
                         display="flex"
-                        flexWrap="wrap"
                         alignItems="center"
                         mb={isMobile ? 2 : 0}
-                        mt={isMobile ? 2 : 0}
                         sx={{ width: isMobile ? '100%' : 'auto' }}>
                         <TextField
                           name="endYear"
@@ -367,7 +390,12 @@ const SearchPage = () => {
                           sx={{ width: isMobile ? '90%' : '100px', ml: isMobile ? 0 : 2, mr: 1 }}
                           onChange={(e: ChangeEvent<HTMLInputElement>) => handleChangeDateRange(e)}
                         />
-                        <Select name="endMonth" value={endMonth} onChange={handleChangeDateRange} displayEmpty sx={{ width: isMobile ? '90%' : '80px', mr: 1 }}>
+                        <Select
+                          name="endMonth"
+                          value={endMonth}
+                          onChange={handleChangeDateRange}
+                          displayEmpty
+                          sx={{ width: isMobile ? '90%' : '80px', mr: 1 }}>
                           <MenuItem value="" disabled>
                             월
                           </MenuItem>
@@ -377,7 +405,9 @@ const SearchPage = () => {
                             </MenuItem>
                           ))}
                         </Select>
-                        <Typography variant="body2" sx={{ minWidth: '50px', whiteSpace: 'nowrap', ml: isMobile ? 0 : 2 }}>
+                        <Typography
+                          variant="body2"
+                          sx={{ minWidth: '50px', whiteSpace: 'nowrap', ml: isMobile ? 0 : 2 }}>
                           월까지
                         </Typography>
                       </Box>
@@ -386,11 +416,18 @@ const SearchPage = () => {
 
                   <Box display="flex" alignItems="center" mb={2}>
                     <Box display="flex" alignItems="center" mb={2}>
-                      <Typography variant="subtitle1" sx={{ width: '80px', ml: 3, minWidth: '50px', whiteSpace: 'nowrap' }}>
+                      <Typography
+                        variant="subtitle1"
+                        sx={{ width: '80px', ml: 3, minWidth: '50px', whiteSpace: 'nowrap' }}>
                         정렬순서
                       </Typography>
                     </Box>
-                    <Select name="sortOrder" value={formData.sortOrder} onChange={(e: SelectChangeEvent) => handleChange(e)} displayEmpty sx={{ flex: 1 }}>
+                    <Select
+                      name="sortOrder"
+                      value={formData.sortOrder}
+                      onChange={(e: SelectChangeEvent) => handleChange(e)}
+                      displayEmpty
+                      sx={{ flex: 1 }}>
                       <MenuItem value="" disabled>
                         정렬순서
                       </MenuItem>
@@ -404,7 +441,11 @@ const SearchPage = () => {
                   </Box>
                 </Grid>
 
-                <Grid item xs={12} sm={2} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
+                <Grid
+                  item
+                  xs={12}
+                  sm={2}
+                  sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
                   <Box display="flex" justifyContent="center">
                     <Button
                       disableRipple
