@@ -16,7 +16,12 @@ import {
   GET_BOOKS_SEARCH_SUCCESS,
   GET_BOOKS_SEARCH_FAILURE,
 } from '../actions/constants';
-import { GetAllBooksRequestAction, GetBookRequestAction, GetBooksByGroupRequestAction, GetBooksSearchRequestAction } from '../actions/types';
+import {
+  GetAllBooksRequestAction,
+  GetBookRequestAction,
+  GetBooksByGroupRequestAction,
+  GetBooksSearchRequestAction,
+} from '../actions/types';
 
 function getAllBooksAPI(page: number, pageSize: number) {
   return axios.get(`/book?page=${page}&pageSize=${pageSize}`);
@@ -59,7 +64,7 @@ export function* getBooksByGroup(action: GetBooksByGroupRequestAction): SagaIter
 
 function getBooksSearchAPI(data: GetBooksSearchRequestAction['data']) {
   const queryString: string = new URLSearchParams(data as any).toString();
-  return axios.get(`/book/search?${queryString}`);
+  return axios.get(`/search?${queryString}`);
 }
 
 export function* getBooksSearch(action: GetBooksSearchRequestAction): SagaIterator {
@@ -114,5 +119,10 @@ function* watchGetBook() {
 }
 
 export default function* bookSaga() {
-  yield all([fork(watchGetAllBooks), fork(watchGetBook), fork(watchGetBooksByGroup), fork(watchGetBooksSearch)]);
+  yield all([
+    fork(watchGetAllBooks),
+    fork(watchGetBook),
+    fork(watchGetBooksByGroup),
+    fork(watchGetBooksSearch),
+  ]);
 }

@@ -54,7 +54,16 @@ export interface GetBooksByGroupFailureAction {
 //Book Search
 export interface GetBooksSearchRequestAction {
   type: typeof GET_BOOKS_SEARCH_REQUEST;
-  data: { title?: string; author?: string; publisher?: string; sortOrder?: string; startDate?: string; endDate?: string; page?: number; pageSize?: number };
+  data: {
+    title?: string;
+    author?: string;
+    publisher?: string;
+    sortOrder?: string;
+    startDate?: string;
+    endDate?: string;
+    page?: number;
+    pageSize?: number;
+  };
 }
 
 export interface GetBooksSearchSuccessAction {
@@ -113,7 +122,10 @@ export const getAllBooksRequest = (page: number, pageSize: number): GetAllBooksR
   pageSize,
 });
 
-export const getAllBooksSuccess = (payload: GetAllBooksSuccessAction['payload'], count: GetAllBooksSuccessAction['count']): GetAllBooksSuccessAction => ({
+export const getAllBooksSuccess = (
+  payload: GetAllBooksSuccessAction['payload'],
+  count: GetAllBooksSuccessAction['count'],
+): GetAllBooksSuccessAction => ({
   type: GET_ALL_BOOKS_SUCCESS,
   payload,
   count,
@@ -125,12 +137,16 @@ export const getAllBooksFailure = (error: string): GetAllBooksFailureAction => (
 });
 
 //Books By Group
-export const getBooksByGroupRequest = (data: GetBooksByGroupRequestAction['data']): GetBooksByGroupRequestAction => ({
+export const getBooksByGroupRequest = (
+  data: GetBooksByGroupRequestAction['data'],
+): GetBooksByGroupRequestAction => ({
   type: GET_BOOKS_BY_GROUP_REQUEST,
   data,
 });
 
-export const getBooksByGroupSuccess = (payload: GetBooksByGroupSuccessAction['payload']): GetBooksByGroupSuccessAction => ({
+export const getBooksByGroupSuccess = (
+  payload: GetBooksByGroupSuccessAction['payload'],
+): GetBooksByGroupSuccessAction => ({
   type: GET_BOOKS_BY_GROUP_SUCCESS,
   payload,
 });
@@ -141,7 +157,9 @@ export const getBooksByGroupFailure = (error: string): GetBooksByGroupFailureAct
 });
 
 //Books Search
-export const getBooksSearchRequest = (data: GetBooksSearchRequestAction['data']): GetBooksSearchRequestAction => ({
+export const getBooksSearchRequest = (
+  data: GetBooksSearchRequestAction['data'],
+): GetBooksSearchRequestAction => ({
   type: GET_BOOKS_SEARCH_REQUEST,
   data,
 });
