@@ -47,8 +47,6 @@ const SearchPage = () => {
     endDate: '',
   });
 
-  console.log('formData 이렇게 생겼다! ', formData);
-
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -120,20 +118,9 @@ const SearchPage = () => {
 
   const start_date = findStartDate(dateRange);
 
-  const getCustomDateInterval = (
-    startYear: string,
-    startMonth: string,
-    endYear: string,
-    endMonth: string,
-  ): { start: string; end: string } | undefined => {
-    const customStartDate = format(
-      new Date(parseInt(startYear), parseInt(startMonth) - 1, 1),
-      'yyyy-MM-dd',
-    );
-    const customEndDate = format(
-      new Date(parseInt(endYear), parseInt(endMonth) - 1, 1),
-      'yyyy-MM-dd',
-    );
+  const getCustomDateInterval = (startYear: string, startMonth: string, endYear: string, endMonth: string): { start: string; end: string } | undefined => {
+    const customStartDate = format(new Date(parseInt(startYear), parseInt(startMonth) - 1, 1), 'yyyy-MM-dd');
+    const customEndDate = format(new Date(parseInt(endYear), parseInt(endMonth) - 1, 1), 'yyyy-MM-dd');
     return { start: customStartDate, end: customEndDate };
   };
 
@@ -202,9 +189,7 @@ const SearchPage = () => {
               }}>
               <ManageSearchIcon sx={{ fontSize: 40, ml: isMobile ? 0 : 2, mr: isMobile ? 0 : 1 }} />
               {!isMobile && (
-                <Typography
-                  variant="h5"
-                  sx={{ mt: 1.5, mb: 1.5, p: 0, minWidth: '50px', whiteSpace: 'nowrap' }}>
+                <Typography variant="h5" sx={{ mt: 1.5, mb: 1.5, p: 0, minWidth: '50px', whiteSpace: 'nowrap' }}>
                   상세검색
                 </Typography>
               )}
@@ -255,14 +240,12 @@ const SearchPage = () => {
 
                   <Box display="flex" alignItems="center" mb={2}>
                     <Box display="flex" alignItems="center" mb={2}>
-                      <Typography
-                        variant="subtitle1"
-                        sx={{ width: '80px', ml: 3, minWidth: '20px', whiteSpace: 'nowrap' }}>
+                      <Typography variant="subtitle1" sx={{ width: '80px', ml: 3, minWidth: '20px', whiteSpace: 'nowrap' }}>
                         출간일
                       </Typography>
                     </Box>
                     {isMobile ? (
-                      <Grid container spacing={0.8} sx={{ paddingLeft: '16px' }}>
+                      <Grid container spacing={0.8}>
                         {[
                           { label: '전체', value: 'all' },
                           { label: '3개월', value: '3' },
@@ -271,7 +254,7 @@ const SearchPage = () => {
                           { label: '24개월', value: '24' },
                           { label: '직접설정', value: 'custom' },
                         ].map((option) => (
-                          <Grid item xs={4} key={option.value}>
+                          <Grid item xs={6} key={option.value}>
                             <ToggleButtonGroup
                               value={dateRange}
                               exclusive
@@ -320,40 +303,22 @@ const SearchPage = () => {
                             borderRadius: '5px !important',
                           },
                         }}>
-                        <ToggleButton
-                          disableRipple
-                          value="all"
-                          sx={{ minWidth: '50px', whiteSpace: 'nowrap' }}>
+                        <ToggleButton disableRipple value="all" sx={{ minWidth: '50px', whiteSpace: 'nowrap' }}>
                           전체
                         </ToggleButton>
-                        <ToggleButton
-                          disableRipple
-                          value="3"
-                          sx={{ minWidth: '50px', whiteSpace: 'nowrap' }}>
+                        <ToggleButton disableRipple value="3" sx={{ minWidth: '50px', whiteSpace: 'nowrap' }}>
                           3개월
                         </ToggleButton>
-                        <ToggleButton
-                          disableRipple
-                          value="6"
-                          sx={{ minWidth: '50px', whiteSpace: 'nowrap' }}>
+                        <ToggleButton disableRipple value="6" sx={{ minWidth: '50px', whiteSpace: 'nowrap' }}>
                           6개월
                         </ToggleButton>
-                        <ToggleButton
-                          disableRipple
-                          value="9"
-                          sx={{ minWidth: '50px', whiteSpace: 'nowrap' }}>
+                        <ToggleButton disableRipple value="9" sx={{ minWidth: '50px', whiteSpace: 'nowrap' }}>
                           9개월
                         </ToggleButton>
-                        <ToggleButton
-                          disableRipple
-                          value="24"
-                          sx={{ minWidth: '50px', whiteSpace: 'nowrap' }}>
+                        <ToggleButton disableRipple value="24" sx={{ minWidth: '50px', whiteSpace: 'nowrap' }}>
                           24개월
                         </ToggleButton>
-                        <ToggleButton
-                          disableRipple
-                          value="custom"
-                          sx={{ minWidth: '30px', whiteSpace: 'nowrap' }}>
+                        <ToggleButton disableRipple value="custom" sx={{ minWidth: '30px', whiteSpace: 'nowrap' }}>
                           직접설정
                         </ToggleButton>
                       </ToggleButtonGroup>
@@ -369,11 +334,7 @@ const SearchPage = () => {
                       flexWrap={isMobile ? 'wrap' : 'nowrap'}
                       mb={2}
                       sx={{ ml: isMobile ? '103px' : '101px', width: '80%' }}>
-                      <Box
-                        display="flex"
-                        alignItems="center"
-                        mb={isMobile ? 2 : 0}
-                        sx={{ width: isMobile ? '100%' : 'auto' }}>
+                      <Box display="flex" alignItems="center" mb={isMobile ? 2 : 0} sx={{ width: isMobile ? '100%' : 'auto' }}>
                         <TextField
                           name="startYear"
                           label="년"
@@ -396,18 +357,12 @@ const SearchPage = () => {
                             </MenuItem>
                           ))}
                         </Select>
-                        <Typography
-                          variant="body2"
-                          sx={{ minWidth: '50px', whiteSpace: 'nowrap', ml: isMobile ? 0 : 2 }}>
+                        <Typography variant="body2" sx={{ minWidth: '50px', whiteSpace: 'nowrap', ml: isMobile ? 0 : 2 }}>
                           월부터
                         </Typography>
                       </Box>
 
-                      <Box
-                        display="flex"
-                        alignItems="center"
-                        mb={isMobile ? 2 : 0}
-                        sx={{ width: isMobile ? '100%' : 'auto' }}>
+                      <Box display="flex" alignItems="center" mb={isMobile ? 2 : 0} sx={{ width: isMobile ? '100%' : 'auto' }}>
                         <TextField
                           name="endYear"
                           label="년"
@@ -415,12 +370,7 @@ const SearchPage = () => {
                           sx={{ width: isMobile ? '90%' : '100px', ml: isMobile ? 0 : 2, mr: 1 }}
                           onChange={(e: ChangeEvent<HTMLInputElement>) => handleChangeDateRange(e)}
                         />
-                        <Select
-                          name="endMonth"
-                          value={endMonth}
-                          onChange={handleChangeDateRange}
-                          displayEmpty
-                          sx={{ width: isMobile ? '90%' : '80px', mr: 1 }}>
+                        <Select name="endMonth" value={endMonth} onChange={handleChangeDateRange} displayEmpty sx={{ width: isMobile ? '90%' : '80px', mr: 1 }}>
                           <MenuItem value="" disabled>
                             월
                           </MenuItem>
@@ -430,9 +380,7 @@ const SearchPage = () => {
                             </MenuItem>
                           ))}
                         </Select>
-                        <Typography
-                          variant="body2"
-                          sx={{ minWidth: '50px', whiteSpace: 'nowrap', ml: isMobile ? 0 : 2 }}>
+                        <Typography variant="body2" sx={{ minWidth: '50px', whiteSpace: 'nowrap', ml: isMobile ? 0 : 2 }}>
                           월까지
                         </Typography>
                       </Box>
@@ -441,18 +389,11 @@ const SearchPage = () => {
 
                   <Box display="flex" alignItems="center" mb={2}>
                     <Box display="flex" alignItems="center" mb={2}>
-                      <Typography
-                        variant="subtitle1"
-                        sx={{ width: '80px', ml: 3, minWidth: '50px', whiteSpace: 'nowrap' }}>
+                      <Typography variant="subtitle1" sx={{ width: '80px', ml: 3, minWidth: '50px', whiteSpace: 'nowrap' }}>
                         정렬순서
                       </Typography>
                     </Box>
-                    <Select
-                      name="sortOrder"
-                      value={formData.sortOrder}
-                      onChange={(e: SelectChangeEvent) => handleChange(e)}
-                      displayEmpty
-                      sx={{ flex: 1 }}>
+                    <Select name="sortOrder" value={formData.sortOrder} onChange={(e: SelectChangeEvent) => handleChange(e)} displayEmpty sx={{ flex: 1 }}>
                       <MenuItem value="" disabled>
                         정렬순서
                       </MenuItem>
@@ -466,11 +407,7 @@ const SearchPage = () => {
                   </Box>
                 </Grid>
 
-                <Grid
-                  item
-                  xs={12}
-                  sm={2}
-                  sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
+                <Grid item xs={12} sm={2} sx={{ display: 'flex', flexDirection: 'column', justifyContent: 'flex-end' }}>
                   <Box display="flex" justifyContent="center">
                     <Button
                       disableRipple
