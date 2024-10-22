@@ -25,7 +25,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { SearchType } from './types/searchType';
 import { AppDispatch } from '../../store/store';
-import { getBooksSearchRequest } from '../actions/types';
+import { getBookIsbnSearchRequest, getBooksSearchRequest } from '../actions/types';
 
 const SearchPage = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -47,6 +47,8 @@ const SearchPage = () => {
     endDate: '',
   });
 
+  const [isbn, setIsbn] = useState<isbnType>('');
+
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
 
@@ -58,6 +60,12 @@ const SearchPage = () => {
       ...prevState,
       [targetName]: targetValue,
     }));
+  };
+
+  const handleIsbnChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value;
+    console.log('isbn value는 이렇게 생겼다 -> ', value);
+    setIsbn(value);
   };
 
   const handleChangeDateRange = (event: ChangeEvent<HTMLInputElement> | SelectChangeEvent) => {
@@ -153,10 +161,55 @@ const SearchPage = () => {
     }
   }, [start_date, customDate, formData.startDate, formData.endDate]);
 
-  const handleSearch = () => {
-    dispatch(getBooksSearchRequest(formData));
-    console.log('라우팅 경로: ', '/search/result', formData);
+  // const handleSearch = () => {
+  //   dispatch(getBooksSearchRequest(formData));
+  //   console.log('라우팅 경로: ', '/search/result', formData);
 
+  //   router.push('/search/result');
+
+  //   setStartMonth('');
+  //   setStartYear('');
+  //   setEndMonth('');
+  //   setEndYear('');
+  //   setDateRange('all');
+  //   setFormData({
+  //     title: '',
+  //     author: '',
+  //     publisher: '',
+  //     sortOrder: '',
+  //     startDate: '',
+  //     endDate: '',
+  //   });
+  // };
+
+  // const handleIsbnSearch = () => {
+  //   console.log('[01] isbn뭐야? ', isbn);
+  //   if (!isbn) {
+  //     alert('ISBN을 입력해주세요.');
+  //     return;
+  //   }
+  //   console.log('[02] isbn 찾기버튼 눌러짐');
+  //   dispatch(getBookIsbnSearchRequest(isbn));
+  //   console.log('[03] isbn 찾기버튼 눌려서 디스패치 날라감');
+
+  //   router.push('/search/result');
+  //   setIsbn('');
+  // };
+
+  const handleSearch = () => {
+    if (isbn) {
+      // ISBN 값이 있으면 ISBN으로 검색
+      console.log('[01] isbn뭐야? ', isbn);
+      dispatch(getBookIsbnSearchRequest(isbn));
+      console.log('[02] isbn 찾기버튼 눌려서 디스패치 날라감');
+      setIsbn('');
+    } else {
+      // ISBN 값이 없으면 다른 검색 조건으로 검색
+      console.log('라우팅 경로: ', '/search/result', formData);
+      dispatch(getBooksSearchRequest(formData));
+    }
+
+    // 공통 동작: 페이지 이동 및 상태 초기화
     router.push('/search/result');
 
     setStartMonth('');
@@ -441,8 +494,8 @@ const SearchPage = () => {
                       fullWidth
                       placeholder="-없이 숫자만 입력하세요."
                       variant="outlined"
-                      // value={formData.isbn}
-                      // onChange={handleChange}
+                      value={isbn}
+                      onChange={(e: ChangeEvent<HTMLInputElement>) => handleIsbnChange(e)}
                       sx={{ flex: 1 }}
                     />
                   </Box>
@@ -454,6 +507,7 @@ const SearchPage = () => {
                       disableRipple
                       variant="contained"
                       color="success"
+                      onClick={handleSearch}
                       sx={{
                         mt: 0,
                         backgroundColor: (theme) => theme.palette.primary.main,

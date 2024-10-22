@@ -11,6 +11,9 @@ import {
   GET_BOOKS_SEARCH_REQUEST,
   GET_BOOKS_SEARCH_SUCCESS,
   GET_BOOKS_SEARCH_FAILURE,
+  GET_BOOK_ISBN_SEARCH_REQUEST,
+  GET_BOOK_ISBN_SEARCH_SUCCESS,
+  GET_BOOK_ISBN_SEARCH_FAILURE,
   RESET_GROUP_BOOKS,
 } from '../actions/constants';
 import { BookActionTypes } from '../actions/types';
@@ -77,6 +80,13 @@ function bookReducer(state = initialState, action: BookActionTypes) {
     case GET_BOOKS_SEARCH_SUCCESS:
       return { ...state, isGetBooksSearchLoading: false, isGetBooksSearchDone: true, books: action.payload, count: action.count };
     case GET_BOOKS_SEARCH_FAILURE:
+      return { ...state, isGetBooksSearchLoading: false, isGetBooksSearchDone: false, isGetBooksSearchError: action.error };
+
+    case GET_BOOK_ISBN_SEARCH_REQUEST:
+      return { ...state, isGetBooksSearchLoading: true };
+    case GET_BOOK_ISBN_SEARCH_SUCCESS:
+      return { ...state, isGetBooksSearchLoading: false, isGetBooksSearchDone: true, books: [action.payload], count: 1 };
+    case GET_BOOK_ISBN_SEARCH_FAILURE:
       return { ...state, isGetBooksSearchLoading: false, isGetBooksSearchDone: false, isGetBooksSearchError: action.error };
 
     case GET_BOOK_REQUEST:

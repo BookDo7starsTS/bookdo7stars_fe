@@ -1,6 +1,6 @@
 'use client';
-import { useEffect } from 'react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+
 import { Container, Box, Pagination } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -16,15 +16,6 @@ const Books = () => {
   const booksPerPage = 20;
   const pageCount = Math.ceil(count / booksPerPage);
 
-  useEffect(() => {
-    dispatch(getBooksSearchRequest({ page: page, pageSize: booksPerPage, title: 'test' }));
-  }, []);
-
-  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value);
-    dispatch(getBooksSearchRequest({ page: value, pageSize: booksPerPage, title: 'test' }));
-  };
-
   return (
     <>
       <Container data-testid="books-container" sx={{ width: '100vw', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
@@ -33,7 +24,6 @@ const Books = () => {
           <Pagination
             count={pageCount}
             page={page}
-            onChange={handlePageChange}
             color="primary"
             showFirstButton
             showLastButton
