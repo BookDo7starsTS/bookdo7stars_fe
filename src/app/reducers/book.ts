@@ -87,7 +87,7 @@ function bookReducer(state = initialState, action: BookActionTypes) {
     case GET_BOOK_ISBN_SEARCH_SUCCESS:
       return { ...state, isGetBooksSearchLoading: false, isGetBooksSearchDone: true, books: [action.payload], count: 1 };
     case GET_BOOK_ISBN_SEARCH_FAILURE:
-      return { ...state, isGetBooksSearchLoading: false, isGetBooksSearchDone: false, isGetBooksSearchError: action.error };
+      return { ...state, isGetBooksSearchLoading: false, isGetBooksSearchDone: false, isGetBooksSearchError: action.error, books: [] };
 
     case GET_BOOK_REQUEST:
       return { ...state, isGetBookLoading: true };

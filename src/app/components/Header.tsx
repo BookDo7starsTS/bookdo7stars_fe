@@ -213,10 +213,7 @@ const Header = () => {
             <StyledButtonSearch sx={{ marginRight: '-1px' }}>Search</StyledButtonSearch>
             {isMobile ? (
               <Tooltip title={'상세검색'}>
-                <IconButton
-                  onClick={handleDetailSearch}
-                  sx={{ marginLeft: '6px', width: '20px', height: '20px', color: 'black' }}
-                  aria-label="상세검색">
+                <IconButton onClick={handleDetailSearch} sx={{ marginLeft: '6px', width: '20px', height: '20px', color: 'black' }} aria-label="상세검색">
                   <ManageSearchIcon sx={{ fontSize: '24px', color: 'black' }} />
                 </IconButton>
               </Tooltip>

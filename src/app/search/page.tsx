@@ -23,9 +23,10 @@ import { format, subMonths } from 'date-fns';
 import { useRouter, useParams } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 
+import { isbnType } from './types/isbnType';
 import { SearchType } from './types/searchType';
-import { AppDispatch } from '../../store/store';
 import { getBookIsbnSearchRequest, getBooksSearchRequest } from '../actions/types';
+import { AppDispatch } from '../store/store';
 
 const SearchPage = () => {
   const dispatch = useDispatch<AppDispatch>();
