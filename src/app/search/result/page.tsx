@@ -9,8 +9,7 @@ import BooksContainer from '../../components/Book/BooksContainer';
 import { RootState } from '../../reducers';
 import { AppDispatch } from '../../store/store';
 
-const Books = () => {
-  const dispatch = useDispatch<AppDispatch>();
+const ResultPage = () => {
   const [page, setPage] = useState(1);
   const { books, count } = useSelector((store: RootState) => store.book);
   const booksPerPage = 20;
@@ -44,4 +43,4 @@ const Books = () => {
   );
 };
 
-export default Books;
+export default ResultPage;
