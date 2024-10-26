@@ -242,7 +242,7 @@ const SearchPage = () => {
           <Paper elevation={0} sx={{ p: 1 }}>
             <Box
               sx={{
-                backgroundColor: (theme) => theme.palette.third.main,
+                backgroundColor: (theme) => theme.palette.third?.main || '#000',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: isMobile ? 'center' : 'flex-start',
