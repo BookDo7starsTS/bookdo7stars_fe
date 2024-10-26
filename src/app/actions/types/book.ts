@@ -61,9 +61,9 @@ export interface GetBooksSearchRequestAction {
     title?: string;
     author?: string;
     publisher?: string;
-    sortOrder?: string;
-    startDate?: string;
-    endDate?: string;
+    orderTerm?: string;
+    start_date?: string;
+    end_date?: string;
     page?: number;
     pageSize?: number;
   };

@@ -31,7 +31,8 @@ import { AppDispatch } from '../store/store';
 const SearchPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
-
+  const initialPageSize = 20;
+  const initialPage = 1;
   const [dateRange, setDateRange] = useState('all');
   const [startYear, setStartYear] = useState('');
   const [endYear, setEndYear] = useState('');
@@ -43,9 +44,11 @@ const SearchPage = () => {
     title: '',
     author: '',
     publisher: '',
-    sortOrder: 'sales',
-    startDate: '',
-    endDate: '',
+    orderTerm: 'sales',
+    start_date: '',
+    end_date: '',
+    page: initialPage,
+    pageSize: initialPageSize,
   });
 
   const [isbn, setIsbn] = useState<isbnType>('');
@@ -147,20 +150,20 @@ const SearchPage = () => {
     if (start_date && !customDate) {
       setFormData((prevState: any) => ({
         ...prevState,
-        startDate: start_date,
-        endDate: currentEndDate,
+        start_date: start_date,
+        end_date: currentEndDate,
       }));
     }
     if (customDate) {
-      if (formData.startDate != customDate.start || formData.endDate != customDate.end) {
+      if (formData.start_date != customDate.start || formData.end_date != customDate.end) {
         setFormData((prevState: any) => ({
           ...prevState,
-          startDate: customDate.start,
-          endDate: customDate.end,
+          start_date: customDate.start,
+          end_date: customDate.end,
         }));
       }
     }
-  }, [start_date, customDate, formData.startDate, formData.endDate]);
+  }, [start_date, customDate, formData.start_date, formData.end_date]);
 
   // const handleSearch = () => {
   //   dispatch(getBooksSearchRequest(formData));
@@ -211,7 +214,9 @@ const SearchPage = () => {
     }
 
     // 공통 동작: 페이지 이동 및 상태 초기화
-    router.push('/search/result');
+    const searchConditionString = encodeURIComponent(JSON.stringify(formData));
+    const isbnString = encodeURIComponent(JSON.stringify(isbn));
+    router.push(`/search/result?isbn=${isbnString}&searchCondition=${searchConditionString}`);
 
     setStartMonth('');
     setStartYear('');
@@ -222,9 +227,11 @@ const SearchPage = () => {
       title: '',
       author: '',
       publisher: '',
-      sortOrder: '',
-      startDate: '',
-      endDate: '',
+      orderTerm: '',
+      start_date: '',
+      end_date: '',
+      page: initialPage,
+      pageSize: initialPageSize,
     });
   };
 
@@ -447,7 +454,7 @@ const SearchPage = () => {
                         정렬순서
                       </Typography>
                     </Box>
-                    <Select name="sortOrder" value={formData.sortOrder} onChange={(e: SelectChangeEvent) => handleChange(e)} displayEmpty sx={{ flex: 1 }}>
+                    <Select name="orderTerm" value={formData.orderTerm} onChange={(e: SelectChangeEvent) => handleChange(e)} displayEmpty sx={{ flex: 1 }}>
                       <MenuItem value="" disabled>
                         정렬순서
                       </MenuItem>

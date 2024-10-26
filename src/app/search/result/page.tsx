@@ -1,19 +1,46 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { Container, Box, Pagination, Typography } from '@mui/material';
+import { useSearchParams } from 'next/navigation';
+//import { usePathname, useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getBooksSearchRequest } from '../../actions/types';
+import { getBookIsbnSearchRequest, getBooksSearchRequest } from '../../actions/types';
 import BooksContainer from '../../components/Book/BooksContainer';
 import { RootState } from '../../reducers';
 import { AppDispatch } from '../../store/store';
+import { isbnType } from '../types/isbnType';
+import { SearchType } from '../types/searchType';
 
 const ResultPage = () => {
+  const queryParams = useSearchParams();
+  const isbn = queryParams.get('isbn');
+  const searchCondition = queryParams.get('searchCondition');
+  let parsedIsbn: isbnType, pasrsedSearchCondition: SearchType;
+  if (isbn) {
+    parsedIsbn = JSON.parse(decodeURIComponent(isbn)); // URL 디코딩 및 JSON 파싱
+  }
+  if (searchCondition) {
+    pasrsedSearchCondition = JSON.parse(decodeURIComponent(searchCondition)); // URL 디코딩 및 JSON 파싱
+  }
+
+  const dispatch = useDispatch<AppDispatch>();
   const [page, setPage] = useState(1);
   const { books, count } = useSelector((store: RootState) => store.book);
   const booksPerPage = 20;
   const pageCount = Math.ceil(count / booksPerPage);
+
+  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+    pasrsedSearchCondition.page = value;
+    pasrsedSearchCondition.pageSize = booksPerPage;
+    if (parsedIsbn) {
+      dispatch(getBookIsbnSearchRequest(parsedIsbn));
+    } else {
+      dispatch(getBooksSearchRequest(pasrsedSearchCondition));
+    }
+  };
 
   return (
     <>
@@ -25,6 +52,7 @@ const ResultPage = () => {
               <Pagination
                 count={pageCount}
                 page={page}
+                onChange={handlePageChange}
                 color="primary"
                 showFirstButton
                 showLastButton
