@@ -10,6 +10,12 @@ import {
   GET_BOOKS_BY_GROUP_FAILURE,
   GET_BOOKS_BY_GROUP_REQUEST,
   GET_BOOKS_BY_GROUP_SUCCESS,
+  GET_BOOKS_SEARCH_REQUEST,
+  GET_BOOKS_SEARCH_SUCCESS,
+  GET_BOOKS_SEARCH_FAILURE,
+  GET_BOOK_ISBN_SEARCH_REQUEST,
+  GET_BOOK_ISBN_SEARCH_SUCCESS,
+  GET_BOOK_ISBN_SEARCH_FAILURE,
   RESET_GROUP_BOOKS,
 } from '../constants';
 
@@ -48,6 +54,47 @@ export interface GetBooksByGroupFailureAction {
   type: typeof GET_BOOKS_BY_GROUP_FAILURE;
   error: string;
 }
+//Book Search
+export interface GetBooksSearchRequestAction {
+  type: typeof GET_BOOKS_SEARCH_REQUEST;
+  data: {
+    title?: string;
+    author?: string;
+    publisher?: string;
+    orderTerm?: string;
+    start_date?: string;
+    end_date?: string;
+    page?: number;
+    pageSize?: number;
+  };
+}
+
+export interface GetBooksSearchSuccessAction {
+  type: typeof GET_BOOKS_SEARCH_SUCCESS;
+  payload: Book[];
+  count: number;
+}
+
+export interface GetBooksSearchFailureAction {
+  type: typeof GET_BOOKS_SEARCH_FAILURE;
+  error: string;
+}
+
+//Book ISBN Search
+export interface GetBookIsbnSearchRequestAction {
+  type: typeof GET_BOOK_ISBN_SEARCH_REQUEST;
+  isbn: string | undefined;
+}
+
+export interface GetBookIsbnSearchSuccessAction {
+  type: typeof GET_BOOK_ISBN_SEARCH_SUCCESS;
+  payload: Book;
+}
+
+export interface GetBookIsbnSearchFailureAction {
+  type: typeof GET_BOOK_ISBN_SEARCH_FAILURE;
+  error: string;
+}
 
 // Book Detail
 export interface GetBookRequestAction {
@@ -77,10 +124,16 @@ export type BookActionTypes =
   | GetBooksByGroupRequestAction
   | GetBooksByGroupSuccessAction
   | GetBooksByGroupFailureAction
+  | GetBooksSearchRequestAction
+  | GetBooksSearchSuccessAction
+  | GetBooksSearchFailureAction
   | GetBookRequestAction
   | GetBookSuccessAction
   | GetBookFailureAction
-  | ResetGroupBooksAction;
+  | ResetGroupBooksAction
+  | GetBookIsbnSearchRequestAction
+  | GetBookIsbnSearchSuccessAction
+  | GetBookIsbnSearchFailureAction;
 
 // Action creater
 
@@ -115,6 +168,42 @@ export const getBooksByGroupSuccess = (payload: GetBooksByGroupSuccessAction['pa
 
 export const getBooksByGroupFailure = (error: string): GetBooksByGroupFailureAction => ({
   type: GET_BOOKS_BY_GROUP_FAILURE,
+  error,
+});
+
+//Books Search
+export const getBooksSearchRequest = (data: GetBooksSearchRequestAction['data']): GetBooksSearchRequestAction => ({
+  type: GET_BOOKS_SEARCH_REQUEST,
+  data,
+});
+
+export const getBooksSearchSuccess = (
+  payload: GetBooksSearchSuccessAction['payload'],
+  count: GetAllBooksSuccessAction['count'],
+): GetBooksSearchSuccessAction => ({
+  type: GET_BOOKS_SEARCH_SUCCESS,
+  payload,
+  count,
+});
+
+export const getBooksSearchFailure = (error: string): GetBooksSearchFailureAction => ({
+  type: GET_BOOKS_SEARCH_FAILURE,
+  error,
+});
+
+//Book ISBN Search
+export const getBookIsbnSearchRequest = (isbn: GetBookIsbnSearchRequestAction['isbn']): GetBookIsbnSearchRequestAction => ({
+  type: GET_BOOK_ISBN_SEARCH_REQUEST,
+  isbn,
+});
+
+export const getBookIsbnSearchSuccess = (payload: GetBookIsbnSearchSuccessAction['payload']): GetBookIsbnSearchSuccessAction => ({
+  type: GET_BOOK_ISBN_SEARCH_SUCCESS,
+  payload,
+});
+
+export const getBookIsbnSearchFailure = (error: string): GetBookIsbnSearchFailureAction => ({
+  type: GET_BOOK_ISBN_SEARCH_FAILURE,
   error,
 });
 

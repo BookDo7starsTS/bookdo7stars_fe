@@ -26,12 +26,7 @@ const BookOverview: React.FC<BookOverviewProps> = ({ book }) => {
             <BookCover cover={book.cover} />
           </Grid>
           <Grid item xs={12} md={8}>
-            <BookBasicInfo
-              title={book.title}
-              author={book.author}
-              publisher={book.publisher}
-              priceStandard={book.priceStandard}
-            />
+            <BookBasicInfo title={book.title} author={book.author} publisher={book.publisher} priceStandard={book.priceStandard} />
             <BookToCartButton book={book} />
             <Box mt={3}>
               <Box

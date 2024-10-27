@@ -12,8 +12,20 @@ import {
   GET_BOOKS_BY_GROUP_REQUEST,
   GET_BOOKS_BY_GROUP_SUCCESS,
   GET_BOOKS_BY_GROUP_FAILURE,
+  GET_BOOKS_SEARCH_REQUEST,
+  GET_BOOKS_SEARCH_SUCCESS,
+  GET_BOOKS_SEARCH_FAILURE,
+  GET_BOOK_ISBN_SEARCH_REQUEST,
+  GET_BOOK_ISBN_SEARCH_SUCCESS,
+  GET_BOOK_ISBN_SEARCH_FAILURE,
 } from '../actions/constants';
-import { GetAllBooksRequestAction, GetBookRequestAction, GetBooksByGroupRequestAction } from '../actions/types';
+import {
+  GetAllBooksRequestAction,
+  GetBookRequestAction,
+  GetBooksByGroupRequestAction,
+  GetBooksSearchRequestAction,
+  GetBookIsbnSearchRequestAction,
+} from '../actions/types';
 
 function getAllBooksAPI(page: number, pageSize: number) {
   return axios.get(`/book?page=${page}&pageSize=${pageSize}`);
@@ -54,6 +66,49 @@ export function* getBooksByGroup(action: GetBooksByGroupRequestAction): SagaIter
   }
 }
 
+function getBooksSearchAPI(data: GetBooksSearchRequestAction['data']) {
+  const queryString: string = new URLSearchParams(data as any).toString();
+  return axios.get(`/book?${queryString}`);
+}
+
+export function* getBooksSearch(action: GetBooksSearchRequestAction): SagaIterator {
+  try {
+    const response: any = yield call(getBooksSearchAPI, action.data);
+    yield put({
+      type: GET_BOOKS_SEARCH_SUCCESS,
+      payload: response.data.books,
+      count: response.data.count,
+    });
+  } catch (err: any) {
+    yield put({
+      type: GET_BOOKS_SEARCH_FAILURE,
+      error: err.response.data.message,
+    });
+  }
+}
+
+function getBookIsbnSearchAPI(isbn: string) {
+  return axios.get(`/book/search/${isbn}`);
+}
+
+export function* getBookIsbnSearch(action: GetBookIsbnSearchRequestAction): SagaIterator {
+  try {
+    if (!action.isbn) {
+      return;
+    }
+    const response: any = yield call(getBookIsbnSearchAPI, action.isbn);
+    yield put({
+      type: GET_BOOK_ISBN_SEARCH_SUCCESS,
+      payload: response.data.book,
+    });
+  } catch (error: any) {
+    yield put({
+      type: GET_BOOK_ISBN_SEARCH_FAILURE,
+      error: error.response.data.message || 'Error occurred while fetching the book.',
+    });
+  }
+}
+
 function getBookAPI(id: GetBookRequestAction['data']) {
   return axios.get(`/book/detail/${id}`);
 }
@@ -81,10 +136,18 @@ function* watchGetBooksByGroup() {
   yield takeLatest(GET_BOOKS_BY_GROUP_REQUEST, getBooksByGroup);
 }
 
+function* watchGetBooksSearch() {
+  yield takeLatest(GET_BOOKS_SEARCH_REQUEST, getBooksSearch);
+}
+
+function* watchGetBookIsbnSearch() {
+  yield takeLatest(GET_BOOK_ISBN_SEARCH_REQUEST, getBookIsbnSearch);
+}
+
 function* watchGetBook() {
   yield takeLatest(GET_BOOK_REQUEST, getBook);
 }
 
 export default function* bookSaga() {
-  yield all([fork(watchGetAllBooks), fork(watchGetBook), fork(watchGetBooksByGroup)]);
+  yield all([fork(watchGetAllBooks), fork(watchGetBook), fork(watchGetBooksByGroup), fork(watchGetBooksSearch), fork(watchGetBookIsbnSearch)]);
 }
