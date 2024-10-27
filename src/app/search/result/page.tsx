@@ -1,9 +1,8 @@
 'use client';
-import { useState } from 'react';
+import { useEffect, useState, useMemo } from 'react';
 
 import { Container, Box, Pagination, Typography } from '@mui/material';
 import { useSearchParams } from 'next/navigation';
-//import { usePathname, useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getBookIsbnSearchRequest, getBooksSearchRequest } from '../../actions/types';
@@ -17,13 +16,24 @@ const ResultPage = () => {
   const queryParams = useSearchParams();
   const isbn = queryParams.get('isbn');
   const searchCondition = queryParams.get('searchCondition');
-  let parsedIsbn: isbnType, pasrsedSearchCondition: SearchType;
-  if (isbn) {
-    parsedIsbn = JSON.parse(decodeURIComponent(isbn)); // URL 디코딩 및 JSON 파싱
-  }
-  if (searchCondition) {
-    pasrsedSearchCondition = JSON.parse(decodeURIComponent(searchCondition)); // URL 디코딩 및 JSON 파싱
-  }
+
+  // let parsedIsbn: isbnType | null = null;
+  // let parsedSearchCondition: SearchType | null = null;
+
+  // if (isbn) {
+  //   parsedIsbn = JSON.parse(decodeURIComponent(isbn)); // URL 디코딩 및 JSON 파싱
+  // }
+  // if (searchCondition) {
+  //   parsedSearchCondition = JSON.parse(decodeURIComponent(searchCondition)); // URL 디코딩 및 JSON 파싱
+  // }
+
+  const parsedIsbn: isbnType = useMemo(() => {
+    return isbn ? JSON.parse(decodeURIComponent(isbn)) : null;
+  }, [isbn]);
+
+  const parsedSearchCondition: SearchType = useMemo(() => {
+    return searchCondition ? JSON.parse(decodeURIComponent(searchCondition)) : null;
+  }, [searchCondition]);
 
   const dispatch = useDispatch<AppDispatch>();
   const [page, setPage] = useState(1);
@@ -33,14 +43,25 @@ const ResultPage = () => {
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
-    pasrsedSearchCondition.page = value;
-    pasrsedSearchCondition.pageSize = booksPerPage;
+    if (parsedSearchCondition) {
+      parsedSearchCondition.page = value;
+      parsedSearchCondition.pageSize = booksPerPage;
+      dispatch(getBooksSearchRequest(parsedSearchCondition));
+    }
     if (parsedIsbn) {
       dispatch(getBookIsbnSearchRequest(parsedIsbn));
-    } else {
-      dispatch(getBooksSearchRequest(pasrsedSearchCondition));
     }
   };
+
+  useEffect(() => {
+    if (parsedIsbn) {
+      dispatch(getBookIsbnSearchRequest(parsedIsbn));
+    }
+    if (parsedSearchCondition) {
+      parsedSearchCondition.pageSize = booksPerPage;
+      dispatch(getBooksSearchRequest(parsedSearchCondition));
+    }
+  }, [dispatch, parsedIsbn, booksPerPage, parsedSearchCondition]);
 
   return (
     <>
