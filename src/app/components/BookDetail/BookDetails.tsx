@@ -85,10 +85,7 @@ const BookDetails: React.FC<BookDetailsProps> = ({ book }) => {
               width: '100%',
             }}>
             <Box sx={{ p: 2 }}>
-              <Typography
-                variant="body1"
-                dangerouslySetInnerHTML={{ __html: book.description || 'No description available' }}
-              />
+              <Typography variant="body1" dangerouslySetInnerHTML={{ __html: book.description || 'No description available' }} />
             </Box>
           </Box>
         </Box>

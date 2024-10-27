@@ -20,8 +20,8 @@ import {
   useTheme,
 } from '@mui/material';
 import { format, subMonths } from 'date-fns';
-import { useRouter, useParams } from 'next/navigation';
-import { useDispatch, useSelector } from 'react-redux';
+import { useRouter } from 'next/navigation';
+import { useDispatch } from 'react-redux';
 
 import { isbnType } from './types/isbnType';
 import { SearchType } from './types/searchType';
@@ -68,7 +68,6 @@ const SearchPage = () => {
 
   const handleIsbnChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
-    console.log('isbn value는 이렇게 생겼다 -> ', value);
     setIsbn(value);
   };
 
@@ -95,7 +94,6 @@ const SearchPage = () => {
   };
 
   const handleDateRange = (e: React.MouseEvent<HTMLElement>, newValue: string) => {
-    console.log('선택된 값:', newValue);
     setDateRange(newValue);
     findStartDate(newValue);
     setStartMonth('');
@@ -165,55 +163,14 @@ const SearchPage = () => {
     }
   }, [start_date, customDate, formData.start_date, formData.end_date]);
 
-  // const handleSearch = () => {
-  //   dispatch(getBooksSearchRequest(formData));
-  //   console.log('라우팅 경로: ', '/search/result', formData);
-
-  //   router.push('/search/result');
-
-  //   setStartMonth('');
-  //   setStartYear('');
-  //   setEndMonth('');
-  //   setEndYear('');
-  //   setDateRange('all');
-  //   setFormData({
-  //     title: '',
-  //     author: '',
-  //     publisher: '',
-  //     sortOrder: '',
-  //     startDate: '',
-  //     endDate: '',
-  //   });
-  // };
-
-  // const handleIsbnSearch = () => {
-  //   console.log('[01] isbn뭐야? ', isbn);
-  //   if (!isbn) {
-  //     alert('ISBN을 입력해주세요.');
-  //     return;
-  //   }
-  //   console.log('[02] isbn 찾기버튼 눌러짐');
-  //   dispatch(getBookIsbnSearchRequest(isbn));
-  //   console.log('[03] isbn 찾기버튼 눌려서 디스패치 날라감');
-
-  //   router.push('/search/result');
-  //   setIsbn('');
-  // };
-
   const handleSearch = () => {
     if (isbn) {
-      // ISBN 값이 있으면 ISBN으로 검색
-      console.log('[01] isbn뭐야? ', isbn);
       dispatch(getBookIsbnSearchRequest(isbn));
-      console.log('[02] isbn 찾기버튼 눌려서 디스패치 날라감');
       setIsbn('');
     } else {
-      // ISBN 값이 없으면 다른 검색 조건으로 검색
-      console.log('라우팅 경로: ', '/search/result', formData);
       dispatch(getBooksSearchRequest(formData));
     }
 
-    // 공통 동작: 페이지 이동 및 상태 초기화
     const searchConditionString = encodeURIComponent(JSON.stringify(formData));
     const isbnString = encodeURIComponent(JSON.stringify(isbn));
     router.push(`/search/result?isbn=${isbnString}&searchCondition=${searchConditionString}`);

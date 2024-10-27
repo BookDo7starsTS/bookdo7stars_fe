@@ -159,8 +159,6 @@ const Header = () => {
     router.push('/search');
   };
 
-  console.log('isMobile:', isMobile);
-
   return (
     <Box>
       <Box

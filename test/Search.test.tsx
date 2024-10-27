@@ -1,23 +1,18 @@
-// 서치페이지 렌더링되는지, 디스페치 날라가는지
 import '@testing-library/jest-dom';
-import { getBooksSearchFailure, getBooksSearchRequest, getBooksSearchSuccess } from '@/app/actions/types';
-import Search from '@/app/search/page';
-import SearchResult from '@/app/search/result/page';
 import rootReducer from '@/app/reducers';
 import rootSaga from '@/app/sagas';
-import {getBookSearch} from '@app/sagas/book';
-import { render, screen, waitFor } from '@testing-library/react';
-import axios from 'axios';
+import Search from '@/app/search/page';
+import { render, screen } from '@testing-library/react';
 import { Provider } from 'react-redux';
 import configureStore from 'redux-mock-store';
-import createSagaMiddleware, { runSaga } from 'redux-saga';
+import createSagaMiddleware from 'redux-saga';
 
 const sagaMiddleware = createSagaMiddleware();
 const mockStore = configureStore([sagaMiddleware]);
 const store = mockStore({
   reducer: rootReducer,
 });
-const mockDispatch = jest.fn();
+
 const mockRouter = jest.fn();
 sagaMiddleware.run(rootSaga);
 jest.mock('next/navigation', () => ({

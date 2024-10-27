@@ -8,5 +8,3 @@ export type SearchType = {
   page: number | undefined;
   pageSize: number | undefined;
 };
-
-//안돠?
