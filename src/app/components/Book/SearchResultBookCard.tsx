@@ -41,9 +41,14 @@ const SearchResultBookCard: React.FC<SearchResultBookCardProps> = ({ book }) => 
     router.push(`/book/${book.id}`);
   };
 
-  console.log('book: ', book);
   return (
-    <StyledCard sx={{ cursor: 'pointer' }} onClick={() => clickBookCard(book)}>
+    <StyledCard
+      sx={{
+        cursor: 'pointer',
+        flexDirection: { xs: 'column', md: 'row' },
+        alignItems: { xs: 'center', md: 'flex-start' },
+      }}
+      onClick={() => clickBookCard(book)}>
       <CardMedia component="img" image={book.cover} alt={book.title} sx={{ width: 240, height: 380, objectFit: 'cover' }} />
       <CardContent sx={{ paddingTop: '70px', paddingLeft: '30px', height: 380, width: '100%' }}>
         <Typography variant="h6" component="div" onClick={() => clickBookCard(book)} sx={{ cursor: 'pointer', fontWeight: 'bold' }}>
@@ -79,17 +84,23 @@ const SearchResultBookCard: React.FC<SearchResultBookCardProps> = ({ book }) => 
 
         <Box
           component="div"
-          display="flex"
+          display={{ xs: 'none', md: 'flex' }}
           alignItems="center"
           sx={{
             marginTop: '47px',
             fontWeight: 'bold',
             borderRadius: '4px',
             position: 'relative',
+            flexWrap: 'nowrap',
+            fontSize: '14px',
+            whiteSpace: 'nowrap',
+            flexDirection: 'row',
+            gap: '14px',
+            position: 'relative',
+            zIndex: 10,
           }}
           onClick={(event) => event.stopPropagation()}>
           <div style={{ marginRight: '14px' }}>배송 정보</div>
-
           <h6 style={{ margin: 0, marginRight: '13px' }}>{address}</h6>
           <Box sx={{ top: '100%', left: 0, zIndex: 100 }}>
             <AddressChange setAddress={setAddress} />
@@ -99,12 +110,13 @@ const SearchResultBookCard: React.FC<SearchResultBookCardProps> = ({ book }) => 
       <Box
         sx={{
           display: 'flex',
-          flexDirection: 'column',
-          width: '200px',
           alignItems: 'center',
           justifyContent: 'space-around',
           padding: '8px',
           paddingRight: '60px',
+          gap: '0px',
+          flexDirection: { xs: 'row', md: 'column' },
+          width: '100%',
         }}>
         <Button variant="contained" color="primary" sx={{ width: '110px', height: '50px', display: 'flex', alignItems: 'center', marginBottom: '10px' }}>
           <ShoppingCartIcon sx={{ color: 'inherit', marginRight: 0.5 }} />
