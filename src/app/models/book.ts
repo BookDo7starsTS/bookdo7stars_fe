@@ -18,4 +18,5 @@ export interface Book {
   queryType: string;
   deleted: boolean;
   pubDate: Date;
+  salesPoint: number;
 }

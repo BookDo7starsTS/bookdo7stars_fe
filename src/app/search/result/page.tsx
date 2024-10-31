@@ -6,7 +6,7 @@ import { useSearchParams } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { getBookIsbnSearchRequest, getBooksSearchRequest } from '../../actions/types';
-import BooksContainer from '../../components/Book/BooksContainer';
+import SearchResultBooksContainer from '../../components/Book/SearchResultBooksContainer';
 import { RootState } from '../../reducers';
 import { AppDispatch } from '../../store/store';
 import { isbnType } from '../types/isbnType';
@@ -68,7 +68,7 @@ const ResultPage = () => {
       <Container data-testid="books-container" sx={{ width: '100vw', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
         {books.length > 0 ? (
           <>
-            <BooksContainer books={books} title={'Search Result'} booksPerPage={booksPerPage} />
+            <SearchResultBooksContainer books={books} title={'Search Result'} booksPerPage={booksPerPage} />
             <Box sx={{ display: 'flex', justifyContent: 'center', mb: '20px' }}>
               <Pagination
                 count={pageCount}
