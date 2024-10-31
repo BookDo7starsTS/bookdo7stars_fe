@@ -33,7 +33,7 @@ const StyledCard = styled(Card)`
   }
 `;
 
-const searchResultBookCard: React.FC<SearchResultBookCardProps> = ({ book }) => {
+const SearchResultBookCard: React.FC<SearchResultBookCardProps> = ({ book }) => {
   const [address, setAddress] = useState('Select your region');
   const theme = useTheme();
   const router = useRouter();
@@ -54,9 +54,9 @@ const searchResultBookCard: React.FC<SearchResultBookCardProps> = ({ book }) => 
         </Typography>
         <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1 }}>
           <Typography variant="subtitle2" color="text.primary">
-            {currencyFormat(book.priceStandard)} →
+            {currencyFormat(book.priceStandard)}원 →
             <Box component="span" sx={{ color: pink[500], fontWeight: 'bold', fontSize: '20px' }}>
-              {currencyFormat(book.priceSales)}
+              {currencyFormat(book.priceSales)}원
             </Box>
             (
             <Box component="span" sx={{ color: pink[500] }}>
@@ -84,8 +84,6 @@ const searchResultBookCard: React.FC<SearchResultBookCardProps> = ({ book }) => 
           sx={{
             marginTop: '47px',
             fontWeight: 'bold',
-            // backgroundColor: '#f5f5f5',
-            // padding: '8px',
             borderRadius: '4px',
             position: 'relative',
           }}
@@ -127,4 +125,4 @@ const searchResultBookCard: React.FC<SearchResultBookCardProps> = ({ book }) => 
   );
 };
 
-export default searchResultBookCard;
+export default SearchResultBookCard;
