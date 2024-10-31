@@ -96,7 +96,6 @@ const SearchResultBookCard: React.FC<SearchResultBookCardProps> = ({ book }) => 
             whiteSpace: 'nowrap',
             flexDirection: 'row',
             gap: '14px',
-            position: 'relative',
             zIndex: 10,
           }}
           onClick={(event) => event.stopPropagation()}>
