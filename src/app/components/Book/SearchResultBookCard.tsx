@@ -24,13 +24,16 @@ const StyledCard = styled(Card)`
   align-items: center;
   border-radius: 12px;
   box-shadow: 3;
-  overflow: hidden;
   transition:
     transform 0.2s,
     box-shadow 0.2s;
   &:hover {
-    transform: scale(1.03);
+    transform: scale(1.009);
     box-shadow: 6;
+  }
+      /* 모바일에서만 max-width 적용 */
+  @media (max-width: 900px) {
+    max-width: 440px;
   }
 `;
 
@@ -47,6 +50,21 @@ const SearchResultBookCard: React.FC<SearchResultBookCardProps> = ({ book }) => 
     router.push(`/book/${book.id}`);
   };
 
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    console.log('장바구니에 추가');
+}
+
+const handleAddToBuy = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    console.log('바로구매');
+}
+
+const handleAddToWishlist = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    console.log('보관함에 추가');
+}
+
   return (
     <>
       {loading ? (
@@ -59,10 +77,23 @@ const SearchResultBookCard: React.FC<SearchResultBookCardProps> = ({ book }) => 
             cursor: 'pointer',
             flexDirection: { xs: 'column', md: 'row' },
             alignItems: { xs: 'center', md: 'flex-start' },
+            overflow: 'visible', 
           }}
           onClick={() => clickBookCard(book)}>
-          <CardMedia component="img" image={book.cover} alt={book.title} sx={{ width: 240, height: 380, objectFit: 'cover' }} />
-          <CardContent sx={{ paddingTop: '70px', paddingLeft: '30px', height: 380, width: '100%' }}>
+          <CardMedia 
+          component="img" 
+          image={book.cover} 
+          alt={book.title} 
+          sx={{  
+            borderTopLeftRadius: {md:'12px'},
+            borderBottomLeftRadius: {md:'12px'},
+            paddingTop: {xs: '30px', md: '0px'},
+            width: 240, 
+            height: 380, 
+            objectFit: 'cover' 
+            }} 
+          />
+          <CardContent sx={{ paddingTop: '70px', paddingLeft: '30px', height: {sx:'300px', md:'380px'}, width: '100%' }}>
             <Typography variant="h6" component="div" onClick={() => clickBookCard(book)} sx={{ cursor: 'pointer', fontWeight: 'bold' }}>
               {book.title}
             </Typography>
@@ -101,7 +132,7 @@ const SearchResultBookCard: React.FC<SearchResultBookCardProps> = ({ book }) => 
               sx={{
                 backgroundColor: `${theme.palette.third.main}`,
                 padding: '8px',
-                paddingRight: '100px',
+                paddingRight: '70px',
                 marginTop: '47px',
                 fontWeight: 'bold',
                 borderRadius: '4px',
@@ -111,7 +142,7 @@ const SearchResultBookCard: React.FC<SearchResultBookCardProps> = ({ book }) => 
                 whiteSpace: 'nowrap',
                 flexDirection: 'row',
                 gap: '14px',
-                zIndex: 10,
+                zIndex: 100,
               }}
               onClick={(event) => event.stopPropagation()}>
               <div style={{ marginRight: '14px' }}>배송 정보</div>
@@ -122,30 +153,50 @@ const SearchResultBookCard: React.FC<SearchResultBookCardProps> = ({ book }) => 
             </Box>
           </CardContent>
           <Box
-            sx={{
-              display: 'flex',
-              alignItems: 'center',
-              paddingBottom: { xs: '30px', md: '0px' },
-              justifyContent: 'space-around',
-              gap: '30px',
-              flexDirection: { xs: 'row', md: 'column' },
-              width: '100%',
-            }}>
-            <Button variant="contained" color="primary" sx={{ width: '110px', height: '50px', display: 'flex', alignItems: 'center' }}>
-              <ShoppingCartIcon sx={{ color: 'inherit', marginRight: 0.5 }} />
-              장바구니
-            </Button>
+  sx={{
+    display: 'flex',
+    alignItems: 'center',
+    paddingBottom: { xs: '30px', md: '0px' },
+    padding: '12px',
+    paddingRight: { xs: '12px', md: '50px' },
+    justifyContent: 'space-around',
+    gap: '30px',
+    flexDirection: { xs: 'row', md: 'column' },
+    width: '100%',
+  }}
+>
+  <Button 
+    variant="contained" 
+    color="primary" 
+    sx={{ width: '110px', height: '50px', display: 'flex', alignItems: 'center' }}  
+    onClick={handleAddToCart}
+  >
+    <ShoppingCartIcon sx={{ color: 'inherit', marginRight: 0.5 }} />
+    장바구니
+  </Button>
 
-            <Button sx={{ border: `2px solid ${theme.palette.primary.main}`, width: '110px', height: '50px' }}>
-              <PaymentIcon sx={{ color: 'primary', marginRight: 0.5 }} />
-              바로구매
-            </Button>
+  <Button 
+    sx={{ border: `2px solid ${theme.palette.primary.main}`, width: '110px', height: '50px' }}  
+    onClick={handleAddToBuy}
+  >
+    <PaymentIcon sx={{ color: 'primary', marginRight: 0.5 }} />
+    바로구매
+  </Button>
 
-            <Button variant="contained" disabled sx={{ width: '110px', height: '50px' }}>
-              <FavoriteBorderIcon sx={{ color: pink[500], marginRight: 0.5 }} />
-              보관함
-            </Button>
-          </Box>
+  <div onClick={(e) => e.stopPropagation()} style={{ cursor: 'default' }}>
+    <Button 
+      variant="contained" 
+      disabled 
+      sx={{ 
+        width: '110px', 
+        height: '50px', 
+      }}  
+    >
+      <FavoriteBorderIcon sx={{ color: pink[500], marginRight: 0.5}} />
+      보관함
+    </Button>
+  </div>
+</Box>
         </StyledCard>
       )}
     </>
