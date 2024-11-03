@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import { Container, Typography, Grid, Box, Pagination, Checkbox, Button } from '@mui/material';
+import { Container, Typography, Grid, Box, Pagination, Checkbox, Button, ToggleButtonGroup, ToggleButton } from '@mui/material';
 
 import SearchResultBookCard from './SearchResultBookCard';
 import { Book } from '../../models/book';
@@ -12,10 +12,14 @@ interface BookContainerProps {
   booksPerPage: number;
   handlePageChange: (event: React.ChangeEvent<unknown>, value: number) => void;
   currentPage: number;
+  searchTerm: string;
+  resultCount: number;
 }
 
-const SearchResultBooksContainer: React.FC<BookContainerProps> = ({ books, count, title, handlePageChange, booksPerPage, currentPage }) => {
+const SearchResultBooksContainer: React.FC<BookContainerProps> = ({ searchTerm, resultCount, books, count, title, handlePageChange, booksPerPage, currentPage }) => {
   const [selectedBooks, setSelectedBooks] = useState<number[]>([]);
+  const [sortBy, setSortBy] = useState('accuracy');
+  const pageCount = Math.ceil(count / booksPerPage);
 
   const handleSelectAll = () => {
     if (selectedBooks.length === books.length) {
@@ -48,7 +52,14 @@ const SearchResultBooksContainer: React.FC<BookContainerProps> = ({ books, count
     );
   };
 
-  const pageCount = Math.ceil(count / booksPerPage);
+  const handleSortChange = (event: React.MouseEvent<HTMLElement>, newSort: string) => {
+    if (newSort) {
+      setSortBy(newSort);
+      console.log(`정렬 기준 변경: ${newSort}`);
+      // 여기에서 API 요청을 보내거나 상태를 업데이트해서 데이터를 다시 불러옵니다.
+    }
+  };
+  
   return (
     <Container
       sx={{
@@ -65,6 +76,41 @@ const SearchResultBooksContainer: React.FC<BookContainerProps> = ({ books, count
           {title}
         </Typography>
       </Box>
+      <Box display="flex" alignItems="center" justifyContent="space-between" mb={2}>
+    <Typography variant="h6" color="textPrimary">
+      '{searchTerm}' 검색 결과 총 {resultCount}건
+    </Typography>
+  </Box>
+      <Box mb={2}>
+      <ToggleButtonGroup
+        value={sortBy}
+        exclusive
+        onChange={handleSortChange}
+        aria-label="Sort options"
+      >
+        <ToggleButton value="accuracy" aria-label="정확도순">
+          정확도순
+        </ToggleButton>
+        <ToggleButton value="sales" aria-label="판매량순">
+          판매량순
+        </ToggleButton>
+        <ToggleButton value="publication" aria-label="출간일순">
+          출간일순
+        </ToggleButton>
+        <ToggleButton value="title" aria-label="상품명순">
+          상품명순
+        </ToggleButton>
+        <ToggleButton value="rank" aria-label="평점순">
+          평점순
+        </ToggleButton>
+        <ToggleButton value="review" aria-label="리뷰순"> {/*  저자순으로 바꿀까요? */}
+          리뷰순
+        </ToggleButton>
+        <ToggleButton value="lowPrice" aria-label="저가격순">
+          저가격순
+        </ToggleButton>
+      </ToggleButtonGroup>
+    </Box>
       <Box sx={{ display: 'flex', justifyContent: 'center', mb: '20px' }}>
         <Pagination
           count={pageCount}

@@ -65,6 +65,8 @@ const ResultPage = () => {
               handlePageChange={handlePageChange}
               booksPerPage={booksPerPage}
               currentPage={page}
+              searchTerm={parsedSearchCondition?.title || ""}
+              resultCount={count}
             />
           </>
         ) : (
