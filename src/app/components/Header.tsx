@@ -221,7 +221,19 @@ const Header = () => {
               </Button>
             )}
             <Box sx={{ flexGrow: 0.5 }} />
-            <Select value={searchTarget} onChange={handleSearchTargetChange} sx={{ marginRight: 1, height: '40px' }}>
+            <Select
+              value={searchTarget}
+              onChange={handleSearchTargetChange}
+              sx={{
+                backgroundColor: alpha(theme.palette.primary.main, 0.15),
+                borderTopRightRadius: '0',
+                borderBottomRightRadius: '0',
+                marginRight: '-25px',
+                height: '40px',
+                '& .MuiOutlinedInput-notchedOutline': {
+                  border: 'none',
+                },
+              }}>
               <MenuItem value="title">Title</MenuItem>
               <MenuItem value="author">Author</MenuItem>
               <MenuItem value="publisher">Publisher</MenuItem>
@@ -238,7 +250,8 @@ const Header = () => {
                   </InputAdornment>
                 ),
                 style: isMobile ? { fontSize: '0.75rem' } : {}, // 모바일에서 글자 크기 조정
-              }}></StyledSearchField>
+              }}
+              sx={{ borderTopLeftRadius: '0', borderBottomLeftRadius: '0' }}></StyledSearchField>
             <StyledButtonSearch sx={{ marginRight: '-1px' }} onClick={handleSearch}>
               Search
             </StyledButtonSearch>
