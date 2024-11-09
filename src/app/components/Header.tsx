@@ -1,5 +1,7 @@
 'use client';
 
+import { useEffect, useState } from 'react';
+
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import HowToRegRoundedIcon from '@mui/icons-material/HowToRegRounded';
 import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
@@ -22,13 +24,15 @@ import {
   useMediaQuery,
   useTheme,
   Tooltip,
+  Select,
+  MenuItem,
 } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CategoryBar from './CategoryBar';
-import { logoutRequest } from '../actions/types';
+import { getBooksSearchRequest, logoutRequest } from '../actions/types';
 import { AppDispatch, AppState } from '../store/store';
 
 const StyledSearchField = styled(TextField)(({ theme }) => ({
@@ -132,6 +136,26 @@ const Header = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { user, isLogoutDone } = useSelector((store: AppState) => store.user);
 
+  const [searchTarget, setSearchTarget] = useState('title');
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const initialPageSize = 20;
+  const initialPage = 1;
+
+  const handleSearchTargetChange = (event) => {
+    setSearchTarget(event.target.value);
+  };
+
+  const handleSearch = () => {
+    if (searchTerm.trim() === '') {
+      alert('Please enter a search term.');
+      return;
+    }
+    const encodedSearchTerm = encodeURIComponent(searchTerm);
+    router.push(`/search/result?${searchTarget}=${encodedSearchTerm}`);
+    dispatch(getBooksSearchRequest({ page: initialPage, pageSize: initialPageSize, [searchTarget]: searchTerm }));
+  };
+
   const handleLogin = () => {
     router.push('/login');
   };
@@ -197,7 +221,14 @@ const Header = () => {
               </Button>
             )}
             <Box sx={{ flexGrow: 0.5 }} />
+            <Select value={searchTarget} onChange={handleSearchTargetChange} sx={{ marginRight: 1, height: '40px' }}>
+              <MenuItem value="title">Title</MenuItem>
+              <MenuItem value="author">Author</MenuItem>
+              <MenuItem value="publisher">Publisher</MenuItem>
+            </Select>
             <StyledSearchField
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
               placeholder="Search..."
               inputProps={{ 'aria-label': 'search' }}
               InputProps={{
@@ -208,7 +239,9 @@ const Header = () => {
                 ),
                 style: isMobile ? { fontSize: '0.75rem' } : {}, // 모바일에서 글자 크기 조정
               }}></StyledSearchField>
-            <StyledButtonSearch sx={{ marginRight: '-1px' }}>Search</StyledButtonSearch>
+            <StyledButtonSearch sx={{ marginRight: '-1px' }} onClick={handleSearch}>
+              Search
+            </StyledButtonSearch>
             {isMobile ? (
               <Tooltip title={'상세검색'}>
                 <IconButton onClick={handleDetailSearch} sx={{ marginLeft: '6px', width: '20px', height: '20px', color: 'black' }} aria-label="상세검색">
