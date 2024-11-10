@@ -73,7 +73,7 @@ function getBooksSearchAPI(data: GetBooksSearchRequestAction['data']) {
 
 export function* getBooksSearch(action: GetBooksSearchRequestAction): SagaIterator {
   try {
-    console.log('사가 잘 도착했네, action');
+    console.log('사가 잘 도착했네', action);
     const response: any = yield call(getBooksSearchAPI, action.data);
     console.log('백엔드 잘 갔다왔네', response);
     yield put({
