@@ -5,7 +5,7 @@ import { Container, Typography, Grid, Box, Pagination, Checkbox, Button, ToggleB
 import SearchResultBookCard from './SearchResultBookCard';
 import { Book } from '../../models/book';
 
-interface BookContainerProps {
+interface SearchResultBooksContainerProps {
   books: Book[];
   title: string;
   count: number;
@@ -14,9 +14,10 @@ interface BookContainerProps {
   currentPage: number;
   searchTerm: string;
   resultCount: number;
+  parsedSearchCondition: string;
 }
 
-const SearchResultBooksContainer: React.FC<BookContainerProps> = ({
+const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
   searchTerm,
   resultCount,
   books,
@@ -25,6 +26,7 @@ const SearchResultBooksContainer: React.FC<BookContainerProps> = ({
   handlePageChange,
   booksPerPage,
   currentPage,
+  parsedSearchCondition,
 }) => {
   const [selectedBooks, setSelectedBooks] = useState<number[]>([]);
   const [sortBy, setSortBy] = useState('accuracy');
@@ -65,7 +67,14 @@ const SearchResultBooksContainer: React.FC<BookContainerProps> = ({
     if (newSort) {
       setSortBy(newSort);
       console.log(`정렬 기준 변경: ${newSort}`);
-      // 여기에서 API 요청을 보내거나 상태를 업데이트해서 데이터를 다시 불러옵니다.
+
+      // 기본 검색 조건을 설정하거나, props로 받은 parsedSearchCondition 사용
+      const updatedSearchCondition = {
+        ...(parsedSearchCondition || { page: currentPage, pageSize: booksPerPage }),
+        orderTerm: newSort, // 선택된 정렬 기준을 추가
+      };
+
+      dispatch(getBooksSearchRequest(updatedSearchCondition));
     }
   };
 
@@ -128,11 +137,6 @@ const SearchResultBooksContainer: React.FC<BookContainerProps> = ({
           </ToggleButton>
           <ToggleButton value="rank" aria-label="평점순">
             평점순
-          </ToggleButton>
-          <ToggleButton value="review" aria-label="리뷰순">
-            {' '}
-            {/*  저자순으로 바꿀까요? */}
-            리뷰순
           </ToggleButton>
           <ToggleButton value="lowPrice" aria-label="저가격순" sx={{ borderBottomRightRadius: '0px' }}>
             저가격순

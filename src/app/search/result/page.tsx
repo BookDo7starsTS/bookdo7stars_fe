@@ -67,6 +67,7 @@ const ResultPage = () => {
               currentPage={page}
               searchTerm={parsedSearchCondition?.title || ''}
               resultCount={count}
+              parsedSearchCondition={parsedSearchCondition}
             />
           </>
         ) : (
