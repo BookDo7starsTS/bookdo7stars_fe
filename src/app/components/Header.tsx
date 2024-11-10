@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useState, KeyboardEvent } from 'react';
 
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import HowToRegRoundedIcon from '@mui/icons-material/HowToRegRounded';
@@ -144,9 +144,16 @@ const Header = () => {
       alert('Please enter a search term.');
       return;
     }
-    const searchCondition = encodeURIComponent(JSON.stringify({ title: searchTerm, page: 1, pageSize: 20 }));
+    const searchCondition = encodeURIComponent(JSON.stringify({ searchTerm, page: 1, pageSize: 20 }));
     router.push(`/search/result?searchCondition=${searchCondition}`);
     dispatch(getBooksSearchRequest({ page: initialPage, pageSize: initialPageSize, searchTerm }));
+    setSearchTerm('');
+  };
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleSearch(); // Enter 키를 눌렀을 때 handleSearch 호출
+    }
   };
 
   const handleLogin = () => {
@@ -218,6 +225,7 @@ const Header = () => {
             <StyledSearchField
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyDown={handleKeyDown}
               placeholder="Search..."
               inputProps={{ 'aria-label': 'search' }}
               InputProps={{

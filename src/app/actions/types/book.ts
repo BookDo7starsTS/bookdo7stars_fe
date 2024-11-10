@@ -58,6 +58,7 @@ export interface GetBooksByGroupFailureAction {
 export interface GetBooksSearchRequestAction {
   type: typeof GET_BOOKS_SEARCH_REQUEST;
   data: {
+    searchTerm?: string;
     title?: string;
     author?: string;
     publisher?: string;

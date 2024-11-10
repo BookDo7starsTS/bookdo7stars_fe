@@ -1,6 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, ChangeEvent } from 'react';
 
+import { getBooksSearchRequest } from '@/app/actions/types';
+import { SearchType } from '@/app/search/types/searchType';
+import { AppDispatch } from '@/app/store/store';
 import { Container, Typography, Grid, Box, Pagination, Checkbox, Button, ToggleButtonGroup, ToggleButton } from '@mui/material';
+import { useDispatch } from 'react-redux';
 
 import SearchResultBookCard from './SearchResultBookCard';
 import { Book } from '../../models/book';
@@ -14,11 +18,10 @@ interface SearchResultBooksContainerProps {
   currentPage: number;
   searchTerm: string;
   resultCount: number;
-  parsedSearchCondition: string;
+  parsedSearchCondition: SearchType;
 }
 
 const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
-  searchTerm,
   resultCount,
   books,
   count,
@@ -29,8 +32,9 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
   parsedSearchCondition,
 }) => {
   const [selectedBooks, setSelectedBooks] = useState<number[]>([]);
-  const [sortBy, setSortBy] = useState('accuracy');
+  const [sortBy, setSortBy] = useState('');
   const pageCount = Math.ceil(count / booksPerPage);
+  const dispatch = useDispatch<AppDispatch>();
 
   const handleSelectAll = () => {
     if (selectedBooks.length === books.length) {
@@ -63,20 +67,39 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
     );
   };
 
-  const handleSortChange = (event: React.MouseEvent<HTMLElement>, newSort: string) => {
-    if (newSort) {
-      setSortBy(newSort);
-      console.log(`정렬 기준 변경: ${newSort}`);
+  const handleSortChange = (event: React.MouseEvent<HTMLElement>, newSortBy: string) => {
+    setSortBy(newSortBy);
+    const updatedSearchCondition: SearchType = {
+      ...parsedSearchCondition,
+      orderTerm: newSortBy,
+    };
+    console.log(updatedSearchCondition);
+    dispatch(getBooksSearchRequest(updatedSearchCondition));
+    // if (newSort) {
+    //   setSortBy(newSort);
+    //   console.log(`정렬 기준 변경: ${newSort}`);
+    //   // 기본 검색 조건을 설정하거나, props로 받은 parsedSearchCondition 사용
+    //   const updatedSearchCondition = {
+    //     ...(parsedSearchCondition || { page: currentPage, pageSize: booksPerPage }),
+    //     orderTerm: newSort, // 선택된 정렬 기준을 추가
+    //   };
+    //   dispatch(getBooksSearchRequest(updatedSearchCondition));
+    // }
+  };
 
-      // 기본 검색 조건을 설정하거나, props로 받은 parsedSearchCondition 사용
-      const updatedSearchCondition = {
-        ...(parsedSearchCondition || { page: currentPage, pageSize: booksPerPage }),
-        orderTerm: newSort, // 선택된 정렬 기준을 추가
-      };
-
-      dispatch(getBooksSearchRequest(updatedSearchCondition));
+  const getTitle = (parsedSearchCondition: SearchType) => {
+    if (parsedSearchCondition.searchTerm) {
+      return parsedSearchCondition.searchTerm + ` 의 검색 결과 총 ${resultCount}건`;
+    } else {
+      const resultString = Object.entries(parsedSearchCondition)
+        .filter(([key, value]) => value !== '' && key !== 'page' && key !== 'pageSize' && key !== 'orderTerm')
+        .map(([_, value]) => `${value}`)
+        .join(' + ');
+      return resultString + ` 의 검색 결과 총 ${resultCount}건`;
     }
   };
+
+  const pageTitle = getTitle(parsedSearchCondition);
 
   return (
     <Container
@@ -96,7 +119,7 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
       </Box>
       <Box display="flex" alignItems="center" justifyContent="center" mb={2}>
         <Typography variant="h6" color="textPrimary" sx={{ color: 'gray' }}>
-          '{searchTerm}' 검색 결과 총 {resultCount}건
+          {pageTitle}
         </Typography>
       </Box>
 
@@ -132,7 +155,7 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
           <ToggleButton value="publication" aria-label="출간일순">
             출간일순
           </ToggleButton>
-          <ToggleButton value="title" aria-label="상품명순">
+          <ToggleButton value="name" aria-label="상품명순">
             상품명순
           </ToggleButton>
           <ToggleButton value="rank" aria-label="평점순">

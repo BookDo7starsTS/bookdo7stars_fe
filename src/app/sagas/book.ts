@@ -68,6 +68,7 @@ export function* getBooksByGroup(action: GetBooksByGroupRequestAction): SagaIter
 
 function getBooksSearchAPI(data: GetBooksSearchRequestAction['data']) {
   const queryString: string = new URLSearchParams(data as any).toString();
+  console.log(queryString);
   return axios.get(`/book?${queryString}`);
 }
 
