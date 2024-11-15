@@ -40,6 +40,10 @@ const SearchPage = () => {
   const [endMonth, setEndMonth] = useState('');
   const months = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
 
+  const isFormEmpty = () => {
+    return !formData.title && !formData.author && !formData.publisher && dateRange === 'all' && !startYear && !endYear && !startMonth && !endMonth;
+  };
+
   const [formData, setFormData] = useState<SearchType>({
     title: '',
     author: '',
@@ -50,6 +54,11 @@ const SearchPage = () => {
     page: initialPage,
     pageSize: initialPageSize,
   });
+
+  // useEffect를 사용하여 입력이 변경될 때 버튼 상태를 업데이트
+  useEffect(() => {
+    // `찾기` 버튼이 비활성화될 조건을 설정하는 데 사용
+  }, [formData, isbn, dateRange, startYear, endYear, startMonth, endMonth]);
 
   const [isbn, setIsbn] = useState<isbnType>('');
 
@@ -432,6 +441,7 @@ const SearchPage = () => {
                       variant="contained"
                       color="success"
                       onClick={handleSearch}
+                      disabled={isFormEmpty()}
                       sx={{
                         backgroundColor: (theme) => theme.palette.primary.main,
                         '&:hover': {
@@ -473,6 +483,7 @@ const SearchPage = () => {
                       variant="contained"
                       color="success"
                       onClick={handleSearch}
+                      disabled={!isbn}
                       sx={{
                         mt: 0,
                         backgroundColor: (theme) => theme.palette.primary.main,
