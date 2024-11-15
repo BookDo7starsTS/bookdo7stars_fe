@@ -77,6 +77,12 @@ const SearchPage = () => {
 
   const handleIsbnChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
+    // 숫자가 아닌 문자가 포함된 경우 알림 표시
+    if (!/^\d*$/.test(value)) {
+      alert('ISBN에는 숫자만 입력할 수 있습니다.');
+      return;
+    }
+
     setIsbn(value);
   };
 
