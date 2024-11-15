@@ -6,6 +6,7 @@ import { getBooksByGroupRequest, resetGroupBooks } from '@/app/actions/types';
 import GroupBooksContainer from '@/app/components/Book/GroupBooksContainer';
 import { RootState } from '@/app/reducers';
 import { AppDispatch } from '@/app/store/store';
+import { Container } from '@mui/material';
 import { useParams } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -33,9 +34,9 @@ const GroupBookPage = () => {
   const title = bookGroups[groupName as QueryTypes];
 
   return (
-    <>
+    <Container data-testid="book-group-container">
       <GroupBooksContainer books={groupBooks} handleSeeMore={handleSeeMore} isGetBooksByGroupLoading={isGetBooksByGroupLoading} title={title} />
-    </>
+    </Container>
   );
 };
 export default GroupBookPage;
