@@ -1,5 +1,7 @@
 'use client';
 
+import { useState, KeyboardEvent } from 'react';
+
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import HowToRegRoundedIcon from '@mui/icons-material/HowToRegRounded';
 import LoginRoundedIcon from '@mui/icons-material/LoginRounded';
@@ -28,7 +30,7 @@ import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CategoryBar from './CategoryBar';
-import { logoutRequest } from '../actions/types';
+import { getBooksSearchRequest, logoutRequest } from '../actions/types';
 import { AppDispatch, AppState } from '../store/store';
 
 const StyledSearchField = styled(TextField)(({ theme }) => ({
@@ -132,6 +134,28 @@ const Header = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { user, isLogoutDone } = useSelector((store: AppState) => store.user);
 
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const initialPageSize = 20;
+  const initialPage = 1;
+
+  const handleSearch = () => {
+    if (searchTerm.trim() === '') {
+      alert('Please enter a search term.');
+      return;
+    }
+    const searchCondition = encodeURIComponent(JSON.stringify({ searchTerm, page: 1, pageSize: 20 }));
+    router.push(`/search/result?searchCondition=${searchCondition}`);
+    dispatch(getBooksSearchRequest({ page: initialPage, pageSize: initialPageSize, searchTerm }));
+    setSearchTerm('');
+  };
+
+  const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleSearch(); // Enter 키를 눌렀을 때 handleSearch 호출
+    }
+  };
+
   const handleLogin = () => {
     router.push('/login');
   };
@@ -197,7 +221,11 @@ const Header = () => {
               </Button>
             )}
             <Box sx={{ flexGrow: 0.5 }} />
+
             <StyledSearchField
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyDown={handleKeyDown}
               placeholder="Search..."
               inputProps={{ 'aria-label': 'search' }}
               InputProps={{
@@ -207,8 +235,11 @@ const Header = () => {
                   </InputAdornment>
                 ),
                 style: isMobile ? { fontSize: '0.75rem' } : {}, // 모바일에서 글자 크기 조정
-              }}></StyledSearchField>
-            <StyledButtonSearch sx={{ marginRight: '-1px' }}>Search</StyledButtonSearch>
+              }}
+              sx={{ borderTopLeftRadius: '0', borderBottomLeftRadius: '0' }}></StyledSearchField>
+            <StyledButtonSearch sx={{ marginRight: '-1px' }} onClick={handleSearch}>
+              Search
+            </StyledButtonSearch>
             {isMobile ? (
               <Tooltip title={'상세검색'}>
                 <IconButton onClick={handleDetailSearch} sx={{ marginLeft: '6px', width: '20px', height: '20px', color: 'black' }} aria-label="상세검색">
