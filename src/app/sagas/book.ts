@@ -68,15 +68,12 @@ export function* getBooksByGroup(action: GetBooksByGroupRequestAction): SagaIter
 
 function getBooksSearchAPI(data: GetBooksSearchRequestAction['data']) {
   const queryString: string = new URLSearchParams(data as any).toString();
-  console.log(queryString);
   return axios.get(`/book?${queryString}`);
 }
 
 export function* getBooksSearch(action: GetBooksSearchRequestAction): SagaIterator {
   try {
-    console.log('사가 잘 도착했네', action);
     const response: any = yield call(getBooksSearchAPI, action.data);
-    console.log('백엔드 잘 갔다왔네', response);
     yield put({
       type: GET_BOOKS_SEARCH_SUCCESS,
       payload: response.data.books,
@@ -140,7 +137,6 @@ function* watchGetBooksByGroup() {
 }
 
 function* watchGetBooksSearch() {
-  console.log('통합검색도 와쳐 잘 도달했네');
   yield takeLatest(GET_BOOKS_SEARCH_REQUEST, getBooksSearch);
 }
 

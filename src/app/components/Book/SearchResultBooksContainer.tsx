@@ -38,7 +38,7 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
 
   const handleSelectAll = () => {
     if (selectedBooks.length === books.length) {
-      setSelectedBooks([]); // 전체 해제
+      setSelectedBooks([]);
     } else {
       setSelectedBooks(books.map((book) => book.id));
     }
@@ -59,11 +59,8 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
   };
 
   const handleCheckboxChange = (bookId: number) => {
-    setSelectedBooks(
-      (prevSelectedBooks) =>
-        prevSelectedBooks.includes(bookId)
-          ? prevSelectedBooks.filter((id) => id !== bookId) // 선택 해제
-          : [...prevSelectedBooks, bookId], // 선택 추가
+    setSelectedBooks((prevSelectedBooks) =>
+      prevSelectedBooks.includes(bookId) ? prevSelectedBooks.filter((id) => id !== bookId) : [...prevSelectedBooks, bookId],
     );
   };
 
@@ -73,18 +70,7 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
       ...parsedSearchCondition,
       orderTerm: newSortBy,
     };
-    console.log(updatedSearchCondition);
     dispatch(getBooksSearchRequest(updatedSearchCondition));
-    // if (newSort) {
-    //   setSortBy(newSort);
-    //   console.log(`정렬 기준 변경: ${newSort}`);
-    //   // 기본 검색 조건을 설정하거나, props로 받은 parsedSearchCondition 사용
-    //   const updatedSearchCondition = {
-    //     ...(parsedSearchCondition || { page: currentPage, pageSize: booksPerPage }),
-    //     orderTerm: newSort, // 선택된 정렬 기준을 추가
-    //   };
-    //   dispatch(getBooksSearchRequest(updatedSearchCondition));
-    // }
   };
 
   const getTitle = (parsedSearchCondition: SearchType) => {
