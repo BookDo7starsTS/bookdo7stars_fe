@@ -28,7 +28,7 @@ const ResultPage = () => {
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const { books, count } = useSelector((store: RootState) => store.book);
+  const { books, count, isGetBooksSearchLoading } = useSelector((store: RootState) => store.book);
   const booksPerPage = 20;
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -68,6 +68,7 @@ const ResultPage = () => {
               searchTerm={parsedSearchCondition?.title || ''}
               resultCount={count}
               parsedSearchCondition={parsedSearchCondition}
+              isGetBooksSearchLoading={isGetBooksSearchLoading}
             />
           </>
         ) : (
