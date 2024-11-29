@@ -1,12 +1,13 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { getCategoryRequest } from '@/app/actions/types';
 import { RootState } from '@/app/reducers';
 import { AppDispatch } from '@/app/store/store';
+import ClearIcon from '@mui/icons-material/Clear';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MenuIcon from '@mui/icons-material/Menu';
-import { AppBar, Toolbar, Typography, MenuItem, Box, IconButton, useTheme, useMediaQuery, Grid, Paper, Link } from '@mui/material';
-import { display } from '@mui/system';
+import SearchIcon from '@mui/icons-material/Search';
+import { AppBar, Toolbar, Typography, MenuItem, Box, IconButton, useTheme, useMediaQuery, Grid, Paper, Link, TextField, InputAdornment } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -18,11 +19,35 @@ const CategoryBar = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const router = useRouter();
   const { categories } = useSelector((store: RootState) => store.category);
-  const [expandedId, setExpandedId] = useState(-1);
+  const [expandedId, setExpandedId] = useState([-1]);
   const [isCategoryVisible, setCategoriesVisible] = useState(false);
 
-  const handleExpandableToggle = (id: number) => {
-    setExpandedId((prev) => (prev === id ? -1 : id));
+  const [searchCategoryText, setSearchCategoryText] = useState('');
+
+  const handleSearch = (keyword: string) => {
+    if (keyword.length < 2) return;
+    const searchAr = [];
+    for (const category of categories) {
+      if (category.name.includes(keyword)) {
+        searchAr.push(category.id);
+        continue;
+      }
+      for (const child of category.children) {
+        if (child.name.includes(keyword)) {
+          searchAr.push(category.id);
+          break;
+        }
+      }
+    }
+    setExpandedId(searchAr);
+  };
+
+  const handleClear = () => {
+    setSearchCategoryText('');
+  };
+
+  const handleExpandableToggle = (id: number[]) => {
+    setExpandedId((prev) => (prev.every((value, index) => value === id[index]) ? [-1] : id));
   };
 
   const handlePopperClick = () => {
@@ -112,49 +137,82 @@ const CategoryBar = () => {
               </IconButton>
             </Box>
             {isCategoryVisible && (
-              <Paper
-                style={{
-                  position: 'absolute',
-                  top: '50px',
-                  left: '10px',
-                  right: '10px',
-                  padding: '30px',
-                  zIndex: 1000,
-                }}
-                elevation={3}>
-                <Grid container spacing={3}>
-                  {categories.map((obj) => (
-                    <Grid key={obj.id} item xs={12} sm={6} md={4} lg={2}>
-                      <Link href="{obj.id}">{obj.name}</Link>
-                      {obj.children.length > 0 && (
-                        <ExpandMoreIcon
-                          onClick={() => handleExpandableToggle(obj.id)}
-                          style={{
-                            position: 'relative',
-                            top: '5px',
-                            transform: expandedId === obj.id ? 'rotate(180deg)' : 'rotate(0deg)',
-                            transition: 'transform 0.3s',
-                          }}
-                        />
-                      )}
-                      {obj.children.map((child) => (
-                        <div
-                          key={child.id}
-                          style={{
-                            height: expandedId === obj.id ? 'auto' : 0,
-                            transition: 'opacity 0.5s ease-in-out',
-                            overflow: 'hidden',
-                            opacity: expandedId === obj.id ? 1 : 0,
-                          }}>
-                          <Link href="{child.id}" underline="none" style={{ fontSize: '10pt', color: 'black' }}>
-                            {child.name}
-                          </Link>
-                        </div>
-                      ))}
-                    </Grid>
-                  ))}
-                </Grid>
-              </Paper>
+              <>
+                <TextField
+                  style={{
+                    position: 'absolute',
+                    top: '50px',
+                    left: '10px',
+                    right: '10px',
+                    padding: '30px',
+                    zIndex: 1000,
+                  }}
+                  onChange={(e) => handleSearch(e.target.value)}
+                  variant="outlined"
+                  placeholder="Search..."
+                  size="small"
+                  fullWidth
+                  InputProps={{
+                    endAdornment: (
+                      <InputAdornment position="end">
+                        {searchCategoryText && (
+                          <IconButton onClick={handleClear}>
+                            <ClearIcon />
+                          </IconButton>
+                        )}
+                        <IconButton>
+                          <SearchIcon />
+                        </IconButton>
+                      </InputAdornment>
+                    ),
+                  }}
+                />
+
+                <Paper
+                  style={{
+                    position: 'absolute',
+                    top: '50px',
+                    left: '10px',
+                    right: '10px',
+                    padding: '30px',
+                    paddingTop: '100px',
+                    zIndex: 999,
+                  }}
+                  elevation={3}>
+                  <Grid container spacing={3}>
+                    {categories.map((obj) => (
+                      <Grid key={obj.id} item xs={12} sm={6} md={4} lg={2}>
+                        <Link href="{obj.id}">{obj.name}</Link>
+                        {obj.children.length > 0 && (
+                          <ExpandMoreIcon
+                            onClick={() => handleExpandableToggle([obj.id])}
+                            style={{
+                              position: 'relative',
+                              top: '5px',
+                              transform: expandedId.includes(obj.id) ? 'rotate(180deg)' : 'rotate(0deg)',
+                              transition: 'transform 0.3s',
+                            }}
+                          />
+                        )}
+                        {obj.children.map((child) => (
+                          <div
+                            key={child.id}
+                            style={{
+                              height: expandedId.includes(obj.id) ? 'auto' : 0,
+                              transition: 'opacity 0.5s ease-in-out',
+                              overflow: 'hidden',
+                              opacity: expandedId.includes(obj.id) ? 1 : 0,
+                            }}>
+                            <Link href="{child.id}" underline="none" style={{ fontSize: '10pt', color: 'black' }}>
+                              {child.name}
+                            </Link>
+                          </div>
+                        ))}
+                      </Grid>
+                    ))}
+                  </Grid>
+                </Paper>
+              </>
             )}
           </Box>
         </Toolbar>
