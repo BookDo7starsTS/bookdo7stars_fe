@@ -26,20 +26,24 @@ const CategoryBar = () => {
 
   const handleSearch = (keyword: string) => {
     if (keyword.length < 2) return;
-    const searchAr = [];
-    for (const category of categories) {
-      if (category.name.includes(keyword)) {
-        searchAr.push(category.id);
-        continue;
-      }
-      for (const child of category.children) {
-        if (child.name.includes(keyword)) {
+
+    const handler = setTimeout(() => {
+      const searchAr = [];
+      for (const category of categories) {
+        if (category.name.includes(keyword)) {
           searchAr.push(category.id);
-          break;
+          continue;
+        }
+        for (const child of category.children) {
+          if (child.name.includes(keyword)) {
+            searchAr.push(category.id);
+            break;
+          }
         }
       }
-    }
-    setExpandedId(searchAr);
+      setExpandedId(searchAr);
+    }, 500);
+    return () => clearTimeout(handler);
   };
 
   const handleClear = () => {
@@ -195,7 +199,7 @@ const CategoryBar = () => {
                           />
                         )}
                         {obj.children.map((child) => (
-                          <div
+                          <Box
                             key={child.id}
                             style={{
                               height: expandedId.includes(obj.id) ? 'auto' : 0,
@@ -206,7 +210,7 @@ const CategoryBar = () => {
                             <Link href="{child.id}" underline="none" style={{ fontSize: '10pt', color: 'black' }}>
                               {child.name}
                             </Link>
-                          </div>
+                          </Box>
                         ))}
                       </Grid>
                     ))}
