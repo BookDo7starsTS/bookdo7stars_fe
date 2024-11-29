@@ -1,13 +1,29 @@
+import { useEffect, useState } from 'react';
+
+import { getCategoryRequest } from '@/app/actions/types';
+import { RootState } from '@/app/reducers';
+import { AppDispatch } from '@/app/store/store';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MenuIcon from '@mui/icons-material/Menu';
-import { AppBar, Toolbar, Typography, MenuItem, Box, IconButton, useTheme, useMediaQuery } from '@mui/material';
+import { AppBar, Toolbar, Typography, MenuItem, Box, IconButton, useTheme, useMediaQuery, Grid, Paper, Link } from '@mui/material';
+import { display } from '@mui/system';
 import { useRouter } from 'next/navigation';
+import { useDispatch, useSelector } from 'react-redux';
 
 import { QueryTypes, bookGroups, getBooksPageURL } from '../books/constants';
 
 const CategoryBar = () => {
+  const dispatch = useDispatch<AppDispatch>();
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
   const router = useRouter();
+  const { categories } = useSelector((store: RootState) => store.category);
+  const [expandedId, setExpandedId] = useState(-1);
+  const [isCategoryVisible, setCategoriesVisible] = useState(false);
+
+  const handleExpandableToggle = (id: number) => {
+    setExpandedId((prev) => (prev === id ? -1 : id));
+  };
 
   const handlePopperClick = () => {
     // 팝오버 열기 로직 추가
@@ -15,6 +31,11 @@ const CategoryBar = () => {
 
   const handlePopperClose = () => {
     // 팝오버 닫기 로직 추가
+  };
+
+  const handleCategoryClick = () => {
+    if (categories.length === 0) dispatch(getCategoryRequest(3));
+    setCategoriesVisible((prev) => (prev = !prev));
   };
 
   const queryTypes: QueryTypes[] = [
@@ -87,9 +108,54 @@ const CategoryBar = () => {
                   height: { xs: 40, sm: 50 },
                   '&:hover': { backgroundColor: 'primary.light' },
                 }}>
-                <MenuIcon />
+                <MenuIcon onClick={handleCategoryClick} />
               </IconButton>
             </Box>
+            {isCategoryVisible && (
+              <Paper
+                style={{
+                  position: 'absolute',
+                  top: '50px',
+                  left: '10px',
+                  right: '10px',
+                  padding: '30px',
+                  zIndex: 1000,
+                }}
+                elevation={3}>
+                <Grid container spacing={3}>
+                  {categories.map((obj) => (
+                    <Grid key={obj.id} item xs={12} sm={6} md={4} lg={2}>
+                      <Link href="{obj.id}">{obj.name}</Link>
+                      {obj.children.length > 0 && (
+                        <ExpandMoreIcon
+                          onClick={() => handleExpandableToggle(obj.id)}
+                          style={{
+                            position: 'relative',
+                            top: '5px',
+                            transform: expandedId === obj.id ? 'rotate(180deg)' : 'rotate(0deg)',
+                            transition: 'transform 0.3s',
+                          }}
+                        />
+                      )}
+                      {obj.children.map((child) => (
+                        <div
+                          key={child.id}
+                          style={{
+                            height: expandedId === obj.id ? 'auto' : 0,
+                            transition: 'opacity 0.5s ease-in-out',
+                            overflow: 'hidden',
+                            opacity: expandedId === obj.id ? 1 : 0,
+                          }}>
+                          <Link href="{child.id}" underline="none" style={{ fontSize: '10pt', color: 'black' }}>
+                            {child.name}
+                          </Link>
+                        </div>
+                      ))}
+                    </Grid>
+                  ))}
+                </Grid>
+              </Paper>
+            )}
           </Box>
         </Toolbar>
       </AppBar>
