@@ -12,7 +12,7 @@ export interface GetAllCategoriesRequestAction {
 
 export interface GetAllCategoriesSuccessAction {
   type: typeof GET_ALL_CATEGORIES_SUCCESS;
-  payload: Record<string, Category>[];
+  payload: Category[];
 }
 
 export interface GetAllCategoriesFailureAction {

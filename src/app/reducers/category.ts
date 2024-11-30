@@ -3,7 +3,7 @@ import { CategoryActionTypes } from '../actions/types';
 import { Category } from '../models/category';
 
 type InitialState = {
-  categories: Record<string, Category>[];
+  categories: Category[];
   isGetAllCategoriesLoading: boolean;
   isGetAllCategoriesDone: boolean;
   isGetAllCategoriesError: boolean;

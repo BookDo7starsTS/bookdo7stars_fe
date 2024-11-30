@@ -10,6 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllCategoriesRequest } from './actions/types';
 import { RootState } from './reducers';
 import { AppDispatch } from './store/store';
+import { Category } from './models/category';
 
 export default function Home() {
   const { categories } = useSelector((store: RootState) => store.category);
@@ -829,16 +830,19 @@ export default function Home() {
       ],
     },
   ];
-  const transformData = (data: any) =>
-    data.map((item: any) => ({
+  const transformData = (data: Category[]): any[] =>
+    data.map((item: Category) => ({
       title: item.name,
       key: item.id,
       children: item.children ? transformData(item.children) : [],
+      route: item.route,
+      level: item.level,
     }));
 
-  const treeData = transformData(categoryData);
-  console.log(Object.values(categories));
+  const catLevel2 = categories.filter((category) => category.level === 2);
+  const treeData = transformData(catLevel2);
 
+  console.log('RESPONSE: ', treeData);
   return (
     <div className="bg-green-200">
       <h1 className="text-xl text-white">Welcome to BookDo7Stars!!!!!!</h1>
