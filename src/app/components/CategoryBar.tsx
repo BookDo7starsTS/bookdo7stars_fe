@@ -24,6 +24,10 @@ const CategoryBar = () => {
   const [searchCategoryText, setSearchCategoryText] = useState<string>('');
 
   const handleSearch = (keyword: string) => {
+    if (keyword.length == 0) {
+      setExpandedId([]);
+      setSearchCategoryText('');
+    }
     if (keyword.length < 2) return;
 
     const handler = setTimeout(() => {
