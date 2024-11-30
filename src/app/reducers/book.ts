@@ -14,6 +14,9 @@ import {
   GET_BOOK_ISBN_SEARCH_REQUEST,
   GET_BOOK_ISBN_SEARCH_SUCCESS,
   GET_BOOK_ISBN_SEARCH_FAILURE,
+  GET_MAINPAGE_BOOKS_REQUEST,
+  GET_MAINPAGE_BOOKS_SUCCESS,
+  GET_MAINPAGE_BOOKS_FAILURE,
   RESET_GROUP_BOOKS,
 } from '../actions/constants';
 import { BookActionTypes } from '../actions/types';
@@ -21,6 +24,7 @@ import { Book } from '../models/book';
 
 type InitialState = {
   books: Book[];
+  mainpageBooks: any;
   count: number;
   groupBooks: Book[];
   isGetAllBooksLoading: boolean;
@@ -35,12 +39,16 @@ type InitialState = {
   isGetBookLoading: boolean;
   isGetBookDone: boolean;
   isGetBookError: string;
+  isGetMainpageBooksLoading: boolean;
+  isGetMainpageBooksDone: boolean;
+  isGetMainpageBookError: string;
   book: Book | null;
   pageSize: number;
 };
 
 export const initialState: InitialState = {
   books: [],
+  mainpageBooks: { banner: [], itemNewSpecial: [], bestSellerCategory: [], itemNewAll: [], itemEditorChoice: [] },
   count: 0,
   groupBooks: [],
   isGetAllBooksLoading: false,
@@ -55,6 +63,9 @@ export const initialState: InitialState = {
   isGetBookLoading: false,
   isGetBookDone: false,
   isGetBookError: '',
+  isGetMainpageBooksLoading: false,
+  isGetMainpageBooksDone: false,
+  isGetMainpageBookError: '',
   book: null,
   pageSize: 20,
 };
@@ -95,6 +106,13 @@ function bookReducer(state = initialState, action: BookActionTypes) {
       return { ...state, isGetBookLoading: false, isGetBookDone: true, book: action.payload };
     case GET_BOOK_FAILURE:
       return { ...state, isGetBookLoading: false, book: null, isGetBookError: action.error };
+
+    case GET_MAINPAGE_BOOKS_REQUEST:
+      return { ...state, isGetMainpageBooksLoading: true };
+    case GET_MAINPAGE_BOOKS_SUCCESS:
+      return { ...state, isGetMainpageBooksLoading: false, isGetMainpageBooksDone: true, mainpageBooks: action.payload };
+    case GET_MAINPAGE_BOOKS_FAILURE:
+      return { ...state, isGetBookLoading: false, book: null, isGetMainpageBooksError: action.error };
 
     case RESET_GROUP_BOOKS:
       return { ...state, groupBooks: [] };

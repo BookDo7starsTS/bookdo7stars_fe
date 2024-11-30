@@ -18,6 +18,9 @@ import {
   GET_BOOK_ISBN_SEARCH_REQUEST,
   GET_BOOK_ISBN_SEARCH_SUCCESS,
   GET_BOOK_ISBN_SEARCH_FAILURE,
+  GET_MAINPAGE_BOOKS_REQUEST,
+  GET_MAINPAGE_BOOKS_SUCCESS,
+  GET_MAINPAGE_BOOKS_FAILURE,
 } from '../actions/constants';
 import {
   GetAllBooksRequestAction,
@@ -128,6 +131,25 @@ export function* getBook(action: GetBookRequestAction): SagaIterator {
   }
 }
 
+function getMainpageBooksAPI() {
+  return axios.get(`/book/mainpage`);
+}
+
+export function* getMainpageBooks(): SagaIterator {
+  try {
+    const response: any = yield call(getMainpageBooksAPI);
+    yield put({
+      type: GET_MAINPAGE_BOOKS_SUCCESS,
+      payload: response.data.books,
+    });
+  } catch (err: any) {
+    yield put({
+      type: GET_MAINPAGE_BOOKS_FAILURE,
+      error: err.response.data.message,
+    });
+  }
+}
+
 function* watchGetAllBooks() {
   yield takeLatest(GET_ALL_BOOKS_REQUEST, getAllBooks);
 }
@@ -148,6 +170,17 @@ function* watchGetBook() {
   yield takeLatest(GET_BOOK_REQUEST, getBook);
 }
 
+function* watchGetMainpageBooks() {
+  yield takeLatest(GET_MAINPAGE_BOOKS_REQUEST, getMainpageBooks);
+}
+
 export default function* bookSaga() {
-  yield all([fork(watchGetAllBooks), fork(watchGetBook), fork(watchGetBooksByGroup), fork(watchGetBooksSearch), fork(watchGetBookIsbnSearch)]);
+  yield all([
+    fork(watchGetAllBooks),
+    fork(watchGetBook),
+    fork(watchGetBooksByGroup),
+    fork(watchGetBooksSearch),
+    fork(watchGetBookIsbnSearch),
+    fork(watchGetMainpageBooks),
+  ]);
 }
