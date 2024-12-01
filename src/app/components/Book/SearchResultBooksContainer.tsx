@@ -16,9 +16,9 @@ interface SearchResultBooksContainerProps {
   booksPerPage: number;
   handlePageChange: (event: React.ChangeEvent<unknown>, value: number) => void;
   currentPage: number;
-  searchTerm: string;
+  searchTerm?: string;
   resultCount: number;
-  parsedSearchCondition: SearchType;
+  parsedSearchCondition?: SearchType;
 }
 
 const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
