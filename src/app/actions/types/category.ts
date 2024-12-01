@@ -8,6 +8,7 @@ import { GET_ALL_CATEGORIES_REQUEST, GET_ALL_CATEGORIES_SUCCESS, GET_ALL_CATEGOR
 // All Books
 export interface GetAllCategoriesRequestAction {
   type: typeof GET_ALL_CATEGORIES_REQUEST;
+  level: number;
 }
 
 export interface GetAllCategoriesSuccessAction {
@@ -26,8 +27,9 @@ export type CategoryActionTypes = GetAllCategoriesRequestAction | GetAllCategori
 // Action creater
 
 //All Books
-export const getAllCategoriesRequest = (): GetAllCategoriesRequestAction => ({
+export const getAllCategoriesRequest = (level: number): GetAllCategoriesRequestAction => ({
   type: GET_ALL_CATEGORIES_REQUEST,
+  level,
 });
 
 export const getAllCategoriesSuccess = (payload: GetAllCategoriesSuccessAction['payload']): GetAllCategoriesSuccessAction => ({
