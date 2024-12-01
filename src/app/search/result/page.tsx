@@ -7,6 +7,7 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { getBookIsbnSearchRequest, getBooksSearchRequest } from '../../actions/types';
 import SearchResultBooksContainer from '../../components/Book/SearchResultBooksContainer';
+import LoadingSpinner from '../../components/LoadingSpinner';
 import { RootState } from '../../reducers';
 import { AppDispatch } from '../../store/store';
 import { isbnType } from '../types/isbnType';
@@ -28,7 +29,7 @@ const ResultPage = () => {
 
   const dispatch = useDispatch<AppDispatch>();
 
-  const { books, count } = useSelector((store: RootState) => store.book);
+  const { books, count, isGetBooksSearchLoading } = useSelector((store: RootState) => store.book);
   const booksPerPage = 20;
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
@@ -56,7 +57,9 @@ const ResultPage = () => {
   return (
     <>
       <Container data-testid="books-container" sx={{ width: '100vw', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-        {books.length > 0 ? (
+        {isGetBooksSearchLoading ? (
+          <LoadingSpinner />
+        ) : (
           <>
             <SearchResultBooksContainer
               books={books}
@@ -70,10 +73,6 @@ const ResultPage = () => {
               parsedSearchCondition={parsedSearchCondition}
             />
           </>
-        ) : (
-          <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-            <Typography variant="h6">검색 결과가 없습니다.</Typography>
-          </Box>
         )}
       </Container>
     </>
