@@ -8,7 +8,6 @@ import { useDispatch } from 'react-redux';
 
 import SearchResultBookCard from './SearchResultBookCard';
 import { Book } from '../../models/book';
-import LoadingSpinner from '../LoadingSpinner';
 
 interface SearchResultBooksContainerProps {
   books: Book[];
@@ -20,7 +19,6 @@ interface SearchResultBooksContainerProps {
   searchTerm: string;
   resultCount: number;
   parsedSearchCondition: SearchType;
-  isGetBooksSearchLoading: boolean;
 }
 
 const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
@@ -32,7 +30,6 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
   booksPerPage,
   currentPage,
   parsedSearchCondition,
-  isGetBooksSearchLoading,
 }) => {
   const [selectedBooks, setSelectedBooks] = useState<number[]>([]);
   const [sortBy, setSortBy] = useState('');
@@ -101,9 +98,7 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
         paddingRight: '0px',
         marginTop: '20px',
       }}>
-      {isGetBooksSearchLoading ? (
-        <LoadingSpinner />
-      ) : (
+      {books.length > 0 ? (
         <>
           <Box sx={{ display: 'flex', width: '100%', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
             <Typography
@@ -199,6 +194,10 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
             </Grid>
           </Box>
         </>
+      ) : (
+        <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
+          <Typography variant="h6">검색 결과가 없습니다.</Typography>
+        </Box>
       )}
     </Container>
   );
