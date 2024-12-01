@@ -21,6 +21,7 @@ export default function Home() {
   const { books } = useSelector((store: RootState) => store.book);
   useEffect(() => {
     dispatch(getMainpageBooksRequest());
+    dispatch(getMainpageBestSellerBooksRequest(1230, 1, 12));
   }, []);
 
   const handleBestSellerCategoryhClick = (categoryId: number) => {
@@ -36,7 +37,7 @@ export default function Home() {
           itemClass="carousel-item-padding-40-px"
           infinite={true}
           autoPlay={true}
-          autoPlaySpeed={2000}
+          autoPlaySpeed={4000}
           arrows={false}
           showDots={true}
           swipeable={true}
@@ -181,6 +182,7 @@ export default function Home() {
                 cursor: 'pointer',
                 textAlign: 'center',
                 fontSize: '16px',
+                width: '100%',
               }}
               tabIndex={0}
               onClick={() => handleBestSellerCategoryhClick(category.id)}
@@ -210,6 +212,7 @@ export default function Home() {
               </Grid>
             ))}
           </Grid>
+          {books.length == 0 && <div style={{ textAlign: 'center', fontWeight: 600 }}>검색 결과가 없습니다.</div>}
         </Box>
 
         <Container
