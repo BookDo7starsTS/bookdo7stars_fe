@@ -2,7 +2,7 @@
 'use client';
 import React, { useEffect } from 'react';
 
-import { getMainpageBooksRequest } from '@/app/actions/types';
+import { getMainpageBooksRequest, getMainpageBestSellerBooksRequest } from '@/app/actions/types';
 import BookCard from '@/app/components/Book/BookCard';
 import MoreButton from '@/app/components/MoreButton';
 import { RootState } from '@/app/reducers';
@@ -11,17 +11,21 @@ import { Typography, Container, Box, Grid } from '@mui/material';
 import Carousel from 'react-multi-carousel';
 import { useDispatch, useSelector } from 'react-redux';
 
-import 'react-multi-carousel/lib/styles.css';
 import { Book } from './models/book';
 import { Category } from './models/category';
+import 'react-multi-carousel/lib/styles.css';
 
 export default function Home() {
   const dispatch = useDispatch<AppDispatch>();
-  const { mainpageBooks } = useSelector((store: RootState) => store.book);
+  const { mainpageBooks } = useSelector((store: RootState) => store.mainpageBook);
+  const { books } = useSelector((store: RootState) => store.book);
   useEffect(() => {
     dispatch(getMainpageBooksRequest());
   }, []);
 
+  const handleBestSellerCategoryhClick = (categoryId: number) => {
+    dispatch(getMainpageBestSellerBooksRequest(categoryId, 1, 12));
+  };
   const handleBannerClick = (bookId: number) => {
     window.location.href = `/book/${bookId}`;
   };
@@ -149,18 +153,22 @@ export default function Home() {
             superLarge: {
               breakpoint: { max: 4000, min: 3000 },
               items: 10,
+              slidesToSlide: 10,
             },
             large: {
               breakpoint: { max: 3000, min: 1024 },
               items: 10,
+              slidesToSlide: 10,
             },
             medium: {
               breakpoint: { max: 1024, min: 464 },
               items: 6,
+              slidesToSlide: 6,
             },
             small: {
               breakpoint: { max: 464, min: 0 },
               items: 2,
+              slidesToSlide: 2,
             },
           }}>
           {mainpageBooks.bestSellerCategory.map((category: Category) => (
@@ -173,11 +181,36 @@ export default function Home() {
                 cursor: 'pointer',
                 textAlign: 'center',
                 fontSize: '16px',
-              }}>
+              }}
+              tabIndex={0}
+              onClick={() => handleBestSellerCategoryhClick(category.id)}
+              onKeyDown={(e) => {
+                if (e.key === 'Enter' || e.key === ' ') {
+                  handleBestSellerCategoryhClick(category.id);
+                }
+              }}
+              role="button">
               {category.name}
             </div>
           ))}
         </Carousel>
+        <Box>
+          <Grid container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+            {books.map((book: Book, index: React.Key | null | undefined) => (
+              <Grid
+                data-testid="book-card"
+                key={index}
+                item
+                xs={12}
+                sm={6}
+                md={4}
+                lg={3}
+                sx={{ paddingY: '30px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                <BookCard key={index} book={book} />
+              </Grid>
+            ))}
+          </Grid>
+        </Box>
 
         <Container
           maxWidth="lg"

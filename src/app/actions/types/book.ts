@@ -19,6 +19,9 @@ import {
   GET_MAINPAGE_BOOKS_REQUEST,
   GET_MAINPAGE_BOOKS_SUCCESS,
   GET_MAINPAGE_BOOKS_FAILURE,
+  GET_MAINPAGE_BESTSELLER_BOOKS_REQUEST,
+  GET_MAINPAGE_BESTSELLER_BOOKS_SUCCESS,
+  GET_MAINPAGE_BESTSELLER_BOOKS_FAILURE,
   RESET_GROUP_BOOKS,
 } from '../constants';
 
@@ -126,6 +129,24 @@ export interface GetMainpageBooksFailureAction {
   error: string;
 }
 
+// Mainpage Bestseller Books
+export interface GetMainpageBestSellerBooksRequestAction {
+  type: typeof GET_MAINPAGE_BESTSELLER_BOOKS_REQUEST;
+  categoryId: number;
+  page: number;
+  pageSize: number;
+}
+
+export interface GetMainpageBestSellerBooksSuccessAction {
+  type: typeof GET_MAINPAGE_BESTSELLER_BOOKS_SUCCESS;
+  payload: any;
+}
+
+export interface GetMainpageBestSellerBooksFailureAction {
+  type: typeof GET_MAINPAGE_BESTSELLER_BOOKS_FAILURE;
+  error: string;
+}
+
 export interface GetBookFailureAction {
   type: typeof GET_BOOK_FAILURE;
   error: string;
@@ -155,7 +176,10 @@ export type BookActionTypes =
   | GetBookIsbnSearchFailureAction
   | GetMainpageBooksRequestAction
   | GetMainpageBooksSuccessAction
-  | GetMainpageBooksFailureAction;
+  | GetMainpageBooksFailureAction
+  | GetMainpageBestSellerBooksRequestAction
+  | GetMainpageBestSellerBooksSuccessAction
+  | GetMainpageBestSellerBooksFailureAction;
 
 // Action creater
 
@@ -257,6 +281,24 @@ export const getMainpageBooksSuccess = (payload: GetMainpageBooksSuccessAction['
 
 export const getMainpageBooksFailure = (error: string): GetMainpageBooksFailureAction => ({
   type: GET_MAINPAGE_BOOKS_FAILURE,
+  error,
+});
+
+//Book Mainpage BestSeller
+export const getMainpageBestSellerBooksRequest = (categoryId: number, page: number, pageSize: number): GetMainpageBestSellerBooksRequestAction => ({
+  type: GET_MAINPAGE_BESTSELLER_BOOKS_REQUEST,
+  categoryId,
+  page,
+  pageSize,
+});
+
+export const getMainpageBestSellerBooksSuccess = (payload: GetMainpageBestSellerBooksSuccessAction['payload']): GetMainpageBestSellerBooksSuccessAction => ({
+  type: GET_MAINPAGE_BESTSELLER_BOOKS_SUCCESS,
+  payload,
+});
+
+export const getMainpageBestSellerBooksFailure = (error: string): GetMainpageBestSellerBooksFailureAction => ({
+  type: GET_MAINPAGE_BESTSELLER_BOOKS_FAILURE,
   error,
 });
 
