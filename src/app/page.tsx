@@ -143,7 +143,7 @@ export default function Home() {
           <Typography variant="h6" style={{ fontWeight: 600 }}>
             베스트 셀러
           </Typography>
-          <MoreButton href="#new" />
+          <MoreButton href="/books/Bestseller" />
         </Container>
         <Carousel
           arrows={true}
@@ -226,7 +226,7 @@ export default function Home() {
           <Typography variant="h6" style={{ fontWeight: 600 }}>
             새로 나온 책
           </Typography>
-          <MoreButton href="#new" />
+          <MoreButton href="/books/ItemNewAll" />
         </Container>
         <Box>
           <Grid container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
@@ -257,7 +257,7 @@ export default function Home() {
           <Typography variant="h6" style={{ fontWeight: 600 }}>
             에디터 추천
           </Typography>
-          <MoreButton href="#new" />
+          <MoreButton href="/books/ItemEditorChoice" />
         </Container>
         <Carousel
           itemClass="carousel-item carousel-item-padding-40-px"
