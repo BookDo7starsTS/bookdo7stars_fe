@@ -1,29 +1,29 @@
-import { GET_ALL_CATEGORIES_FAILURE, GET_ALL_CATEGORIES_REQUEST, GET_ALL_CATEGORIES_SUCCESS } from '../actions/constants';
+import { GET_CATEGORY_REQUEST, GET_CATEGORY_SUCCESS, GET_CATEGORY_FAILURE } from '../actions/constants';
 import { CategoryActionTypes } from '../actions/types';
 import { Category } from '../models/category';
 
 type InitialState = {
   categories: Category[];
-  isGetAllCategoriesLoading: boolean;
-  isGetAllCategoriesDone: boolean;
-  isGetAllCategoriesError: boolean;
+  isGetCategoryLoading: boolean;
+  isGetCategoryDone: boolean;
+  isGetCategoryError: string;
 };
 
 export const initialState: InitialState = {
   categories: [],
-  isGetAllCategoriesLoading: false,
-  isGetAllCategoriesDone: false,
-  isGetAllCategoriesError: false,
+  isGetCategoryLoading: false,
+  isGetCategoryDone: false,
+  isGetCategoryError: '',
 };
 
 function categoryReducer(state = initialState, action: CategoryActionTypes) {
   switch (action.type) {
-    case GET_ALL_CATEGORIES_REQUEST:
-      return { ...state, isGetAllCategoriesLoading: true };
-    case GET_ALL_CATEGORIES_SUCCESS:
-      return { ...state, isGetAllCategoriesLoading: false, isGetAllCategoriesDone: true, categories: action.payload };
-    case GET_ALL_CATEGORIES_FAILURE:
-      return { ...state, isGetAllCategoriesLoading: false, isGetAllCategoriesDone: false, isGetAllCategoriesError: action.error };
+    case GET_CATEGORY_REQUEST:
+      return { ...state, isGetCategoryLoading: true };
+    case GET_CATEGORY_SUCCESS:
+      return { ...state, isGetCategoryLoading: false, isGetCategoryDone: true, categories: action.payload };
+    case GET_CATEGORY_FAILURE:
+      return { ...state, isGetCategoryLoading: false, isGetCategoryDone: false, isGetCategoryError: action.error };
     default:
       return state;
   }

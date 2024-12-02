@@ -2,32 +2,32 @@ import axios from 'axios';
 import { SagaIterator } from 'redux-saga';
 import { all, call, fork, put, takeLatest } from 'redux-saga/effects';
 
-import { GetAllCategoriesRequestAction } from './../actions/types/category';
-import { GET_ALL_CATEGORIES_REQUEST, GET_ALL_CATEGORIES_SUCCESS, GET_ALL_CATEGORIES_FAILURE } from '../actions/constants';
+import { GET_CATEGORY_REQUEST, GET_CATEGORY_SUCCESS, GET_CATEGORY_FAILURE } from '../actions/constants';
+import { GetCategoryRequestAction } from '../actions/types';
 
-function getAllCategoriesAPI(level: number) {
+function getCategoriesAPI(level: number) {
   return axios.get(`/category?level=${level}`);
 }
 
-export function* getAllCategories(action: GetAllCategoriesRequestAction): SagaIterator {
+export function* getCategories(action: GetCategoryRequestAction): SagaIterator {
   try {
-    const response: any = yield call(getAllCategoriesAPI, action.level);
+    const response: any = yield call(getCategoriesAPI, action.level);
     yield put({
-      type: GET_ALL_CATEGORIES_SUCCESS,
+      type: GET_CATEGORY_SUCCESS,
       payload: response.data,
     });
   } catch (err: any) {
     yield put({
-      type: GET_ALL_CATEGORIES_FAILURE,
+      type: GET_CATEGORY_FAILURE,
       error: err.response.data.message,
     });
   }
 }
 
-function* watchGetAllCategories() {
-  yield takeLatest(GET_ALL_CATEGORIES_REQUEST, getAllCategories);
+function* watchGetCategories() {
+  yield takeLatest(GET_CATEGORY_REQUEST, getCategories);
 }
 
 export default function* categorySaga() {
-  yield all([fork(watchGetAllCategories)]);
+  yield all([fork(watchGetCategories)]);
 }
