@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-import { getAllCategoriesRequest } from '@/app/actions/types';
+import { getCategoryRequest } from '@/app/actions/types';
 import { Category } from '@/app/models/category';
 import { RootState } from '@/app/reducers';
 import { AppDispatch } from '@/app/store/store';

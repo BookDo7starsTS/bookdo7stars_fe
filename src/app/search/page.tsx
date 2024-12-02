@@ -58,7 +58,7 @@ const SearchPage = () => {
   // useEffect를 사용하여 입력이 변경될 때 버튼 상태를 업데이트
   useEffect(() => {
     // `찾기` 버튼이 비활성화될 조건을 설정하는 데 사용
-  }, [formData, isbn, dateRange, startYear, endYear, startMonth, endMonth]);
+  }, [formData, dateRange, startYear, endYear, startMonth, endMonth]);
 
   const [isbn, setIsbn] = useState<isbnType>('');
 

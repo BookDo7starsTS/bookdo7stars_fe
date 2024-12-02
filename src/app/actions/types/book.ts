@@ -27,7 +27,6 @@ export interface GetAllBooksRequestAction {
   type: typeof GET_ALL_BOOKS_REQUEST;
   page: number;
   pageSize: number;
-  categoryId: string;
 }
 
 export interface GetAllBooksSuccessAction {
@@ -140,11 +139,10 @@ export type BookActionTypes =
 // Action creater
 
 //All Books
-export const getAllBooksRequest = (page: number, pageSize: number, categoryId: string): GetAllBooksRequestAction => ({
+export const getAllBooksRequest = (page: number, pageSize: number): GetAllBooksRequestAction => ({
   type: GET_ALL_BOOKS_REQUEST,
   page,
   pageSize,
-  categoryId,
 });
 
 export const getAllBooksSuccess = (payload: GetAllBooksSuccessAction['payload'], count: GetAllBooksSuccessAction['count']): GetAllBooksSuccessAction => ({

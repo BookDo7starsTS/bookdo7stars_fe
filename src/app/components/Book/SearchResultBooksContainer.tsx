@@ -18,7 +18,8 @@ interface SearchResultBooksContainerProps {
   currentPage: number;
   searchTerm?: string;
   resultCount: number;
-  parsedSearchCondition?: SearchType;
+  parsedSearchCondition: SearchType;
+  isGetBooksSearchLoading: boolean;
 }
 
 const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
@@ -30,6 +31,7 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
   booksPerPage,
   currentPage,
   parsedSearchCondition,
+  isGetBooksSearchLoading,
 }) => {
   const [selectedBooks, setSelectedBooks] = useState<number[]>([]);
   const [sortBy, setSortBy] = useState('');

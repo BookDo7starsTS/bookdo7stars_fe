@@ -27,13 +27,13 @@ import {
   GetBookIsbnSearchRequestAction,
 } from '../actions/types';
 
-function getAllBooksAPI(page: number, pageSize: number, categoryId: string) {
-  return axios.get(`/book?page=${page}&pageSize=${pageSize}&category_id=${categoryId}`);
+function getAllBooksAPI(page: number, pageSize: number) {
+  return axios.get(`/book?page=${page}&pageSize=${pageSize}`);
 }
 
 export function* getAllBooks(action: GetAllBooksRequestAction): SagaIterator {
   try {
-    const response: any = yield call(getAllBooksAPI, action.page, action.pageSize, action.categoryId);
+    const response: any = yield call(getAllBooksAPI, action.page, action.pageSize);
     yield put({
       type: GET_ALL_BOOKS_SUCCESS,
       payload: response.data.books,
