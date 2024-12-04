@@ -1,7 +1,8 @@
 'use client';
+
 import { useEffect, useState, useMemo } from 'react';
 
-import { Container, Box, Pagination, Typography } from '@mui/material';
+import { Container } from '@mui/material';
 import { useSearchParams } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -55,27 +56,23 @@ const ResultPage = () => {
   }, [dispatch, parsedIsbn, booksPerPage, parsedSearchCondition]);
 
   return (
-    <>
-      <Container data-testid="books-container" sx={{ width: '100vw', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-        {isGetBooksSearchLoading ? (
-          <LoadingSpinner />
-        ) : (
-          <>
-            <SearchResultBooksContainer
-              books={books}
-              count={count}
-              title={'Search Result'}
-              handlePageChange={handlePageChange}
-              booksPerPage={booksPerPage}
-              currentPage={page}
-              searchTerm={parsedSearchCondition?.title || ''}
-              resultCount={count}
-              parsedSearchCondition={parsedSearchCondition}
-            />
-          </>
-        )}
-      </Container>
-    </>
+    <Container data-testid="books-container" sx={{ width: '100vw', mt: 3 }}>
+      {isGetBooksSearchLoading ? (
+        <LoadingSpinner />
+      ) : (
+        <SearchResultBooksContainer
+          books={books}
+          count={count}
+          title={'Search Result'}
+          handlePageChange={handlePageChange}
+          booksPerPage={booksPerPage}
+          currentPage={page}
+          searchTerm={parsedSearchCondition?.title || ''}
+          resultCount={count}
+          parsedSearchCondition={parsedSearchCondition}
+        />
+      )}
+    </Container>
   );
 };
 

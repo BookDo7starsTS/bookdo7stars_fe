@@ -3,11 +3,12 @@ import { useState, useEffect, ChangeEvent } from 'react';
 import { getBooksSearchRequest } from '@/app/actions/types';
 import { SearchType } from '@/app/search/types/searchType';
 import { AppDispatch } from '@/app/store/store';
-import { Container, Typography, Grid, Box, Pagination, Checkbox, Button, ToggleButtonGroup, ToggleButton } from '@mui/material';
+import { useMediaQuery, Container, Typography, Grid, Box, Pagination, Checkbox, Button, ToggleButtonGroup, ToggleButton } from '@mui/material';
 import { useDispatch } from 'react-redux';
 
 import SearchResultBookCard from './SearchResultBookCard';
 import { Book } from '../../models/book';
+import ResultFilters from '../Result/ResultFilters';
 
 interface SearchResultBooksContainerProps {
   books: Book[];
@@ -35,6 +36,8 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
   const [sortBy, setSortBy] = useState('');
   const pageCount = Math.ceil(count / booksPerPage);
   const dispatch = useDispatch<AppDispatch>();
+
+  const isWidth900Up = useMediaQuery('(min-width:900px)');
 
   const handleSelectAll = () => {
     if (selectedBooks.length === books.length) {
@@ -173,26 +176,33 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
               {'마이리스트 담기'}
             </Button>
           </Box>
-          <Box>
-            <Grid container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-              {books.map((book, index) => (
-                <Grid
-                  data-testid="book-card"
-                  key={index}
-                  item
-                  xs={12}
-                  sm={12}
-                  md={12}
-                  lg={12}
-                  sx={{ paddingY: '30px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                  <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                    <Checkbox checked={selectedBooks.includes(book.id)} onChange={() => handleCheckboxChange(book.id)} />
-                    <SearchResultBookCard key={index} book={book} />
-                  </Box>
-                </Grid>
-              ))}
+          <Grid container spacing={3}>
+            <Grid item xs={12} md={3} sx={{ paddingRight: '16px' }}>
+              <ResultFilters />
             </Grid>
-          </Box>
+            <Grid item xs={12} md={9} sx={{ paddingLeft: isWidth900Up ? '200px !important' : '0px' }}>
+              <Box>
+                <Grid container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                  {books.map((book, index) => (
+                    <Grid
+                      data-testid="book-card"
+                      key={index}
+                      item
+                      xs={12}
+                      sm={12}
+                      md={8}
+                      // lg={8}
+                      sx={{ paddingY: '30px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                        <Checkbox checked={selectedBooks.includes(book.id)} onChange={() => handleCheckboxChange(book.id)} />
+                        <SearchResultBookCard key={index} book={book} />
+                      </Box>
+                    </Grid>
+                  ))}
+                </Grid>
+              </Box>
+            </Grid>
+          </Grid>
         </>
       ) : (
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
