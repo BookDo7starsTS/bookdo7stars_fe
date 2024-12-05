@@ -1,6 +1,13 @@
-import { Category } from '@/app/models/category';
+import { Category, CategoryById } from '@/app/models/category';
 
-import { GET_CATEGORY_REQUEST, GET_CATEGORY_SUCCESS, GET_CATEGORY_FAILURE } from '../constants';
+import {
+  GET_CATEGORY_REQUEST,
+  GET_CATEGORY_SUCCESS,
+  GET_CATEGORY_FAILURE,
+  GET_CATEGORY_BY_ID_REQUEST,
+  GET_CATEGORY_BY_ID_FAILURE,
+  GET_CATEGORY_BY_ID_SUCCESS,
+} from '../constants';
 
 // Action type
 // We’ve decided to define request data as data:{}, response data as payload, and errors simply as error.
@@ -20,8 +27,29 @@ export interface GetCategoryFailureAction {
   error: string;
 }
 
+export interface GetCategoryByIdRequestAction {
+  type: typeof GET_CATEGORY_BY_ID_REQUEST;
+  id: string;
+}
+
+export interface GetCategoryByIdSuccessAction {
+  type: typeof GET_CATEGORY_BY_ID_SUCCESS;
+  payload: Record<string, CategoryById[]>;
+}
+
+export interface GetCategoryByIdFailureAction {
+  type: typeof GET_CATEGORY_BY_ID_FAILURE;
+  error: string;
+}
+
 //Union type
-export type CategoryActionTypes = GetCategoryRequestAction | GetCategorySuccessAction | GetCategoryFailureAction;
+export type CategoryActionTypes =
+  | GetCategoryRequestAction
+  | GetCategorySuccessAction
+  | GetCategoryFailureAction
+  | GetCategoryByIdRequestAction
+  | GetCategoryByIdSuccessAction
+  | GetCategoryByIdFailureAction;
 
 export const getCategoryRequest = (level: number): GetCategoryRequestAction => ({
   type: GET_CATEGORY_REQUEST,
@@ -35,5 +63,20 @@ export const getCategorySuccess = (payload: GetCategorySuccessAction['payload'])
 
 export const getCategoryFailure = (error: string): GetCategoryFailureAction => ({
   type: GET_CATEGORY_FAILURE,
+  error,
+});
+
+export const getCategoryByIdRequest = (id: string): GetCategoryByIdRequestAction => ({
+  type: GET_CATEGORY_BY_ID_REQUEST,
+  id,
+});
+
+export const getCategoryByIdSuccess = (payload: GetCategoryByIdSuccessAction['payload']): GetCategoryByIdSuccessAction => ({
+  type: GET_CATEGORY_BY_ID_SUCCESS,
+  payload,
+});
+
+export const getCategoryByIdFailure = (error: string): GetCategoryByIdFailureAction => ({
+  type: GET_CATEGORY_BY_ID_FAILURE,
   error,
 });
