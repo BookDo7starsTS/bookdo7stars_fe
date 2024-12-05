@@ -9,6 +9,7 @@ import {
   GET_CATEGORY_BY_ID_REQUEST,
   GET_CATEGORY_BY_ID_FAILURE,
   GET_CATEGORY_BY_ID_SUCCESS,
+  RESET_CATEGORY_BY_ID_REQUEST,
 } from '../actions/constants';
 import { GetCategoryByIdRequestAction, GetCategoryRequestAction } from '../actions/types';
 

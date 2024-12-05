@@ -9,7 +9,7 @@ import { Category } from '@/app/models/category';
 import { RootState } from '@/app/reducers';
 import { AppDispatch } from '@/app/store/store';
 import { Grid } from '@mui/material';
-import { useParams } from 'next/navigation';
+import { useParams, usePathname } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { getCategoriesById } from '@/app/sagas/category';
 
@@ -21,19 +21,26 @@ const CategoryBookPage = () => {
   const { categoryId } = useParams<{ categoryId: string }>();
 
   const [page, setPage] = useState(1);
+  const pathname = usePathname();
 
   useEffect(() => {
-    dispatch(getCategoryByIdRequest(categoryId));
-  }, [categoryId]);
+    if (!categoriesById[categoryId]) {
+      dispatch(getCategoryByIdRequest(categoryId));
+    }
+  }, [categoryId, dispatch]);
 
   const booksPerPage = 20;
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
     setPage(value);
   };
+  const allSubCategoryIds = categoriesById[categoryId]?.map((category) => category.id.toString()) || [];
+
+  console.log('categoriesById', categoriesById);
+  console.log('categoryId', categoryId);
   return (
     <Grid container spacing={2} sx={{ padding: '1rem', marginLeft: 0, marginTop: '1rem' }}>
       <Grid item xs={4} sx={{ border: '1px solid', padding: '0 !important' }} className="category-list">
-        <CategoryList categories={categoriesById} categoryId={categoryId} />
+        <CategoryList categories={categoriesById} categoryId={categoryId} allSubCategoryIds={allSubCategoryIds} />
       </Grid>
       <Grid item xs={8}></Grid>
     </Grid>
