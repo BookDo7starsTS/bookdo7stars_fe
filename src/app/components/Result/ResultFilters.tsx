@@ -10,7 +10,7 @@ const ResultFilters = () => {
   const searchData = useSelector((store: RootState) => store.book.searchData);
   const [filters, setFilters] = useState({
     dateRange: [3, 60], // Represents the values in months (3M to 60M or 전체)
-    priceRange: [10000, 30000],
+    priceRange: [0, 100000],
   });
 
   // Marks for the date range slider
@@ -30,18 +30,35 @@ const ResultFilters = () => {
     });
   };
 
+  const handlePriceSliderChange = (name: string) => (event: Event, value: number | number[]) => {
+    setFilters((prev) => ({
+      ...prev,
+      [name]: value, // value는 배열이어야 함
+    }));
+  };
+
   const applyFilters = () => {
-    const [startMonths] = filters.dateRange; // 선택된 슬라이더 값 (3, 12, 24 등)
+    const sliderValueToMonthsMap: Record<number, number> = {
+      10: 3,   // 10 = 3M
+      20: 12,  // 20 = 12M
+      30: 24,  // 30 = 24M
+      40: 36,  // 40 = 36M
+      50: 60,  // 50 = 60M
+      60: 60,  // 60 = 전체
+    };
+    
+    const selectedSliderValue = filters.dateRange[0]; // 슬라이더의 첫 번째 값
+    const startMonths = sliderValueToMonthsMap[selectedSliderValue] || 0; // 기본값 0
+  
     const today = new Date();
   
     // 시작 날짜 계산
     let startDateISO;
     if (startMonths === 60) {
-      // '전체' 선택 시 시작 날짜 제한 없음
-      startDateISO = null;
+      startDateISO = null; // '전체' 선택 시 제한 없음
     } else {
       const startDate = new Date(today);
-      startDate.setMonth(today.getMonth() - startMonths); // startMonths 만큼 월 빼기
+      startDate.setMonth(today.getMonth() - startMonths);
   
       // 날짜 유효성 검증 및 조정
       if (startDate.getDate() !== today.getDate()) {
@@ -51,15 +68,13 @@ const ResultFilters = () => {
       startDateISO = startDate.toISOString().split('T')[0];
     }
   
-    // 종료 날짜 계산 (오늘 날짜)
     const endDateISO = today.toISOString().split('T')[0];
   
-    // Redux Dispatch
     dispatch({
       type: GET_BOOKS_SEARCH_REQUEST,
       data: {
         ...searchData,
-        start_date: startDateISO, // 동적으로 계산된 시작 날짜
+        start_date: startDateISO,
         end_date: endDateISO,
         start_price: filters.priceRange[0],
         end_price: filters.priceRange[1],
@@ -95,7 +110,7 @@ const ResultFilters = () => {
       </Box>
       <Box mb={2}>
         <Typography>판매가</Typography>
-        <Slider value={filters.priceRange} onChange={handleSliderChange('priceRange')} valueLabelDisplay="auto" min={10000} max={30000} />
+        <Slider value={filters.priceRange} onChange={handlePriceSliderChange('priceRange')} valueLabelDisplay="auto" min={0} max={100000} />
       </Box>
 
       <Button variant="contained" color="primary" onClick={applyFilters} fullWidth>
