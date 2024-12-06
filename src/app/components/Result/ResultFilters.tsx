@@ -24,33 +24,45 @@ const ResultFilters = () => {
   ];
 
   const handleSliderChange = (name: string) => (event: Event, value: number | number[]) => {
-    setFilters((prev) => ({
-      ...prev,
-      [name]: value,
-    }));
+    setFilters({
+      ...filters,
+      [name]: [value],
+    });
   };
 
   const applyFilters = () => {
-    const [startMonths] = filters.dateRange;
+    const [startMonths] = filters.dateRange; // 선택된 슬라이더 값 (3, 12, 24 등)
     const today = new Date();
   
     // 시작 날짜 계산
-    // const startDate = new Date(today);
-    // startDate.setMonth(today.getMonth() - startMonths); // startMonths 만큼 월을 빼서 설정
-    const startDateISO = "2024-09-05"
+    let startDateISO;
+    if (startMonths === 60) {
+      // '전체' 선택 시 시작 날짜 제한 없음
+      startDateISO = null;
+    } else {
+      const startDate = new Date(today);
+      startDate.setMonth(today.getMonth() - startMonths); // startMonths 만큼 월 빼기
   
-    // 종료 날짜 계산
+      // 날짜 유효성 검증 및 조정
+      if (startDate.getDate() !== today.getDate()) {
+        startDate.setDate(0); // 이전 달의 마지막 날로 조정
+      }
+  
+      startDateISO = startDate.toISOString().split('T')[0];
+    }
+  
+    // 종료 날짜 계산 (오늘 날짜)
     const endDateISO = today.toISOString().split('T')[0];
   
     // Redux Dispatch
     dispatch({
       type: GET_BOOKS_SEARCH_REQUEST,
       data: {
-        ...searchData, 
-          start_date: startDateISO,
-          end_date: endDateISO,
-          start_price: filters.priceRange[0],
-          end_price: filters.priceRange[1]
+        ...searchData,
+        start_date: startDateISO, // 동적으로 계산된 시작 날짜
+        end_date: endDateISO,
+        start_price: filters.priceRange[0],
+        end_price: filters.priceRange[1],
       },
     });
   
@@ -59,6 +71,7 @@ const ResultFilters = () => {
       priceRange: filters.priceRange,
     });
   };
+  
 
 
   return (
@@ -71,7 +84,7 @@ const ResultFilters = () => {
       <Box mb={2}>
         <Typography>출간일</Typography>
         <Slider
-          value={filters.dateRange}
+          value={filters.dateRange[0]}
           onChange={handleSliderChange('dateRange')}
           //   valueLabelDisplay="auto"
           min={10}
