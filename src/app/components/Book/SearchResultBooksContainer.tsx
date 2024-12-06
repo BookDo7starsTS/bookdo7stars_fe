@@ -48,7 +48,7 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
   };
 
   useEffect(() => {
-    console.log('선택된 책들: ', selectedBooks);
+    // console.log('선택된 책들: ', selectedBooks);
   }, [selectedBooks]);
 
   const handleAddToCart = () => {

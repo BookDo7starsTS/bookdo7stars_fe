@@ -1,8 +1,13 @@
 import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { GET_BOOKS_SEARCH_REQUEST } from '../../actions/constants/book' // 액션 정의된 경로
+import { RootState } from '@/app/reducers';
 
 import { Container, Box, Typography, Slider, Button } from '@mui/material';
 
 const ResultFilters = () => {
+  const dispatch = useDispatch();
+  const searchData = useSelector((store: RootState) => store.book.searchData);
   const [filters, setFilters] = useState({
     dateRange: [3, 60], // Represents the values in months (3M to 60M or 전체)
     priceRange: [10000, 30000],
@@ -26,8 +31,35 @@ const ResultFilters = () => {
   };
 
   const applyFilters = () => {
-    console.log('Applied Filters', filters);
+    const [startMonths] = filters.dateRange;
+    const today = new Date();
+  
+    // 시작 날짜 계산
+    // const startDate = new Date(today);
+    // startDate.setMonth(today.getMonth() - startMonths); // startMonths 만큼 월을 빼서 설정
+    const startDateISO = "2024-09-05"
+  
+    // 종료 날짜 계산
+    const endDateISO = today.toISOString().split('T')[0];
+  
+    // Redux Dispatch
+    dispatch({
+      type: GET_BOOKS_SEARCH_REQUEST,
+      data: {
+        ...searchData, 
+          start_date: startDateISO,
+          end_date: endDateISO,
+          start_price: filters.priceRange[0],
+          end_price: filters.priceRange[1]
+      },
+    });
+  
+    console.log('Applied Filters:', {
+      dateRange: [startDateISO, endDateISO],
+      priceRange: filters.priceRange,
+    });
   };
+
 
   return (
     <Container>
