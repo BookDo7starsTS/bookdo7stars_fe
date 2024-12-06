@@ -4,12 +4,13 @@ import { GET_BOOKS_SEARCH_REQUEST } from '../../actions/constants/book' // 액�
 import { RootState } from '@/app/reducers';
 
 import { Container, Box, Typography, Slider, Button } from '@mui/material';
+import { SearchType } from '@/app/search/types/searchType';
 
 const ResultFilters = () => {
   const dispatch = useDispatch();
   const searchData = useSelector((store: RootState) => store.book.searchData);
   const [filters, setFilters] = useState({
-    dateRange: [3, 60], // Represents the values in months (3M to 60M or 전체)
+    dateRange: [3, 70], // Represents the values in months (3M to 60M or 전체)
     priceRange: [0, 100000],
   });
 
@@ -44,7 +45,7 @@ const ResultFilters = () => {
       30: 24,  // 30 = 24M
       40: 36,  // 40 = 36M
       50: 60,  // 50 = 60M
-      60: 60,  // 60 = 전체
+      60: 70,  // 60 = 전체
     };
     
     const selectedSliderValue = filters.dateRange[0]; // 슬라이더의 첫 번째 값
@@ -54,9 +55,8 @@ const ResultFilters = () => {
   
     // 시작 날짜 계산
     let startDateISO;
-    if (startMonths === 60) {
-      startDateISO = null; // '전체' 선택 시 제한 없음
-    } else {
+    let endDateISO;
+    if (startMonths !== 70) {
       const startDate = new Date(today);
       startDate.setMonth(today.getMonth() - startMonths);
   
@@ -66,19 +66,30 @@ const ResultFilters = () => {
       }
   
       startDateISO = startDate.toISOString().split('T')[0];
+      endDateISO = today.toISOString().split('T')[0]
     }
   
-    const endDateISO = today.toISOString().split('T')[0];
-  
+   console.log("222", startDateISO, endDateISO)
+  const requestData = {
+    ...searchData,
+    start_price: filters.priceRange[0],
+    end_price: filters.priceRange[1],
+  } as any
+
+  if(startDateISO !== undefined){
+    requestData.start_date = startDateISO
+  }
+
+  if(endDateISO !== undefined){
+    requestData.end_date = startDateISO
+  }
+
+  console.log("요청데이타ㅏㅏㅏㅏ ", requestData)
+
+
     dispatch({
       type: GET_BOOKS_SEARCH_REQUEST,
-      data: {
-        ...searchData,
-        start_date: startDateISO,
-        end_date: endDateISO,
-        start_price: filters.priceRange[0],
-        end_price: filters.priceRange[1],
-      },
+      data: requestData
     });
   
     console.log('Applied Filters:', {
