@@ -34,10 +34,10 @@ const SearchPage = () => {
   const initialPageSize = 20;
   const initialPage = 1;
   const [dateRange, setDateRange] = useState('all');
-  const [startYear, setStartYear] = useState('');
-  const [endYear, setEndYear] = useState('');
-  const [startMonth, setStartMonth] = useState('');
-  const [endMonth, setEndMonth] = useState('');
+  const [startYear, setStartYear] = useState<string|undefined>(undefined);
+  const [endYear, setEndYear] = useState<string|undefined>(undefined);
+  const [startMonth, setStartMonth] = useState<string|undefined>(undefined);
+  const [endMonth, setEndMonth] = useState<string|undefined>(undefined);
   const months = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12'];
 
   const isFormEmpty = () => {
@@ -49,8 +49,8 @@ const SearchPage = () => {
     author: '',
     publisher: '',
     orderTerm: 'sales',
-    start_date: '',
-    end_date: '',
+    start_date: undefined,
+    end_date: undefined,
     page: initialPage,
     pageSize: initialPageSize,
   });
@@ -111,10 +111,10 @@ const SearchPage = () => {
   const handleDateRange = (e: React.MouseEvent<HTMLElement>, newValue: string) => {
     setDateRange(newValue);
     findStartDate(newValue);
-    setStartMonth('');
-    setStartYear('');
-    setEndMonth('');
-    setEndYear('');
+    setStartMonth(undefined);
+    setStartYear(undefined);
+    setEndMonth(undefined);
+    setEndYear(undefined);
   };
 
   const findStartDate = (dateRange: string) => {
@@ -190,18 +190,18 @@ const SearchPage = () => {
     const isbnString = encodeURIComponent(JSON.stringify(isbn));
     router.push(`/search/result?isbn=${isbnString}&searchCondition=${searchConditionString}`);
 
-    setStartMonth('');
-    setStartYear('');
-    setEndMonth('');
-    setEndYear('');
+    setStartMonth(undefined);
+    setStartYear(undefined);
+    setEndMonth(undefined);
+    setEndYear(undefined);
     setDateRange('all');
     setFormData({
       title: '',
       author: '',
       publisher: '',
       orderTerm: '',
-      start_date: '',
-      end_date: '',
+      start_date: undefined,
+      end_date: undefined,
       page: initialPage,
       pageSize: initialPageSize,
     });
