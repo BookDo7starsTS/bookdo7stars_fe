@@ -79,14 +79,17 @@ const ResultFilters = () => {
 
   if(startDateISO !== undefined){
     requestData.start_date = startDateISO
+  } else {
+    delete requestData.start_date 
   }
 
   if(endDateISO !== undefined){
     requestData.end_date = endDateISO
+  } else {
+    delete requestData.end_date
   }
 
   console.log("요청데이타ㅏㅏㅏㅏ ", requestData)
-
 
     dispatch({
       type: GET_BOOKS_SEARCH_REQUEST,
@@ -94,7 +97,7 @@ const ResultFilters = () => {
     });
   
     console.log('Applied Filters:', {
-      dateRange: [startDateISO, endDateISO],
+      dateRange: [requestData.start_date, requestData.end_date],
       priceRange: filters.priceRange,
     });
   };
