@@ -10,7 +10,7 @@ const ResultFilters = () => {
   const dispatch = useDispatch();
   const searchData = useSelector((store: RootState) => store.book.searchData);
   const [filters, setFilters] = useState({
-    dateRange: [3, 70], // Represents the values in months (3M to 60M or 전체)
+    dateRange: [undefined, undefined], // Represents the values in months (3M to 60M or 전체)
     priceRange: [0, 100000],
   });
 
@@ -25,9 +25,10 @@ const ResultFilters = () => {
   ];
 
   const handleSliderChange = (name: string) => (event: Event, value: number | number[]) => {
+    const newValue = value === 60 ? [undefined, undefined] : [value];
     setFilters({
       ...filters,
-      [name]: [value],
+      [name]: newValue,
     });
   };
 
@@ -49,7 +50,7 @@ const ResultFilters = () => {
     };
     
     const selectedSliderValue = filters.dateRange[0]; // 슬라이더의 첫 번째 값
-    const startMonths = sliderValueToMonthsMap[selectedSliderValue] || 0; // 기본값 0
+    const startMonths = selectedSliderValue ? sliderValueToMonthsMap[selectedSliderValue]: 70;
   
     const today = new Date();
   
@@ -81,7 +82,7 @@ const ResultFilters = () => {
   }
 
   if(endDateISO !== undefined){
-    requestData.end_date = startDateISO
+    requestData.end_date = endDateISO
   }
 
   console.log("요청데이타ㅏㅏㅏㅏ ", requestData)
@@ -110,7 +111,7 @@ const ResultFilters = () => {
       <Box mb={2}>
         <Typography>출간일</Typography>
         <Slider
-          value={filters.dateRange[0]}
+          value={filters.dateRange[0] === undefined ? 60 : filters.dateRange[0]}
           onChange={handleSliderChange('dateRange')}
           //   valueLabelDisplay="auto"
           min={10}
