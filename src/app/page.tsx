@@ -14,7 +14,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Book } from './models/book';
 import { Category } from './models/category';
 import 'react-multi-carousel/lib/styles.css';
-('use client');
 
 export default function Home() {
   const dispatch = useDispatch<AppDispatch>();
