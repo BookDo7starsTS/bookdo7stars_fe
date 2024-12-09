@@ -8,8 +8,9 @@ import {
   GET_CATEGORY_BY_ID_FAILURE,
   GET_CATEGORY_BY_ID_SUCCESS,
   RESET_CATEGORY_BY_ID_REQUEST,
-  SET_SELECTED_CATEGORY_ID,
+  SET_SELECTED_PARENT_CATEGORY_ID,
   SET_EXPANDED_CATEGORY_IDS,
+  SET_SUB_CATEGORY_IDS,
 } from '../constants';
 
 // Action type
@@ -51,13 +52,17 @@ export interface ResetCategoryByIdAction {
 }
 
 export interface SetCategoryIdRequestAction {
-  type: typeof SET_SELECTED_CATEGORY_ID;
+  type: typeof SET_SELECTED_PARENT_CATEGORY_ID;
   id: string | undefined;
 }
 
 export interface SetExpandedCategoryIdsRequestAction {
   type: typeof SET_EXPANDED_CATEGORY_IDS;
   ids: string[];
+}
+export interface SetAllSubCategoryIdsRequestAction {
+  type: typeof SET_SUB_CATEGORY_IDS;
+  subCatIds: string[];
 }
 
 //Union type
@@ -70,7 +75,8 @@ export type CategoryActionTypes =
   | GetCategoryByIdFailureAction
   | ResetCategoryByIdAction
   | SetCategoryIdRequestAction
-  | SetExpandedCategoryIdsRequestAction;
+  | SetExpandedCategoryIdsRequestAction
+  | SetAllSubCategoryIdsRequestAction;
 
 export const getCategoryRequest = (level: number): GetCategoryRequestAction => ({
   type: GET_CATEGORY_REQUEST,
@@ -107,12 +113,17 @@ export const resetCategoryByIdRequest = (id: string): ResetCategoryByIdAction =>
   id,
 });
 
-export const setCategoryIdRequestAction = (id: string | undefined): SetCategoryIdRequestAction => ({
-  type: SET_SELECTED_CATEGORY_ID,
+export const setSelectedCategoryIdRequest = (id: string | undefined): SetCategoryIdRequestAction => ({
+  type: SET_SELECTED_PARENT_CATEGORY_ID,
   id,
 });
 
-export const setExpandedCategoryIdsRequestAction = (ids: string[]): SetExpandedCategoryIdsRequestAction => ({
+export const setExpandedCategoryIdsRequest = (ids: string[]): SetExpandedCategoryIdsRequestAction => ({
   type: SET_EXPANDED_CATEGORY_IDS,
   ids,
+});
+
+export const setAllSubCategoryIdsRequest = (subCatIds: string[]): SetAllSubCategoryIdsRequestAction => ({
+  type: SET_SUB_CATEGORY_IDS,
+  subCatIds,
 });

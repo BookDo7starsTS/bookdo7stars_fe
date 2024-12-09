@@ -6,8 +6,9 @@ import {
   GET_CATEGORY_BY_ID_REQUEST,
   GET_CATEGORY_BY_ID_SUCCESS,
   RESET_CATEGORY_BY_ID_REQUEST,
-  SET_SELECTED_CATEGORY_ID,
+  SET_SELECTED_PARENT_CATEGORY_ID,
   SET_EXPANDED_CATEGORY_IDS,
+  SET_SUB_CATEGORY_IDS,
 } from '../actions/constants';
 import { CategoryActionTypes } from '../actions/types';
 import { Category, CategoryById } from '../models/category';
@@ -15,7 +16,9 @@ import { Category, CategoryById } from '../models/category';
 type InitialState = {
   categories: Category[];
   categoriesById: Record<string, CategoryById[]>;
+  selectedParentCategoryId: string;
   expandedIds: string[];
+  allSubCategoryIds: string[];
   isGetCategoryLoading: boolean;
   isGetCategoryDone: boolean;
   isGetCategoryError: string;
@@ -30,7 +33,9 @@ type InitialState = {
 export const initialState: InitialState = {
   categories: [],
   categoriesById: {},
+  selectedParentCategoryId: '',
   expandedIds: [],
+  allSubCategoryIds: [],
   isGetCategoryLoading: false,
   isGetCategoryDone: false,
   isGetCategoryError: '',
@@ -59,10 +64,13 @@ function categoryReducer(state = initialState, action: CategoryActionTypes) {
     case RESET_CATEGORY_BY_ID_REQUEST:
       const { [action.id]: _, ...restCategoriesById } = state.categoriesById;
       return { ...state, isResetCategoryByIdLoading: true, categoriesById: restCategoriesById };
-    case SET_SELECTED_CATEGORY_ID:
-      return { ...state, selectedCategoryId: action.id };
+    case SET_SELECTED_PARENT_CATEGORY_ID:
+      return { ...state, selectedParentCategoryId: action.id };
     case SET_EXPANDED_CATEGORY_IDS:
       return { ...state, expandedIds: action.ids };
+    case SET_SUB_CATEGORY_IDS:
+      console.log(action.subCatIds);
+      return { ...state, allSubCategoryIds: action.subCatIds };
     default:
       return state;
   }

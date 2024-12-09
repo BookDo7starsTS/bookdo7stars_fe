@@ -3,7 +3,6 @@ import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutl
 import { CategoryById } from '@/app/models/category';
 import { AppDispatch } from '@/app/store/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { setCategoryIdRequestAction } from '@/app/actions/types';
 import { useRouter } from 'next/navigation';
 import { RootState } from '@/app/reducers';
 import React from 'react';

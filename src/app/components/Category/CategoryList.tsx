@@ -5,8 +5,8 @@ import {
   getCategoryByIdRequest,
   getCategoryRequest,
   resetCategoryByIdRequest,
-  setCategoryIdRequestAction,
-  setExpandedCategoryIdsRequestAction,
+  setSelectedCategoryIdRequest,
+  setExpandedCategoryIdsRequest,
 } from '@/app/actions/types';
 import { Category, CategoryById } from '@/app/models/category';
 import { RootState } from '@/app/reducers';
@@ -23,33 +23,29 @@ import { useRouter, usePathname } from 'next/navigation';
 type CategoryListProps = {
   categories: Record<string, CategoryById[]>;
   categoryId: string;
-  allSubCategoryIds: string[];
 };
 
 const CategoryList = (props: CategoryListProps) => {
-  const { categories, categoryId, allSubCategoryIds } = props;
-  const { expandedIds } = useSelector((store: RootState) => store.category);
+  const { categories, categoryId } = props;
+  const { expandedIds, selectedParentCategoryId } = useSelector((store: RootState) => store.category);
   const router = useRouter();
   const pathname = usePathname();
 
   const dispatch = useDispatch<AppDispatch>();
 
+  console.log(expandedIds);
   const onExpandCategory = (id: string) => {
-    if (expandedIds.includes(id)) {
-      dispatch(setExpandedCategoryIdsRequestAction(expandedIds.filter((expandedId) => expandedId !== id)));
-      return;
-      // dispatch(resetCategoryByIdRequest(id.toString()));
-    }
-    if (!categories[id]) {
+    if (!categories[id] || categories[id].length === 0) {
       console.log('asdfasdfasdfasdf');
       dispatch(getCategoryByIdRequest(id.toString()));
     }
-    dispatch(setExpandedCategoryIdsRequestAction([...expandedIds, id]));
-    // dispatch(getCategoryByIdRequest(id.toString()));
-  };
 
-  console.log(categories);
-  console.log(expandedIds);
+    if (expandedIds.includes(id)) {
+      dispatch(setExpandedCategoryIdsRequest(expandedIds.filter((expandedId) => expandedId !== id)));
+    } else {
+      dispatch(setExpandedCategoryIdsRequest([...expandedIds, id]));
+    }
+  };
 
   const handleOnClickCategory = (id: number) => {
     router.push(`/books/category/${id}`);
