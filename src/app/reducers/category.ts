@@ -6,7 +6,7 @@ import {
   GET_CATEGORY_BY_ID_REQUEST,
   GET_CATEGORY_BY_ID_SUCCESS,
   RESET_CATEGORY_BY_ID_REQUEST,
-  SET_SELECTED_PARENT_CATEGORY_ID,
+  SET_SELECTED_CATEGORY_IDS,
   SET_EXPANDED_CATEGORY_IDS,
   SET_SUB_CATEGORY_IDS,
 } from '../actions/constants';
@@ -16,9 +16,10 @@ import { Category, CategoryById } from '../models/category';
 type InitialState = {
   categories: Category[];
   categoriesById: Record<string, CategoryById[]>;
-  selectedParentCategoryId: string;
+  selectedCategoryIds: string[];
   expandedIds: string[];
   allSubCategoryIds: string[];
+  hasChildren: boolean;
   isGetCategoryLoading: boolean;
   isGetCategoryDone: boolean;
   isGetCategoryError: string;
@@ -33,9 +34,10 @@ type InitialState = {
 export const initialState: InitialState = {
   categories: [],
   categoriesById: {},
-  selectedParentCategoryId: '',
+  selectedCategoryIds: [],
   expandedIds: [],
   allSubCategoryIds: [],
+  hasChildren: true,
   isGetCategoryLoading: false,
   isGetCategoryDone: false,
   isGetCategoryError: '',
@@ -56,16 +58,27 @@ function categoryReducer(state = initialState, action: CategoryActionTypes) {
     case GET_CATEGORY_FAILURE:
       return { ...state, isGetCategoryLoading: false, isGetCategoryDone: false, isGetCategoryError: action.error };
     case GET_CATEGORY_BY_ID_REQUEST:
-      return { ...state, isGetCategoryByIdLoading: true };
+      return { ...state, isGetCategoryByIdLoading: true, hasChildren: true };
     case GET_CATEGORY_BY_ID_SUCCESS:
-      return { ...state, isGetCategoryByIdLoading: false, isGetCategoryByIdDone: true, categoriesById: { ...state.categoriesById, ...action.payload } };
+      console.log(action.payload);
+      return {
+        ...state,
+        isGetCategoryByIdLoading: false,
+        isGetCategoryByIdDone: true,
+        categoriesById: { ...state.categoriesById, ...action.payload },
+        hasChildren: Object.keys(action.payload).length > 0 ? true : false,
+      };
     case GET_CATEGORY_BY_ID_FAILURE:
       return { ...state, isGetCategoryByIdLoading: false, isGetCategoryByIdDone: false, isGetCategoryByIdError: action.error };
     case RESET_CATEGORY_BY_ID_REQUEST:
       const { [action.id]: _, ...restCategoriesById } = state.categoriesById;
       return { ...state, isResetCategoryByIdLoading: true, categoriesById: restCategoriesById };
-    case SET_SELECTED_PARENT_CATEGORY_ID:
-      return { ...state, selectedParentCategoryId: action.id };
+    case SET_SELECTED_CATEGORY_IDS:
+      console.log(action.id);
+      return {
+        ...state,
+        selectedCategoryIds: !state.selectedCategoryIds.includes(action.id) ? [...state.selectedCategoryIds, action.id] : state.selectedCategoryIds,
+      };
     case SET_EXPANDED_CATEGORY_IDS:
       return { ...state, expandedIds: action.ids };
     case SET_SUB_CATEGORY_IDS:

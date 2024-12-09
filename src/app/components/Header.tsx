@@ -29,7 +29,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 
-import CategoryBar from './CategoryBar';
+import CategoryBar from './Category/CategoryBar';
 import { getBooksSearchRequest, logoutRequest } from '../actions/types';
 import { AppDispatch, AppState } from '../store/store';
 

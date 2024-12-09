@@ -15,7 +15,7 @@ import { getCategoriesById } from '@/app/sagas/category';
 
 const CategoryBookPage = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { categoriesById, selectedParentCategoryId } = useSelector((store: RootState) => store.category);
+  const { categoriesById, selectedCategoryIds, hasChildren } = useSelector((store: RootState) => store.category);
   const { books, count, isGetAllBooksLoading } = useSelector((store: RootState) => store.book);
 
   const { categoryId } = useParams<{ categoryId: string }>();
@@ -25,10 +25,14 @@ const CategoryBookPage = () => {
   console.log('categoriesById', categoriesById);
 
   useEffect(() => {
-    if (selectedParentCategoryId && !categoriesById[selectedParentCategoryId]) {
-      dispatch(getCategoryByIdRequest(selectedParentCategoryId));
+    console.log(hasChildren);
+    if (!categoriesById[categoryId] && hasChildren) {
+      dispatch(getCategoryByIdRequest(categoryId));
     }
-  }, [selectedParentCategoryId, categoriesById, dispatch]);
+    if (!categoriesById[categoryId] && !hasChildren) {
+      return;
+    }
+  }, [categoriesById, hasChildren, dispatch]);
 
   const booksPerPage = 20;
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {

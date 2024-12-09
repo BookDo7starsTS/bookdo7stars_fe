@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { getCategoryRequest, setSelectedCategoryIdRequest } from '@/app/actions/types';
+import { getCategoryRequest, setSelectedCategoryIdsRequest } from '@/app/actions/types';
 import { RootState } from '@/app/reducers';
 import { AppDispatch } from '@/app/store/store';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
@@ -10,8 +10,8 @@ import { AppBar, Toolbar, Typography, MenuItem, Box, IconButton, useTheme, useMe
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { QueryTypes, bookGroups, getBooksPageURL } from '../books/constants';
-import { Category } from '../models/category';
+import { QueryTypes, bookGroups, getBooksPageURL } from '../../books/constants';
+import { Category } from '../../models/category';
 
 const CategoryBar = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -86,10 +86,11 @@ const CategoryBar = () => {
   };
 
   const setSelectedCategoryId = (obj: Category, child?: Category) => {
-    dispatch(setSelectedCategoryIdRequest(obj.id.toString()));
     if (child) {
+      dispatch(setSelectedCategoryIdsRequest(child.id.toString()));
       router.push('/books/category/' + child.id.toString());
     } else {
+      dispatch(setSelectedCategoryIdsRequest(obj.id.toString()));
       router.push('/books/category/' + obj.id.toString());
     }
   };

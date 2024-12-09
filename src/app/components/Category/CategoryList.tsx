@@ -5,8 +5,8 @@ import {
   getCategoryByIdRequest,
   getCategoryRequest,
   resetCategoryByIdRequest,
-  setSelectedCategoryIdRequest,
   setExpandedCategoryIdsRequest,
+  setSelectedCategoryIdsRequest,
 } from '@/app/actions/types';
 import { Category, CategoryById } from '@/app/models/category';
 import { RootState } from '@/app/reducers';
@@ -27,7 +27,7 @@ type CategoryListProps = {
 
 const CategoryList = (props: CategoryListProps) => {
   const { categories, categoryId } = props;
-  const { expandedIds, selectedParentCategoryId } = useSelector((store: RootState) => store.category);
+  const { expandedIds, selectedCategoryIds } = useSelector((store: RootState) => store.category);
   const router = useRouter();
   const pathname = usePathname();
 
@@ -48,35 +48,42 @@ const CategoryList = (props: CategoryListProps) => {
   };
 
   const handleOnClickCategory = (id: number) => {
+    dispatch(setSelectedCategoryIdsRequest(id.toString()));
+    onExpandCategory(id.toString());
     router.push(`/books/category/${id}`);
   };
+  console.log(expandedIds);
+  console.log('selectedCategoryIds, ', selectedCategoryIds);
   return (
     <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
-      {categories[categoryId] &&
-        categories[categoryId].map((cat) => {
-          return (
-            <React.Fragment key={cat.id}>
-              <CategoryListItem
-                category={cat}
-                expandedIds={expandedIds}
-                onExpandCategory={onExpandCategory}
-                handleOnClickCategory={handleOnClickCategory}
-                style={{ padding: '0.25rem' }}
-              />
-              {expandedIds.includes(cat.id.toString()) &&
-                categories[cat.id]?.map((subCat) => (
-                  <CategoryListItem
-                    key={subCat.id}
-                    category={subCat}
-                    expandedIds={expandedIds}
-                    onExpandCategory={onExpandCategory}
-                    handleOnClickCategory={handleOnClickCategory}
-                    style={{ padding: '0 0 0 4rem' }}
-                  />
-                ))}
-            </React.Fragment>
-          );
-        })}
+      {selectedCategoryIds.map((id) => {
+        if (!categories[id]) return null; // categories[id]가 없으면 null 반환
+
+        return categories[id].map((cat) => (
+          <React.Fragment key={cat.id}>
+            <CategoryListItem
+              category={cat}
+              categoryId={categoryId}
+              expandedIds={expandedIds}
+              onExpandCategory={onExpandCategory}
+              handleOnClickCategory={handleOnClickCategory}
+              style={{ padding: '0.25rem' }}
+            />
+            {expandedIds.includes(cat.id.toString()) &&
+              categories[cat.id]?.map((subCat) => (
+                <CategoryListItem
+                  key={subCat.id}
+                  category={subCat}
+                  categoryId={categoryId}
+                  expandedIds={expandedIds}
+                  onExpandCategory={onExpandCategory}
+                  handleOnClickCategory={handleOnClickCategory}
+                  style={{ padding: '0 0 0 4rem' }}
+                />
+              ))}
+          </React.Fragment>
+        ));
+      })}
     </List>
   );
 };

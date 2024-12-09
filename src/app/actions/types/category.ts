@@ -8,7 +8,7 @@ import {
   GET_CATEGORY_BY_ID_FAILURE,
   GET_CATEGORY_BY_ID_SUCCESS,
   RESET_CATEGORY_BY_ID_REQUEST,
-  SET_SELECTED_PARENT_CATEGORY_ID,
+  SET_SELECTED_CATEGORY_IDS,
   SET_EXPANDED_CATEGORY_IDS,
   SET_SUB_CATEGORY_IDS,
 } from '../constants';
@@ -51,9 +51,9 @@ export interface ResetCategoryByIdAction {
   id: string;
 }
 
-export interface SetCategoryIdRequestAction {
-  type: typeof SET_SELECTED_PARENT_CATEGORY_ID;
-  id: string | undefined;
+export interface SetSelectedCategoryIdsRequestAction {
+  type: typeof SET_SELECTED_CATEGORY_IDS;
+  id: string;
 }
 
 export interface SetExpandedCategoryIdsRequestAction {
@@ -74,7 +74,7 @@ export type CategoryActionTypes =
   | GetCategoryByIdSuccessAction
   | GetCategoryByIdFailureAction
   | ResetCategoryByIdAction
-  | SetCategoryIdRequestAction
+  | SetSelectedCategoryIdsRequestAction
   | SetExpandedCategoryIdsRequestAction
   | SetAllSubCategoryIdsRequestAction;
 
@@ -113,8 +113,8 @@ export const resetCategoryByIdRequest = (id: string): ResetCategoryByIdAction =>
   id,
 });
 
-export const setSelectedCategoryIdRequest = (id: string | undefined): SetCategoryIdRequestAction => ({
-  type: SET_SELECTED_PARENT_CATEGORY_ID,
+export const setSelectedCategoryIdsRequest = (id: string): SetSelectedCategoryIdsRequestAction => ({
+  type: SET_SELECTED_CATEGORY_IDS,
   id,
 });
 
