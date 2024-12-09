@@ -28,6 +28,7 @@ import { Book } from '../models/book';
 type InitialState = {
   books: Book[];
   mainpageBooks: any;
+  searchData: {};
   count: number;
   groupBooks: Book[];
   isGetAllBooksLoading: boolean;
@@ -55,6 +56,14 @@ type InitialState = {
 export const initialState: InitialState = {
   books: [],
   mainpageBooks: { banner: [], itemNewSpecial: [], bestSellerCategory: [], itemNewAll: [], itemEditorChoice: [] },
+  searchData: {
+    title: '',
+    author: '',
+    publisher: '',
+    orderTerm: 'sales',
+    page: 1,
+    pageSize: 20,
+  },
   count: 0,
   groupBooks: [],
   isGetAllBooksLoading: false,
@@ -96,8 +105,10 @@ function bookReducer(state = initialState, action: BookActionTypes) {
       return { ...state, isGetBooksByGroupLoading: false, isGetBooksByGroupDone: false, isGetBooksByGroupError: action.error };
 
     case GET_BOOKS_SEARCH_REQUEST:
-      return { ...state, isGetBooksSearchLoading: true };
+      console.log('여기는 리듀서의 서치 리퀘스트다!, searchData는 이렇게 생겼다!! =>>>>>>', state.searchData);
+      return { ...state, isGetBooksSearchLoading: true, searchData: action.data };
     case GET_BOOKS_SEARCH_SUCCESS:
+      console.log('여기는 리듀서의 서치 석세스다!');
       return { ...state, isGetBooksSearchLoading: false, isGetBooksSearchDone: true, books: action.payload, count: action.count };
     case GET_BOOKS_SEARCH_FAILURE:
       return { ...state, isGetBooksSearchLoading: false, isGetBooksSearchDone: false, isGetBooksSearchError: action.error };
