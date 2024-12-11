@@ -23,13 +23,15 @@ const CategoryListItem = (props: CategoryListItemProps) => {
   const router = useRouter();
   const theme = useTheme();
 
+  console.log(expandedIds);
+
   return (
     <ListItem key={category.id} sx={{ ...style }}>
       {category.count > 0 && (
         <IconButton sx={{ padding: '0.5rem' }} aria-label="expand category" onClick={() => onExpandCategory(category.id.toString())}>
           <ArrowForwardIosOutlinedIcon
             sx={{
-              transform: expandedIds.includes(category.id.toString()) ? 'rotate(90deg)' : 'rotate(0deg)',
+              transform: expandedIds.includes(category.id.toString()) && expandedIds.includes(categoryId) ? 'rotate(90deg)' : 'rotate(0deg)',
               transition: 'transform 0.3s',
             }}
           />
@@ -49,4 +51,4 @@ const CategoryListItem = (props: CategoryListItemProps) => {
   );
 };
 
-export default React.memo(CategoryListItem);
+export default CategoryListItem;

@@ -19,7 +19,6 @@ type InitialState = {
   selectedCategoryIds: string[];
   expandedIds: string[];
   allSubCategoryIds: string[];
-  hasChildren: boolean;
   isGetCategoryLoading: boolean;
   isGetCategoryDone: boolean;
   isGetCategoryError: string;
@@ -37,7 +36,6 @@ export const initialState: InitialState = {
   selectedCategoryIds: [],
   expandedIds: [],
   allSubCategoryIds: [],
-  hasChildren: true,
   isGetCategoryLoading: false,
   isGetCategoryDone: false,
   isGetCategoryError: '',
@@ -66,7 +64,6 @@ function categoryReducer(state = initialState, action: CategoryActionTypes) {
         isGetCategoryByIdLoading: false,
         isGetCategoryByIdDone: true,
         categoriesById: { ...state.categoriesById, ...action.payload },
-        hasChildren: Object.keys(action.payload).length > 0 ? true : false,
       };
     case GET_CATEGORY_BY_ID_FAILURE:
       return { ...state, isGetCategoryByIdLoading: false, isGetCategoryByIdDone: false, isGetCategoryByIdError: action.error };
