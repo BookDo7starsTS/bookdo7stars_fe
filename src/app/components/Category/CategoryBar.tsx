@@ -85,13 +85,11 @@ const CategoryBar = () => {
     router.push(getBooksPageURL(group));
   };
 
-  const setSelectedCategoryId = (obj: Category, child?: Category) => {
-    if (child) {
-      dispatch(setSelectedCategoryIdsRequest(child.id.toString()));
-      router.push('/books/category/' + child.id.toString());
-    } else {
-      dispatch(setSelectedCategoryIdsRequest(obj.id.toString()));
+  const selectCategory = (obj: Category, child?: Category) => {
+    if (!child) {
       router.push('/books/category/' + obj.id.toString());
+    } else {
+      router.push('/books/category/' + child.id.toString());
     }
   };
 
@@ -184,8 +182,12 @@ const CategoryBar = () => {
                   elevation={3}>
                   <Grid container spacing={3}>
                     {categories.map((obj) => (
-                      <Grid key={obj.id} item xs={12} sm={6} md={4} lg={2} onClick={() => setSelectedCategoryId(obj)}>
-                        <Link style={{ fontWeight: searchCategoryText.length > 0 && obj.name.includes(searchCategoryText) ? 600 : 100 }}>{obj.name}</Link>
+                      <Grid key={obj.id} item xs={12} sm={6} md={4} lg={2}>
+                        <Link
+                          href={'/books/category/' + obj.id.toString()}
+                          style={{ fontWeight: searchCategoryText.length > 0 && obj.name.includes(searchCategoryText) ? 600 : 100, cursor: 'pointer' }}>
+                          {obj.name}
+                        </Link>
                         {obj.children.length > 0 && (
                           <ExpandMoreIcon
                             onClick={() => handleExpandableToggle([obj.id])}
@@ -194,6 +196,7 @@ const CategoryBar = () => {
                               top: '5px',
                               transform: expandedId.includes(obj.id) ? 'rotate(180deg)' : 'rotate(0deg)',
                               transition: 'transform 0.3s',
+                              cursor: 'pointer',
                             }}
                           />
                         )}
@@ -205,10 +208,10 @@ const CategoryBar = () => {
                               transition: 'opacity 0.5s ease-in-out',
                               overflow: 'hidden',
                               opacity: expandedId.includes(obj.id) ? 1 : 0,
-                            }}
-                            onClick={() => setSelectedCategoryId(obj, child)}>
+                              cursor: 'pointer',
+                            }}>
                             <Link
-                              // href={'/books/category/' + child.id.toString()}
+                              href={'/books/category/' + child.id.toString()}
                               underline="none"
                               style={{
                                 fontSize: '10pt',

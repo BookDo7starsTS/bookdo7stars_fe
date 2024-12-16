@@ -1,24 +1,16 @@
 'use client';
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
-import {
-  getCategoryByIdRequest,
-  getCategoryRequest,
-  resetCategoryByIdRequest,
-  setExpandedCategoryIdsRequest,
-  setSelectedCategoryIdsRequest,
-} from '@/app/actions/types';
+import { GetCategoriesByIdRequest, setExpandedCategoryIdsRequest, setSelectedCategoryIdsRequest } from '@/app/actions/types';
 import { Category, CategoryById } from '@/app/models/category';
 import { RootState } from '@/app/reducers';
 import { AppDispatch } from '@/app/store/store';
-import { Box, IconButton, List, ListItem, ListItemText, Popover } from '@mui/material';
-import Tree from 'rc-tree';
+import { List } from '@mui/material';
 import 'rc-tree/assets/index.css';
 import { useDispatch, useSelector } from 'react-redux';
-import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined';
 import CategoryListItem from './CategoryListItem';
 import React from 'react';
-import { useRouter, usePathname } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 type CategoryListProps = {
   categories: Record<string, CategoryById[]>;
@@ -29,13 +21,14 @@ const CategoryList = (props: CategoryListProps) => {
   const { categories, categoryId } = props;
   const { expandedIds } = useSelector((store: RootState) => store.category);
   const router = useRouter();
-  const pathname = usePathname();
 
   const dispatch = useDispatch<AppDispatch>();
 
+  const ids = useMemo(() => Object.keys(categories), [categories]);
+
   const onExpandCategory = (id: string) => {
     if (!categories[id] || categories[id].length === 0) {
-      dispatch(getCategoryByIdRequest(id.toString()));
+      dispatch(GetCategoriesByIdRequest(id.toString()));
     }
     if (expandedIds.includes(id)) {
       dispatch(setExpandedCategoryIdsRequest(expandedIds.filter((expandedId) => expandedId !== id)));
@@ -49,23 +42,21 @@ const CategoryList = (props: CategoryListProps) => {
     onExpandCategory(id.toString());
     router.push(`/books/category/${id}`);
   };
-  const ids = Object.keys(categories).map((key) => key);
-  console.log('ids, ', ids);
 
   useEffect(() => {
     if (expandedIds.length === 0) {
-      console.log('hahahah');
-      ids.forEach((id) => {
-        categories[id]?.forEach((cat) => {
-          if (cat.id.toString() === categoryId) {
-            console.log('hahahah22322');
-            dispatch(setExpandedCategoryIdsRequest([...expandedIds, categoryId]));
-          }
-        });
-      });
+      const newExpandedIds: string[] = [];
+      if (ids.length === 3) {
+        newExpandedIds.push(ids[1]);
+      }
+      if (ids.length > 3) {
+        for (let i = 1; i < ids.length - 1; i++) {
+          newExpandedIds.push(ids[i]);
+        }
+      }
+      dispatch(setExpandedCategoryIdsRequest(newExpandedIds));
     }
-  }, [categories, ids, expandedIds, categoryId, dispatch]);
-  console.log('expandedIds', expandedIds);
+  }, [ids]);
 
   return (
     <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
@@ -79,7 +70,7 @@ const CategoryList = (props: CategoryListProps) => {
             handleOnClickCategory={handleOnClickCategory}
             style={{ padding: '0.25rem' }}
           />
-          {expandedIds.includes(categoryId) &&
+          {expandedIds.length !== 0 &&
             categories[cat.id]?.map((subCat) => (
               <CategoryListItem
                 key={subCat.id}
@@ -98,28 +89,3 @@ const CategoryList = (props: CategoryListProps) => {
 };
 
 export default CategoryList;
-
-// return categories[id].map((cat) => (
-//   <React.Fragment key={cat.id}>
-//     <CategoryListItem
-//       category={cat}
-//       categoryId={categoryId}
-//       expandedIds={expandedIds}
-//       onExpandCategory={onExpandCategory}
-//       handleOnClickCategory={handleOnClickCategory}
-//       style={{ padding: '0.25rem' }}
-//     />
-//     {expandedIds.includes(cat.id.toString()) &&
-//       categories[cat.id]?.map((subCat) => (
-//         <CategoryListItem
-//           key={subCat.id}
-//           category={subCat}
-//           categoryId={categoryId}
-//           expandedIds={expandedIds}
-//           onExpandCategory={onExpandCategory}
-//           handleOnClickCategory={handleOnClickCategory}
-//           style={{ padding: '0 0 0 4rem' }}
-//         />
-//       ))}
-//   </React.Fragment>
-// ));

@@ -6,5 +6,11 @@ export interface Category {
 
 export type CategoryById = Omit<Category, 'children'> & {
   parent_id: number;
-  count: number;
+  count?: number;
 };
+
+export interface ICategory {
+  id: number;
+  name: string;
+  parent_id: number;
+}

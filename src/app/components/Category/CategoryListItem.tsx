@@ -1,5 +1,6 @@
-import { IconButton, ListItem, ListItemText, SxProps, useTheme } from '@mui/material';
+import { Box, IconButton, ListItem, ListItemText, SxProps, useTheme } from '@mui/material';
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined';
+import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
 import { CategoryById } from '@/app/models/category';
 import { AppDispatch } from '@/app/store/store';
 import { useDispatch, useSelector } from 'react-redux';
@@ -18,24 +19,24 @@ type CategoryListItemProps = {
 
 const CategoryListItem = (props: CategoryListItemProps) => {
   const { category, expandedIds, categoryId, onExpandCategory, handleOnClickCategory, style } = props;
-  const { selectedCategoryIds } = useSelector((store: RootState) => store.category);
   const dispatch = useDispatch<AppDispatch>();
-  const router = useRouter();
   const theme = useTheme();
-
-  console.log(expandedIds);
 
   return (
     <ListItem key={category.id} sx={{ ...style }}>
-      {category.count > 0 && (
+      {category.count && category.count > 0 ? (
         <IconButton sx={{ padding: '0.5rem' }} aria-label="expand category" onClick={() => onExpandCategory(category.id.toString())}>
           <ArrowForwardIosOutlinedIcon
             sx={{
-              transform: expandedIds.includes(category.id.toString()) && expandedIds.includes(categoryId) ? 'rotate(90deg)' : 'rotate(0deg)',
+              transform: expandedIds.includes(category.parent_id.toString()) || expandedIds.includes(category.id.toString()) ? 'rotate(90deg)' : 'rotate(0deg)',
               transition: 'transform 0.3s',
             }}
           />
         </IconButton>
+      ) : (
+        <Box sx={{ display: 'flex', alignItems: 'center' }}>
+          <RemoveOutlinedIcon sx={{ width: '1.5rem', height: '1rem' }} />
+        </Box>
       )}
       <ListItemText
         id={category.id.toString()}
