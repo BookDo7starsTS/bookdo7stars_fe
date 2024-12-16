@@ -45,7 +45,15 @@ const CategoryBookPage = () => {
     <Grid container spacing={2} sx={{ padding: '1rem', marginLeft: 0, marginTop: '1rem' }}>
       <Grid item xs={4} sx={{ padding: '0 !important', marginLeft: '1rem' }} className="category-list">
         <Box
-          sx={{ display: 'flex', justifyContent: 'center', marginBottom: '1rem', boxShadow: '0px 4px 10px #AFC6AA', borderRadius: '4px', minWidth: '350px' }}>
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            marginBottom: '1rem',
+            boxShadow: '0px 4px 10px #AFC6AA',
+            borderRadius: '4px',
+            minWidth: '350px',
+            maxWidth: '500px',
+          }}>
           <Typography variant="h4" style={{ fontWeight: 600 }}>
             {selectedCategory ? selectedCategory.name : '찾으시는 카테고리는 없습니다.'}
           </Typography>
