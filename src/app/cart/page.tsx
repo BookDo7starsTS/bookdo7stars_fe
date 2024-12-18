@@ -1,27 +1,35 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 
-import { updateCartItemQuantity, removeFromCart } from '@/app/actions/types';
 import { RootState } from '@/app/reducers';
 import { AppDispatch } from '@/app/store/store';
 import { Box, Button, Typography, Grid } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 
 import CartCard from '../components/Cart/CartCard';
+import { getItemsInCartRequest } from '../actions/types';
+import { Book } from '../models/book';
 
 const CartPage = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const cartItems = useSelector((state: RootState) => state.cart.items);
+  const { items } = useSelector((state: RootState) => state.cart);
 
   const [checkedItems, setCheckedItems] = useState<string[]>([]);
 
+  useEffect(() => {
+    dispatch(getItemsInCartRequest());
+  }, []);
+
+  const bookIds = items.map((item) => item.bookId);
+  const booksInCart: Book[] = [];
+
   // 전체 선택/해제
   const handleToggleSelectAll = () => {
-    if (checkedItems.length === cartItems.length) {
+    if (checkedItems.length === items.length) {
       setCheckedItems([]); // 전체 해제
     } else {
-      setCheckedItems(cartItems.map((item) => item.id)); // 전체 선택
+      // setCheckedItems(cartItems.map((item) => item.id)); // 전체 선택
     }
   };
 
@@ -32,49 +40,38 @@ const CartPage = () => {
 
   // 수량 증가
   const handleIncrease = (id: string, quantity: number) => {
-    dispatch(updateCartItemQuantity(id, quantity + 1));
+    // dispatch(updateCartItemQuantity(id, quantity + 1));
   };
 
   // 수량 감소
   const handleDecrease = (id: string, quantity: number) => {
     if (quantity > 1) {
-      dispatch(updateCartItemQuantity(id, quantity - 1));
+      // dispatch(updateCartItemQuantity(id, quantity - 1));
     }
   };
 
   // 아이템 삭제
   const handleDelete = (id: string) => {
-    dispatch(removeFromCart(id));
+    // dispatch(removeFromCart(id));
     setCheckedItems((prev) => prev.filter((itemId) => itemId !== id));
   };
 
   // 총 금액 및 상품 수 계산
-  const totalPrice = cartItems.reduce((sum, item) => sum + item.quantity * item.price, 0);
-  const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-
+  // const totalPrice = cartItems.reduce((sum, item) => sum + item.quantity * item.price, 0);
+  // const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+  console.log('ITEMS', items);
   return (
     <Box sx={{ mt: '50px' }} p={2} maxWidth="800px" mx="auto">
       {/* Select All / Deselect All Button */}
       <Box display="flex" justifyContent="space-between" mb={2}>
         <Button variant="outlined" onClick={handleToggleSelectAll}>
-          {checkedItems.length === cartItems.length ? '전체 해제' : '전체 선택'}
+          {checkedItems.length === items.length ? '전체 해제' : '전체 선택'}
         </Button>
       </Box>
 
       {/* Cart Items */}
-      {cartItems.length > 0 ? (
-        cartItems.map((item) => (
-          <CartCard
-            key={item.id}
-            book={item}
-            quantity={item.quantity}
-            checked={checkedItems.includes(item.id)}
-            onIncrease={() => handleIncrease(item.id, item.quantity)}
-            onDecrease={() => handleDecrease(item.id, item.quantity)}
-            onDelete={() => handleDelete(item.id)}
-            onCheckboxChange={() => handleCheckboxChange(item.id)}
-          />
-        ))
+      {items.length > 0 ? (
+        items.map((item) => <CartCard key={item.id} bookId={item.bookId.toString()} quantity={item.quantity} />)
       ) : (
         <Typography variant="h6" textAlign="center">
           장바구니가 비어있습니다.
@@ -86,12 +83,14 @@ const CartPage = () => {
         <Grid container spacing={2}>
           <Grid item xs={6}>
             <Typography>
-              총 상품 수량: <b>{totalItems}개</b>
+              총 상품 수량
+              {/* : <b>{totalItems}개</b> */}
             </Typography>
           </Grid>
           <Grid item xs={6}>
             <Typography>
-              총 결제 금액: <b>₩{totalPrice.toLocaleString()}</b>
+              총 결제 금액
+              {/* : <b>₩{totalPrice.toLocaleString()}</b> */}
             </Typography>
           </Grid>
         </Grid>

@@ -6,12 +6,13 @@ import { Box, Card, CardContent, CardMedia, Typography } from '@mui/material';
 import { pink } from '@mui/material/colors';
 import IconButton from '@mui/material/IconButton';
 import { useRouter } from 'next/navigation';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
-import {CartItem} from '../../models/cart'
+import { CartItem } from '../../models/cart';
 
 import { currencyFormat } from '../../../utils/helpers';
-import { addToCartRequest, addToCartSuccess, addToCartFailure  } from '../../actions/types';
+import { addToCartRequest, addToCartSuccess, addToCartFailure } from '../../actions/types';
+import { RootState } from '@/app/reducers';
 
 interface BookCardProps {
   book: Book;
@@ -28,17 +29,16 @@ const StyledTypography = styled(Typography)`
 
 const BookCard: React.FC<BookCardProps> = ({ book }) => {
   const dispatch = useDispatch<AppDispatch>();
+  const { user } = useSelector((store: RootState) => store.user);
   const router = useRouter();
   const clickBookCard = (book: Book) => {
     router.push(`/book/${book.id}`);
   };
 
-  const handleAddToCart = (book: Book) => {
-    const cartItem: CartItem = { ...book, quantity: 1 };
+  const handleAddToCart = (bookId: number) => {
+    const cartItem: CartItem = { bookId, quantity: 1, user: user };
     dispatch(addToCartRequest(cartItem));
-    console.log('BookCard에서 handleAddToCart함수안이다. addToCartSuccess를 디스패치했다.', addToCartRequest(cartItem));
-
-    router.push('/cart');
+    console.log('BookCard에서 handleAddToCart함수안이다. addToCartSuccess를 디스패치했다.');
   };
 
   return (
@@ -82,7 +82,7 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
               <IconButton sx={{ padding: '5px' }} aria-label="add to favorites">
                 <FavoriteBorderIcon fontSize="small" sx={{ color: pink[500] }} />
               </IconButton>
-              <IconButton sx={{ padding: '5px' }} aria-label="add to cart" onClick={() => handleAddToCart(book)}>
+              <IconButton sx={{ padding: '5px' }} aria-label="add to cart" onClick={() => handleAddToCart(book.id)}>
                 <ShoppingCartIcon fontSize="small" />
               </IconButton>
             </Box>

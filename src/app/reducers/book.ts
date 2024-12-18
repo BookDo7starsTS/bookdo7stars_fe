@@ -21,6 +21,7 @@ import {
   GET_MAINPAGE_BESTSELLER_BOOKS_SUCCESS,
   GET_MAINPAGE_BESTSELLER_BOOKS_FAILURE,
   RESET_GROUP_BOOKS,
+  RESET_BOOK,
 } from '../actions/constants';
 import { BookActionTypes } from '../actions/types';
 import { Book } from '../models/book';
@@ -123,6 +124,8 @@ function bookReducer(state = initialState, action: BookActionTypes) {
     case GET_BOOK_REQUEST:
       return { ...state, isGetBookLoading: true };
     case GET_BOOK_SUCCESS:
+      console.log('BOOK???', action.payload);
+      console.log('BOOKS', state.books);
       return { ...state, isGetBookLoading: false, isGetBookDone: true, book: action.payload };
     case GET_BOOK_FAILURE:
       return { ...state, isGetBookLoading: false, book: null, isGetBookError: action.error };
@@ -133,6 +136,8 @@ function bookReducer(state = initialState, action: BookActionTypes) {
     case GET_MAINPAGE_BESTSELLER_BOOKS_FAILURE:
       return { ...state, isGetMainPageBestSellerBooksLoading: false, book: null, isGetMainPageBestSellerBooksError: action.error };
 
+    case RESET_BOOK:
+      return { ...state, book: null };
     case RESET_GROUP_BOOKS:
       return { ...state, groupBooks: [] };
     default:
