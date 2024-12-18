@@ -9,23 +9,16 @@ import { RootState } from '@/app/reducers';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '@/app/store/store';
 import { getBookRequest, resetBook } from '@/app/actions/types';
+import { Book } from '@/app/models/book';
 
 type CartCardProps = {
-  bookId: string;
+  book: Book;
   quantity: number;
 };
 
 const CartCard = (props: CartCardProps) => {
-  const { bookId, quantity } = props;
-  const { book } = useSelector((store: RootState) => store.book);
+  const { book, quantity } = props;
   const dispatch = useDispatch<AppDispatch>();
-
-  useEffect(() => {
-    if (book) {
-      dispatch(resetBook());
-    }
-    dispatch(getBookRequest(bookId));
-  }, [bookId, dispatch]);
 
   console.log('BOOK IN CART', book);
 

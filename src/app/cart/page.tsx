@@ -21,9 +21,6 @@ const CartPage = () => {
     dispatch(getItemsInCartRequest());
   }, []);
 
-  const bookIds = items.map((item) => item.bookId);
-  const booksInCart: Book[] = [];
-
   // 전체 선택/해제
   const handleToggleSelectAll = () => {
     if (checkedItems.length === items.length) {
@@ -71,7 +68,7 @@ const CartPage = () => {
 
       {/* Cart Items */}
       {items.length > 0 ? (
-        items.map((item) => <CartCard key={item.id} bookId={item.bookId.toString()} quantity={item.quantity} />)
+        items.map((item) => <CartCard key={item.id} book={item.book} quantity={item.quantity} />)
       ) : (
         <Typography variant="h6" textAlign="center">
           장바구니가 비어있습니다.

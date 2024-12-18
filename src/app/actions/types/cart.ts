@@ -12,6 +12,7 @@ import {
   UPDATE_CART_ITEM_QUANTITY,
   CLEAR_CART,
 } from '../constants';
+import { User } from '@/app/models/user';
 
 export interface GetItemsInCartRequestAction {
   type: typeof GET_ITEMS_IN_CART_REQUEST;
@@ -29,7 +30,7 @@ export interface GetItemsInCartFailureAction {
 
 export interface AddToCartRequestAction {
   type: typeof ADD_TO_CART_REQUEST;
-  data: CartItem;
+  data: { bookId: number; quantity: number; user: User | null };
 }
 
 export interface AddToCartSuccessAction {
@@ -84,9 +85,9 @@ export const getItemsInCartFailure = (error: string): GetItemsInCartFailureActio
   error,
 });
 
-export const addToCartRequest = (cartItem: CartItem): AddToCartRequestAction => ({
+export const addToCartRequest = (data: AddToCartRequestAction['data']): AddToCartRequestAction => ({
   type: ADD_TO_CART_REQUEST,
-  data: cartItem,
+  data: data,
 });
 
 export const addToCartSuccess = (cartItem: CartItem): AddToCartSuccessAction => ({

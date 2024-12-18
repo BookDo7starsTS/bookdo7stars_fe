@@ -36,7 +36,7 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
   };
 
   const handleAddToCart = (bookId: number) => {
-    const cartItem: CartItem = { bookId, quantity: 1, user: user };
+    const cartItem = { bookId, quantity: 1, user: user };
     dispatch(addToCartRequest(cartItem));
     console.log('BookCard에서 handleAddToCart함수안이다. addToCartSuccess를 디스패치했다.');
   };

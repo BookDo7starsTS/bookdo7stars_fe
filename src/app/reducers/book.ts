@@ -124,8 +124,6 @@ function bookReducer(state = initialState, action: BookActionTypes) {
     case GET_BOOK_REQUEST:
       return { ...state, isGetBookLoading: true };
     case GET_BOOK_SUCCESS:
-      console.log('BOOK???', action.payload);
-      console.log('BOOKS', state.books);
       return { ...state, isGetBookLoading: false, isGetBookDone: true, book: action.payload };
     case GET_BOOK_FAILURE:
       return { ...state, isGetBookLoading: false, book: null, isGetBookError: action.error };
