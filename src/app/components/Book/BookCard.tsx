@@ -1,13 +1,18 @@
 import { Book } from '@/app/models/book';
+import { AppDispatch } from '@/app/store/store';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Box, Card, CardContent, CardMedia, Typography } from '@mui/material';
 import { pink } from '@mui/material/colors';
 import IconButton from '@mui/material/IconButton';
 import { useRouter } from 'next/navigation';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import {CartItem} from '../../models/cart'
 
 import { currencyFormat } from '../../../utils/helpers';
+import { addToCartRequest, addToCartSuccess, addToCartFailure  } from '../../actions/types';
+
 interface BookCardProps {
   book: Book;
 }
@@ -22,17 +27,18 @@ const StyledTypography = styled(Typography)`
 `;
 
 const BookCard: React.FC<BookCardProps> = ({ book }) => {
+  const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const clickBookCard = (book: Book) => {
     router.push(`/book/${book.id}`);
   };
 
   const handleAddToCart = (book: Book) => {
-    // 선택한 책 + 수량 1 해서 
-    // 장바구니 페이지로 이동
+    const cartItem: CartItem = { ...book, quantity: 1 };
+    dispatch(addToCartRequest(cartItem));
+    console.log('BookCard에서 handleAddToCart함수안이다. addToCartSuccess를 디스패치했다.', addToCartRequest(cartItem));
+
     router.push('/cart');
-    const cartItem = { ...book, quantity:1 };
-    console.log('북카드에서 카트에 추가:', cartItem);
   };
 
   return (

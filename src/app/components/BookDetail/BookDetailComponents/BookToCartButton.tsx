@@ -21,7 +21,7 @@ interface BookToCartButtonProps {
   quantity: number;
 }
 
-const BookToCartButton: React.FC<BookToCartButtonProps> = ({ book,quantity }) => {
+const BookToCartButton: React.FC<BookToCartButtonProps> = ({ book, quantity }) => {
   const router = useRouter();
   const handleAddToCart = () => {
     // 카트에 추가하는 로직 구현

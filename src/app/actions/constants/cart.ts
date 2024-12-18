@@ -1,0 +1,7 @@
+//cart
+export const ADD_TO_CART_REQUEST = 'ADD_TO_CART_REQUEST';
+export const ADD_TO_CART_SUCCESS = 'ADD_TO_CART_SUCCESS';
+export const ADD_TO_CART_FAILURE = 'ADD_TO_CART_FAILURE';
+export const REMOVE_FROM_CART = 'REMOVE_FROM_CART'; //책 한권 삭제
+export const UPDATE_CART_ITEM_QUANTITY = 'UPDATE_CART_ITEM_QUANTITY';
+export const CLEAR_CART = 'CLEAR_CART'; //전체삭제
