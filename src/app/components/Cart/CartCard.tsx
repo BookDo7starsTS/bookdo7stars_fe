@@ -14,13 +14,12 @@ import { Book } from '@/app/models/book';
 type CartCardProps = {
   book: Book;
   quantity: number;
+  handleCheckboxChange: (id: string) => void;
 };
 
 const CartCard = (props: CartCardProps) => {
-  const { book, quantity } = props;
+  const { book, quantity, handleCheckboxChange } = props;
   const dispatch = useDispatch<AppDispatch>();
-
-  console.log('BOOK IN CART', book);
 
   return (
     <Card variant="outlined" sx={{ mb: 2 }}>
@@ -28,7 +27,7 @@ const CartCard = (props: CartCardProps) => {
         <Grid container spacing={2} alignItems="center">
           {/* Checkbox */}
           <Grid item xs={1}>
-            <Checkbox onClick={() => handleSelectItem()} />
+            <Checkbox onClick={() => handleCheckboxChange(book.id.toString())} />
           </Grid>
 
           {/* Product Image */}

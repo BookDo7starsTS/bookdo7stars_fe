@@ -9,6 +9,8 @@ import { useDispatch, useSelector } from 'react-redux';
 
 import { getItemsInCartRequest } from '../actions/types';
 import CartCard from '../components/Cart/CartCard';
+import { Book } from '../models/book';
+import { CartItem } from '../models/cart';
 
 const CartPage = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -25,7 +27,7 @@ const CartPage = () => {
     if (checkedItems.length === items.length) {
       setCheckedItems([]); // 전체 해제
     } else {
-      // setCheckedItems(cartItems.map((item) => item.id)); // 전체 선택
+      setCheckedItems(items.map((item) => item.book.id.toString())); // 전체 선택
     }
   };
 
@@ -33,6 +35,7 @@ const CartPage = () => {
   const handleCheckboxChange = (id: string) => {
     setCheckedItems((prev) => (prev.includes(id) ? prev.filter((itemId) => itemId !== id) : [...prev, id]));
   };
+  console.log('CHECKEDITEMS', checkedItems);
 
   // 수량 증가
   const handleIncrease = (id: string, quantity: number) => {
@@ -53,9 +56,19 @@ const CartPage = () => {
   };
 
   // 총 금액 및 상품 수 계산
-  // const totalPrice = cartItems.reduce((sum, item) => sum + item.quantity * item.price, 0);
-  // const totalItems = cartItems.reduce((sum, item) => sum + item.quantity, 0);
-  console.log('ITEMS', items);
+  const selectedItems = items.filter((item) => checkedItems.includes(item.book.id.toString()));
+
+  // checkedItems = ['1', '2'];
+  // items = [{... book: {id: '1'}}, {... book: {id: '2'}}]
+  // items.filter((item) => checkedItems.map((checkedItem) => item.book.id.toString() === checkedItem));
+  let totalPrice;
+  let totalItems;
+  if (selectedItems) {
+    totalPrice = selectedItems.reduce((sum, item) => sum + item.quantity * item!.book.priceStandard, 0);
+    totalItems = selectedItems.reduce((sum, item) => sum + item!.quantity, 0);
+  }
+
+  console.log('ITEMS', selectedItems);
   return (
     <Box sx={{ mt: '50px' }} p={2} maxWidth="800px" mx="auto">
       {/* Select All / Deselect All Button */}
@@ -67,7 +80,7 @@ const CartPage = () => {
 
       {/* Cart Items */}
       {items.length > 0 ? (
-        items.map((item) => <CartCard key={item.id} book={item.book} quantity={item.quantity} />)
+        items.map((item) => <CartCard key={item.id} book={item.book} quantity={item.quantity} handleCheckboxChange={handleCheckboxChange} />)
       ) : (
         <Typography variant="h6" textAlign="center">
           장바구니가 비어있습니다.
@@ -79,17 +92,35 @@ const CartPage = () => {
         <Grid container spacing={2}>
           <Grid item xs={6}>
             <Typography>
-              총 상품 수량
-              {/* : <b>{totalItems}개</b> */}
+              총 상품가격: <b>₩{totalPrice?.toLocaleString()}</b> (1,500원 할인)
+            </Typography>
+            <Typography>
+              배송비: <b>2,500원</b>
+            </Typography>
+            <Typography>
+              총 주문 상품수: <b>{totalItems}개</b>
             </Typography>
           </Grid>
           <Grid item xs={6}>
             <Typography>
-              총 결제 금액
-              {/* : <b>₩{totalPrice.toLocaleString()}</b> */}
+              멤버십 마일리지: <b>0원</b>
+            </Typography>
+            <Typography>
+              상품 마일리지: <b>750원</b> (5%)
+            </Typography>
+            <Typography color="primary">
+              5만 원 이상 추가 마일리지: <b>0원</b>
             </Typography>
           </Grid>
         </Grid>
+        <Box sx={{ mt: 2, borderTop: '1px solid #ddd', pt: 2 }}>
+          <Typography variant="h6">
+            총 결제 예상 금액: <b>16,000원</b>
+          </Typography>
+          <Typography variant="h6">
+            총 적립 예상 마일리지: <b>750원</b>
+          </Typography>
+        </Box>
       </Box>
 
       {/* Order Button */}
