@@ -10,8 +10,7 @@ import {
   GET_ITEMS_IN_CART_SUCCESS,
   GET_ITEMS_IN_CART_FAILURE,
 } from '../actions/constants';
-import { AddToCartRequestAction, GetItemsInCartRequestAction } from '../actions/types';
-import { CartItem } from '../models/cart';
+import { AddToCartRequestAction } from '../actions/types';
 
 function getItemsInCartAPI() {
   return axios.get('/cart', { withCredentials: true });
@@ -20,7 +19,6 @@ function getItemsInCartAPI() {
 export function* getItemsInCart(): SagaIterator {
   try {
     const response: any = yield call(getItemsInCartAPI);
-    console.log('response===>', response);
     yield put({
       type: GET_ITEMS_IN_CART_SUCCESS,
       payload: response.data.cartItems,
@@ -41,18 +39,10 @@ function addToCartAPI(data: AddToCartRequestAction['data']) {
 
 export function* addToCart(action: AddToCartRequestAction): SagaIterator {
   try {
-    console.log('addToCart사가 잘 들어옴 ');
-    if (!action.data.user) {
-      yield put({
-        type: ADD_TO_CART_SUCCESS,
-        payload: action.data,
-      });
-    }
     const response: any = yield call(addToCartAPI, action.data);
-    console.log('response===>', response);
     yield put({
       type: ADD_TO_CART_SUCCESS,
-      payload: response.data.cartItem,
+      payload: response.data,
     });
   } catch (err: any) {
     yield put({

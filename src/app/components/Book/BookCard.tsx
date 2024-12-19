@@ -6,13 +6,11 @@ import { Box, Card, CardContent, CardMedia, Typography } from '@mui/material';
 import { pink } from '@mui/material/colors';
 import IconButton from '@mui/material/IconButton';
 import { useRouter } from 'next/navigation';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
-import { CartItem } from '../../models/cart';
 
 import { currencyFormat } from '../../../utils/helpers';
-import { addToCartRequest, addToCartSuccess, addToCartFailure } from '../../actions/types';
-import { RootState } from '@/app/reducers';
+import { addToCartRequest } from '../../actions/types';
 
 interface BookCardProps {
   book: Book;
@@ -29,16 +27,14 @@ const StyledTypography = styled(Typography)`
 
 const BookCard: React.FC<BookCardProps> = ({ book }) => {
   const dispatch = useDispatch<AppDispatch>();
-  const { user } = useSelector((store: RootState) => store.user);
   const router = useRouter();
   const clickBookCard = (book: Book) => {
     router.push(`/book/${book.id}`);
   };
 
   const handleAddToCart = (bookId: number) => {
-    const cartItem = { bookId, quantity: 1, user: user };
+    const cartItem = { bookId, quantity: 1 };
     dispatch(addToCartRequest(cartItem));
-    console.log('BookCard에서 handleAddToCart함수안이다. addToCartSuccess를 디스패치했다.');
   };
 
   return (

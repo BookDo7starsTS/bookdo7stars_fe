@@ -28,7 +28,7 @@ const CartCard = (props: CartCardProps) => {
         <Grid container spacing={2} alignItems="center">
           {/* Checkbox */}
           <Grid item xs={1}>
-            <Checkbox />
+            <Checkbox onClick={() => handleSelectItem()} />
           </Grid>
 
           {/* Product Image */}

@@ -2,19 +2,16 @@ import {
   ADD_TO_CART_REQUEST,
   ADD_TO_CART_SUCCESS,
   ADD_TO_CART_FAILURE,
-  REMOVE_FROM_CART,
-  UPDATE_CART_ITEM_QUANTITY,
-  CLEAR_CART,
   GET_ITEMS_IN_CART_REQUEST,
   GET_ITEMS_IN_CART_FAILURE,
   GET_ITEMS_IN_CART_SUCCESS,
 } from '../actions/constants';
 import { CartActionTypes } from '../actions/types';
-import { Book } from '../models/book';
 import { CartItem } from '../models/cart';
 
 interface CartState {
   items: CartItem[];
+  addedItem: CartItem | null;
   totalItems: number;
   totalPrice: number;
   isAddToCartLoading: boolean;
@@ -23,9 +20,12 @@ interface CartState {
   isGetItemsInCartLoading: boolean;
   isGetItemsInCartDone: boolean;
   isGetItemsInCartError: string;
+  addToCartSuccessMessage: string | null;
+  addToCartFailureMessage: string;
 }
 const initialCartState: CartState = {
   items: [],
+  addedItem: null,
   totalItems: 0,
   totalPrice: 0,
   isGetItemsInCartLoading: false,
@@ -34,6 +34,8 @@ const initialCartState: CartState = {
   isAddToCartLoading: false,
   isAddToCartDone: false,
   isAddToCartError: '',
+  addToCartSuccessMessage: null,
+  addToCartFailureMessage: '',
 };
 function cartReducer(state = initialCartState, action: CartActionTypes): CartState {
   switch (action.type) {
@@ -45,20 +47,24 @@ function cartReducer(state = initialCartState, action: CartActionTypes): CartSta
     }
 
     case GET_ITEMS_IN_CART_FAILURE:
-      return { ...state, isAddToCartLoading: false, isAddToCartError: action.error };
+      return { ...state, isGetItemsInCartLoading: false, isAddToCartError: action.error };
 
     case ADD_TO_CART_REQUEST:
-      return { ...state, isAddToCartLoading: true };
+      return { ...state, isAddToCartLoading: true, isAddToCartDone: false };
 
     case ADD_TO_CART_SUCCESS: {
-      const newItem = action.payload;
-      console.log('????', action.payload);
-
-      return { ...state };
+      return {
+        ...state,
+        isAddToCartLoading: false,
+        isAddToCartDone: true,
+        addedItem: action.payload.cartItem,
+        addToCartSuccessMessage: action.payload.message,
+      };
     }
 
     case ADD_TO_CART_FAILURE:
-      return { ...state, isAddToCartLoading: false, isAddToCartError: action.error };
+      console.log(action.error);
+      return { ...state, isAddToCartLoading: false, isAddToCartDone: false, isAddToCartError: action.error };
 
     // case REMOVE_FROM_CART: {
     //   const updatedItems = state.items.filter((item) => item.id !== action.payload);

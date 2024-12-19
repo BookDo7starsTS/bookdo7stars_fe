@@ -7,9 +7,8 @@ import { AppDispatch } from '@/app/store/store';
 import { Box, Button, Typography, Grid } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 
-import CartCard from '../components/Cart/CartCard';
 import { getItemsInCartRequest } from '../actions/types';
-import { Book } from '../models/book';
+import CartCard from '../components/Cart/CartCard';
 
 const CartPage = () => {
   const dispatch = useDispatch<AppDispatch>();

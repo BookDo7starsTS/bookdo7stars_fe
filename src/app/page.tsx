@@ -10,9 +10,11 @@ import { AppDispatch } from '@/app/store/store';
 import { Typography, Container, Box, Grid } from '@mui/material';
 import Carousel from 'react-multi-carousel';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import { Book } from './models/book';
 import { Category } from './models/category';
+
 import 'react-multi-carousel/lib/styles.css';
 
 export default function Home() {
@@ -20,6 +22,7 @@ export default function Home() {
   const { mainpageBooks } = useSelector((store: RootState) => store.mainpageBook);
   const { books } = useSelector((store: RootState) => store.book);
   const { user } = useSelector((store: RootState) => store.user);
+  const { isAddToCartDone, addToCartSuccessMessage } = useSelector((store: RootState) => store.cart);
 
   useEffect(() => {
     if (!user) {
@@ -31,6 +34,12 @@ export default function Home() {
     dispatch(getMainpageBooksRequest());
     dispatch(getMainpageBestSellerBooksRequest(1230, 1, 12));
   }, []);
+
+  useEffect(() => {
+    if (isAddToCartDone) {
+      toast.success(`${addToCartSuccessMessage}`);
+    }
+  }, [isAddToCartDone]);
 
   const handleBestSellerCategoryhClick = (categoryId: number) => {
     dispatch(getMainpageBestSellerBooksRequest(categoryId, 1, 12));

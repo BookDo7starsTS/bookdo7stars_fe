@@ -1,4 +1,3 @@
-import { Book } from '@/app/models/book';
 import { CartItem } from '@/app/models/cart';
 
 import {
@@ -8,11 +7,7 @@ import {
   ADD_TO_CART_REQUEST,
   ADD_TO_CART_SUCCESS,
   ADD_TO_CART_FAILURE,
-  REMOVE_FROM_CART,
-  UPDATE_CART_ITEM_QUANTITY,
-  CLEAR_CART,
 } from '../constants';
-import { User } from '@/app/models/user';
 
 export interface GetItemsInCartRequestAction {
   type: typeof GET_ITEMS_IN_CART_REQUEST;
@@ -30,12 +25,12 @@ export interface GetItemsInCartFailureAction {
 
 export interface AddToCartRequestAction {
   type: typeof ADD_TO_CART_REQUEST;
-  data: { bookId: number; quantity: number; user: User | null };
+  data: { bookId: number; quantity: number };
 }
 
 export interface AddToCartSuccessAction {
   type: typeof ADD_TO_CART_SUCCESS;
-  payload: CartItem;
+  payload: { cartItem: CartItem; message: string };
 }
 
 export interface AddToCartFailureAction {
@@ -43,22 +38,22 @@ export interface AddToCartFailureAction {
   error: string;
 }
 
-export interface RemoveFromCartAction {
-  type: typeof REMOVE_FROM_CART;
-  payload: string; // Book ID
-}
+// export interface RemoveFromCartAction {
+//   type: typeof REMOVE_FROM_CART;
+//   payload: string; // Book ID
+// }
 
-export interface UpdateCartItemQuantityAction {
-  type: typeof UPDATE_CART_ITEM_QUANTITY;
-  payload: {
-    bookId: string;
-    quantity: number;
-  };
-}
+// export interface UpdateCartItemQuantityAction {
+//   type: typeof UPDATE_CART_ITEM_QUANTITY;
+//   payload: {
+//     bookId: string;
+//     quantity: number;
+//   };
+// }
 
-export interface ClearCartAction {
-  type: typeof CLEAR_CART;
-}
+// export interface ClearCartAction {
+//   type: typeof CLEAR_CART;
+// }
 
 export type CartActionTypes =
   | GetItemsInCartRequestAction
@@ -66,10 +61,7 @@ export type CartActionTypes =
   | GetItemsInCartFailureAction
   | AddToCartRequestAction
   | AddToCartSuccessAction
-  | AddToCartFailureAction
-  | RemoveFromCartAction
-  | UpdateCartItemQuantityAction
-  | ClearCartAction;
+  | AddToCartFailureAction;
 
 export const getItemsInCartRequest = (): GetItemsInCartRequestAction => ({
   type: GET_ITEMS_IN_CART_REQUEST,
@@ -90,9 +82,9 @@ export const addToCartRequest = (data: AddToCartRequestAction['data']): AddToCar
   data: data,
 });
 
-export const addToCartSuccess = (cartItem: CartItem): AddToCartSuccessAction => ({
+export const addToCartSuccess = (payload: AddToCartSuccessAction['payload']): AddToCartSuccessAction => ({
   type: ADD_TO_CART_SUCCESS,
-  payload: cartItem,
+  payload: payload,
 });
 
 export const addToCartFailure = (error: string): AddToCartFailureAction => ({
