@@ -28,13 +28,7 @@ export default function Home() {
     dispatch(getMainpageBestSellerBooksRequest(1230, 1, 12));
   }, []);
 
-  useEffect(() => {
-    if (isAddToCartDone) {
-      toast.success(`${addToCartSuccessMessage}`);
-    }
-  }, [isAddToCartDone]);
-
-  const handleBestSellerCategoryhClick = (categoryId: number) => {
+  const handleBestSellerCategoryClick = (categoryId: number) => {
     dispatch(getMainpageBestSellerBooksRequest(categoryId, 1, 12));
   };
   const handleBannerClick = (bookId: number) => {
@@ -195,10 +189,10 @@ export default function Home() {
                 width: '100%',
               }}
               tabIndex={0}
-              onClick={() => handleBestSellerCategoryhClick(category.id)}
+              onClick={() => handleBestSellerCategoryClick(category.id)}
               onKeyDown={(e) => {
                 if (e.key === 'Enter' || e.key === ' ') {
-                  handleBestSellerCategoryhClick(category.id);
+                  handleBestSellerCategoryClick(category.id);
                 }
               }}
               role="button">
