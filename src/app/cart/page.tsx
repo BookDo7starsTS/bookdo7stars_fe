@@ -84,11 +84,10 @@ const CartPage = () => {
   let totalPrice;
   let totalItems;
   if (selectedItems) {
-    totalPrice = selectedItems.reduce((sum, item) => sum + item.quantity * item!.book.priceStandard, 0);
-    totalItems = selectedItems.reduce((sum, item) => sum + item!.quantity, 0);
+    totalPrice = selectedItems.reduce((sum, item) => sum + item.quantity * item.book.priceSales, 0);
+    totalItems = selectedItems.reduce((sum, item) => sum + item.quantity, 0);
   }
 
-  console.log('ITEMS', selectedItems);
   return (
     <Box sx={{ mt: '50px' }} p={2} maxWidth="800px" mx="auto">
       {/* Select All / Deselect All Button */}

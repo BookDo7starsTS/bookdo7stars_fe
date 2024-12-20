@@ -2,7 +2,7 @@
 'use client';
 import React, { useEffect } from 'react';
 
-import { getMainpageBooksRequest, getMainpageBestSellerBooksRequest, checkSessionRequest } from '@/app/actions/types';
+import { getMainpageBooksRequest, getMainpageBestSellerBooksRequest } from '@/app/actions/types';
 import BookCard from '@/app/components/Book/BookCard';
 import MoreButton from '@/app/components/MoreButton';
 import { RootState } from '@/app/reducers';
@@ -21,14 +21,7 @@ export default function Home() {
   const dispatch = useDispatch<AppDispatch>();
   const { mainpageBooks } = useSelector((store: RootState) => store.mainpageBook);
   const { books } = useSelector((store: RootState) => store.book);
-  const { user } = useSelector((store: RootState) => store.user);
   const { isAddToCartDone, addToCartSuccessMessage } = useSelector((store: RootState) => store.cart);
-
-  useEffect(() => {
-    if (!user) {
-      dispatch(checkSessionRequest());
-    }
-  }, [user]);
 
   useEffect(() => {
     dispatch(getMainpageBooksRequest());
