@@ -1,25 +1,21 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
+import { Book } from '@/app/models/book';
 import AddIcon from '@mui/icons-material/Add';
 import DeleteIcon from '@mui/icons-material/Delete';
 import RemoveIcon from '@mui/icons-material/Remove';
 import { Box, Card, CardContent, Typography, IconButton, Grid, Button } from '@mui/material';
 import Checkbox from '@mui/material/Checkbox';
-import { RootState } from '@/app/reducers';
-import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch } from '@/app/store/store';
-import { getBookRequest, resetBook } from '@/app/actions/types';
-import { Book } from '@/app/models/book';
 
 type CartCardProps = {
   book: Book;
   quantity: number;
-  handleCheckboxChange: (id: string) => void;
+  handleCheckboxChange: (id: string, e: React.ChangeEvent<HTMLInputElement>) => void;
+  checkedIds: Record<string, boolean>;
 };
 
 const CartCard = (props: CartCardProps) => {
-  const { book, quantity, handleCheckboxChange } = props;
-  const dispatch = useDispatch<AppDispatch>();
+  const { book, quantity, handleCheckboxChange, checkedIds } = props;
 
   return (
     <Card variant="outlined" sx={{ mb: 2 }}>
@@ -27,7 +23,10 @@ const CartCard = (props: CartCardProps) => {
         <Grid container spacing={2} alignItems="center">
           {/* Checkbox */}
           <Grid item xs={1}>
-            <Checkbox onClick={() => handleCheckboxChange(book.id.toString())} />
+            <Checkbox
+              checked={checkedIds[book.id.toString()] || false}
+              onChange={(e: React.ChangeEvent<HTMLInputElement>) => handleCheckboxChange(book.id.toString(), e)}
+            />
           </Grid>
 
           {/* Product Image */}

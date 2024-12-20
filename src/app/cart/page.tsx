@@ -16,7 +16,14 @@ const CartPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { items } = useSelector((state: RootState) => state.cart);
 
-  const [checkedItems, setCheckedItems] = useState<string[]>([]);
+  // const [checkedItems, setCheckedItems] = useState<string[]>([]);
+  const [checkedIds, setCheckedIds] = useState<Record<string, boolean>>({});
+  const handleChange = (id: string, isChecked: boolean) => {
+    setCheckedIds((prev) => ({
+      ...prev,
+      [id]: isChecked,
+    }));
+  };
 
   useEffect(() => {
     dispatch(getItemsInCartRequest());
@@ -25,17 +32,33 @@ const CartPage = () => {
   // 전체 선택/해제
   const handleToggleSelectAll = () => {
     if (checkedItems.length === items.length) {
-      setCheckedItems([]); // 전체 해제
+      items.map((item) => {
+        setCheckedIds((prev) => ({
+          ...prev,
+          [item.book.id.toString()]: false,
+        }));
+      });
     } else {
-      setCheckedItems(items.map((item) => item.book.id.toString())); // 전체 선택
+      items.map((item) => {
+        setCheckedIds((prev) => ({
+          ...prev,
+          [item.book.id.toString()]: true,
+        }));
+      });
     }
   };
 
   // 개별 체크박스
-  const handleCheckboxChange = (id: string) => {
-    setCheckedItems((prev) => (prev.includes(id) ? prev.filter((itemId) => itemId !== id) : [...prev, id]));
+  const handleCheckboxChange = (id: string, event: React.ChangeEvent<HTMLInputElement>) => {
+    setCheckedIds((prev) => ({
+      ...prev,
+      [id]: event.target.checked,
+    }));
   };
-  console.log('CHECKEDITEMS', checkedItems);
+
+  const checkedItems = Object.entries(checkedIds)
+    .filter(([key, value]) => value)
+    .map(([key]) => key);
 
   // 수량 증가
   const handleIncrease = (id: string, quantity: number) => {
@@ -52,15 +75,12 @@ const CartPage = () => {
   // 아이템 삭제
   const handleDelete = (id: string) => {
     // dispatch(removeFromCart(id));
-    setCheckedItems((prev) => prev.filter((itemId) => itemId !== id));
+    // setCheckedItems((prev) => prev.filter((itemId) => itemId !== id));
   };
 
   // 총 금액 및 상품 수 계산
   const selectedItems = items.filter((item) => checkedItems.includes(item.book.id.toString()));
 
-  // checkedItems = ['1', '2'];
-  // items = [{... book: {id: '1'}}, {... book: {id: '2'}}]
-  // items.filter((item) => checkedItems.map((checkedItem) => item.book.id.toString() === checkedItem));
   let totalPrice;
   let totalItems;
   if (selectedItems) {
@@ -80,7 +100,9 @@ const CartPage = () => {
 
       {/* Cart Items */}
       {items.length > 0 ? (
-        items.map((item) => <CartCard key={item.id} book={item.book} quantity={item.quantity} handleCheckboxChange={handleCheckboxChange} />)
+        items.map((item) => (
+          <CartCard key={item.id} book={item.book} quantity={item.quantity} handleCheckboxChange={handleCheckboxChange} checkedIds={checkedIds} />
+        ))
       ) : (
         <Typography variant="h6" textAlign="center">
           장바구니가 비어있습니다.
