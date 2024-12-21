@@ -34,9 +34,9 @@ const CategoryListItem = (props: CategoryListItemProps) => {
           />
         </IconButton>
       ) : (
-        <Box sx={{ display: 'flex', alignItems: 'center' }}>
-          <RemoveOutlinedIcon sx={{ width: '1.5rem', height: '1rem' }} />
-        </Box>
+        <IconButton sx={{ padding: '0.5rem' }} disabled >
+          <RemoveOutlinedIcon />
+        </IconButton>
       )}
       <ListItemText
         id={category.id.toString()}

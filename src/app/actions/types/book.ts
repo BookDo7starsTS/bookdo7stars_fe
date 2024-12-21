@@ -23,6 +23,9 @@ import {
   GET_MAINPAGE_BESTSELLER_BOOKS_SUCCESS,
   GET_MAINPAGE_BESTSELLER_BOOKS_FAILURE,
   RESET_GROUP_BOOKS,
+  GET_BOOKS_BY_CATEGORY_FAILURE,
+  GET_BOOKS_BY_CATEGORY_REQUEST,
+  GET_BOOKS_BY_CATEGORY_SUCCESS,
 } from '../constants';
 
 // Action type
@@ -86,6 +89,27 @@ export interface GetBooksSearchSuccessAction {
 
 export interface GetBooksSearchFailureAction {
   type: typeof GET_BOOKS_SEARCH_FAILURE;
+  error: string;
+}
+
+// Books by Category
+export interface GetBooksByCategoryRequestAction {
+  type: typeof GET_BOOKS_BY_CATEGORY_REQUEST;
+  data: {
+    categoryId: string;
+    page?: number;
+    pageSize?: number;
+  };
+}
+
+export interface GetBooksByCategorySuccessAction {
+  type: typeof GET_BOOKS_BY_CATEGORY_SUCCESS;
+  payload: Book[];
+  count: number;
+}
+
+export interface GetBooksByCategoryFailureAction {
+  type: typeof GET_BOOKS_BY_CATEGORY_FAILURE;
   error: string;
 }
 
@@ -181,7 +205,10 @@ export type BookActionTypes =
   | GetMainpageBooksFailureAction
   | GetMainpageBestSellerBooksRequestAction
   | GetMainpageBestSellerBooksSuccessAction
-  | GetMainpageBestSellerBooksFailureAction;
+  | GetMainpageBestSellerBooksFailureAction
+  | GetBooksByCategoryRequestAction
+  | GetBooksByCategorySuccessAction
+  | GetBooksByCategoryFailureAction;
 
 // Action creater
 
@@ -236,6 +263,26 @@ export const getBooksSearchSuccess = (
 
 export const getBooksSearchFailure = (error: string): GetBooksSearchFailureAction => ({
   type: GET_BOOKS_SEARCH_FAILURE,
+  error,
+});
+
+//Books by Category
+export const getBooksByCategoryRequest = (data: GetBooksByCategoryRequestAction['data']): GetBooksByCategoryRequestAction => ({
+  type: GET_BOOKS_BY_CATEGORY_REQUEST,
+  data,
+});
+
+export const getBooksByCategorySuccess = (
+  payload: GetBooksByCategorySuccessAction['payload'],
+  count: GetBooksByCategorySuccessAction['count'],
+): GetBooksByCategorySuccessAction => ({
+  type: GET_BOOKS_BY_CATEGORY_SUCCESS,
+  payload,
+  count,
+});
+
+export const getBooksByCategoryFailure = (error: string): GetBooksByCategoryFailureAction => ({
+  type:GET_BOOKS_BY_CATEGORY_FAILURE,
   error,
 });
 
