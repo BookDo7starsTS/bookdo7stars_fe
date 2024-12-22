@@ -146,7 +146,7 @@ const SearchResultBookCard: React.FC<SearchResultBookCardProps> = ({ book }) => 
               }}
               onClick={(event) => event.stopPropagation()}>
               <div style={{ marginRight: '14px' }}>배송 정보</div>
-              <h6 style={{ margin: 0, marginRight: '13px' }}>{address}</h6>
+              <h6 style={{ marginRight: '13px' }}>{address}</h6>
               <Box sx={{ top: '100%', left: 0, zIndex: 100 }}>
                 <AddressChange setAddress={setAddress} />
               </Box>

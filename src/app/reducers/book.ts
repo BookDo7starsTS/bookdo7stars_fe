@@ -117,12 +117,12 @@ function bookReducer(state = initialState, action: BookActionTypes) {
       return { ...state, isGetBooksByGroupLoading: false, isGetBooksByGroupDone: false, isGetBooksByGroupError: action.error };
 
     case GET_BOOKS_BY_CATEGORY_REQUEST:
-    return { ...state, isGetBooksByCategoryLoading: true };
+      return { ...state, isGetBooksByCategoryLoading: true };
     case GET_BOOKS_BY_CATEGORY_SUCCESS:
       return { ...state, isGetBooksByCategoryLoading: false, isGetBooksByCategoryDone: true, categoryBooks: action.payload, count: action.count };
     case GET_BOOKS_BY_CATEGORY_FAILURE:
-    return { ...state, isGetBooksByCategoryLoading: false, isGetBooksByCategoryDone: false, isGetBooksByGroupError: action.error };
-    
+      return { ...state, isGetBooksByCategoryLoading: false, isGetBooksByCategoryDone: false, isGetBooksByGroupError: action.error };
+
     case GET_BOOKS_SEARCH_REQUEST:
       return { ...state, isGetBooksSearchLoading: true, searchData: action.data };
     case GET_BOOKS_SEARCH_SUCCESS:

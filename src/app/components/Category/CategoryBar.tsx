@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { getCategoryRequest, setSelectedCategoryIdsRequest } from '@/app/actions/types';
+import { getCategoryRequest } from '@/app/actions/types';
 import { RootState } from '@/app/reducers';
 import { AppDispatch } from '@/app/store/store';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';

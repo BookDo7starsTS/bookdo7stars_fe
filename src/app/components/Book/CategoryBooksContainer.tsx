@@ -1,38 +1,26 @@
-import { Book } from "@/app/models/book";
-import { Typography, ToggleButtonGroup, ToggleButton, Pagination, Button, Grid, Checkbox } from "@mui/material";
-import { Container, Box, useMediaQuery } from "@mui/system";
-import ResultFilters from "../Result/ResultFilters";
-import SearchResultBookCard from "./BookDetailCard";
-import { useEffect, useState } from "react";
-import { AppDispatch } from "@/app/store/store";
-import { useDispatch } from "react-redux";
-import BookDetailCard from "./BookDetailCard";
+import { useEffect, useState } from 'react';
+
+import { Book } from '@/app/models/book';
+import { Typography, ToggleButtonGroup, ToggleButton, Pagination, Button, Grid, Checkbox } from '@mui/material';
+import { Container, Box, useMediaQuery } from '@mui/system';
+
+import BookDetailCard from './BookDetailCard';
 
 type CategoryBooksContainerProps = {
-    categoryBooks: Book[];
-    handlePageChange: (event: React.ChangeEvent<unknown>, value: number) => void;
-    count: number;
-    booksPerPage: number;
-    currentPage: number;
-}
+  categoryBooks: Book[];
+  handlePageChange: (event: React.ChangeEvent<unknown>, value: number) => void;
+  count: number;
+  booksPerPage: number;
+  currentPage: number;
+};
 const CategoryBooksContainer = (props: CategoryBooksContainerProps) => {
-    
-    const {categoryBooks, handlePageChange, count, booksPerPage, currentPage} = props;
-    
-    const [selectedBooks, setSelectedBooks] = useState<number[]>([]);
+  const { categoryBooks, handlePageChange, count, booksPerPage, currentPage } = props;
+
+  const [selectedBooks, setSelectedBooks] = useState<number[]>([]);
   const [sortBy, setSortBy] = useState('');
   const pageCount = Math.ceil(count / booksPerPage);
-  const dispatch = useDispatch<AppDispatch>();
 
   const isWidth900Up = useMediaQuery('(min-width:900px)');
-
-//   const handleSelectAll = () => {
-//     if (selectedBooks.length === books.length) {
-//       setSelectedBooks([]);
-//     } else {
-//       setSelectedBooks(books.map((book) => book.id));
-//     }
-//   };
 
   useEffect(() => {
     // console.log('선택된 책들: ', selectedBooks);
@@ -56,11 +44,10 @@ const CategoryBooksContainer = (props: CategoryBooksContainerProps) => {
 
   const handleSortChange = (event: React.MouseEvent<HTMLElement>, newSortBy: string) => {
     setSortBy(newSortBy);
-
   };
 
-    return (
-        <Container
+  return (
+    <Container
       sx={{
         display: 'flex',
         justifyContent: 'center',
@@ -117,9 +104,7 @@ const CategoryBooksContainer = (props: CategoryBooksContainerProps) => {
           </Box>
 
           <Box sx={{ display: 'flex', width: '100%', alignItems: 'end', justifyContent: 'end', gap: '12px', marginBottom: '20px' }}>
-            <Button variant="outlined">
-              {/* {selectedBooks.length === books.length ? '전체 해제' : '전체 선택'} */}
-            </Button>
+            <Button variant="outlined">{/* {selectedBooks.length === books.length ? '전체 해제' : '전체 선택'} */}</Button>
             <Button variant="outlined" onClick={handleAddToCart} disabled>
               {'장바구니 담기'}
             </Button>
@@ -130,28 +115,28 @@ const CategoryBooksContainer = (props: CategoryBooksContainerProps) => {
               {'마이리스트 담기'}
             </Button>
           </Box>
-            <Grid item xs={12} sx={{ paddingLeft: isWidth900Up ? '200px !important' : '0px' }}>
-              <Box>
-                <Grid container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                  {categoryBooks.map((book, index) => (
-                    <Grid
-                      data-testid="book-card"
-                      key={index}
-                      item
-                      xs={12}
-                      sm={12}
-                      md={8}
-                      // lg={8}
-                      sx={{ paddingY: '30px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
-                      <Box sx={{ display: 'flex', alignItems: 'center' }}>
-                        <Checkbox checked={selectedBooks.includes(book.id)} onChange={() => handleCheckboxChange(book.id)} />
-                        <BookDetailCard key={index} book={book} />
-                      </Box>
-                    </Grid>
-                  ))}
-                </Grid>
-              </Box>
-            </Grid>
+          <Grid item xs={12} sx={{ paddingLeft: isWidth900Up ? '200px !important' : '0px' }}>
+            <Box>
+              <Grid container sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                {categoryBooks.map((book, index) => (
+                  <Grid
+                    data-testid="book-card"
+                    key={index}
+                    item
+                    xs={12}
+                    sm={12}
+                    md={8}
+                    // lg={8}
+                    sx={{ paddingY: '30px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                      <Checkbox checked={selectedBooks.includes(book.id)} onChange={() => handleCheckboxChange(book.id)} />
+                      <BookDetailCard key={index} book={book} />
+                    </Box>
+                  </Grid>
+                ))}
+              </Grid>
+            </Box>
+          </Grid>
         </>
       ) : (
         <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
@@ -159,6 +144,6 @@ const CategoryBooksContainer = (props: CategoryBooksContainerProps) => {
         </Box>
       )}
     </Container>
-    );
-}
+  );
+};
 export default CategoryBooksContainer;

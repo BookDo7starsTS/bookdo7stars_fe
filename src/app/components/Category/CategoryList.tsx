@@ -1,16 +1,16 @@
 'use client';
-import { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 import { GetCategoriesByIdRequest, setExpandedCategoryIdsRequest, setSelectedCategoryIdsRequest } from '@/app/actions/types';
-import { Category, CategoryById } from '@/app/models/category';
+import { CategoryById } from '@/app/models/category';
 import { RootState } from '@/app/reducers';
 import { AppDispatch } from '@/app/store/store';
 import { List } from '@mui/material';
 import 'rc-tree/assets/index.css';
-import { useDispatch, useSelector } from 'react-redux';
-import CategoryListItem from './CategoryListItem';
-import React from 'react';
 import { useRouter } from 'next/navigation';
+import { useDispatch, useSelector } from 'react-redux';
+
+import CategoryListItem from './CategoryListItem';
 
 type CategoryListProps = {
   categories: Record<string, CategoryById[]>;

@@ -4,15 +4,14 @@ import { getBooksSearchRequest } from '@/app/actions/types';
 import { SearchType } from '@/app/search/types/searchType';
 import { AppDispatch } from '@/app/store/store';
 import { useMediaQuery, Container, Typography, Grid, Box, Pagination, Checkbox, Button, ToggleButtonGroup, ToggleButton } from '@mui/material';
+import useTheme from '@mui/system/useTheme';
 import { useDispatch } from 'react-redux';
 
 import SearchResultBookCard from './BookDetailCard';
 import { Book } from '../../models/book';
 import ResultFilters from '../Result/ResultFilters';
-import { useTheme } from '@mui/material/styles';
 interface SearchResultBooksContainerProps {
   books: Book[];
-  title: string;
   count: number;
   booksPerPage: number;
   handlePageChange: (event: React.ChangeEvent<unknown>, value: number) => void;
@@ -20,24 +19,22 @@ interface SearchResultBooksContainerProps {
   searchTerm?: string;
   resultCount: number;
   parsedSearchCondition: SearchType;
-  isGetBooksSearchLoading: boolean;
 }
 
 const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
   resultCount,
   books,
   count,
-  title,
   handlePageChange,
   booksPerPage,
   currentPage,
   parsedSearchCondition,
-  isGetBooksSearchLoading,
 }) => {
   const [selectedBooks, setSelectedBooks] = useState<number[]>([]);
   const [sortBy, setSortBy] = useState('');
   const pageCount = Math.ceil(count / booksPerPage);
   const dispatch = useDispatch<AppDispatch>();
+  const theme = useTheme();
 
   const isWidth900Up = useMediaQuery('(min-width:900px)');
 
@@ -79,7 +76,6 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
   };
 
   const getTitle = (parsedSearchCondition: SearchType) => {
-    const theme = useTheme();
     if (parsedSearchCondition.searchTerm) {
       return parsedSearchCondition.searchTerm + ` 의 검색 결과 총 ${resultCount}건`;
     } else {
@@ -89,8 +85,10 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
         .join(' + ');
       return (
         <span>
-          <span style={{ color:theme.palette.primary.main, fontWeight: 'bold' }}>'{resultString}'</span> 검색 결과 총 <span style={{ fontWeight: 'bold' }}>{resultCount}</span>건
-        </span>)
+          <span style={{ color: theme.palette.primary.main, fontWeight: 'bold' }}>{resultString}</span> 검색 결과 총{' '}
+          <span style={{ fontWeight: 'bold' }}>{resultCount}</span>건
+        </span>
+      );
     }
   };
 
@@ -123,8 +121,6 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
               {pageTitle}
             </Typography>
           </Box>
-
-          
 
           <Box mb={2} sx={{ borderBottom: '0.5px solid #ccc', paddingBottom: '0px' }}>
             <ToggleButtonGroup value={sortBy} exclusive onChange={handleSortChange} aria-label="Sort options">

@@ -1,12 +1,13 @@
-import { Box, IconButton, ListItem, ListItemText, SxProps, useTheme } from '@mui/material';
+import React from 'react';
+
+import { CategoryById } from '@/app/models/category';
+import { RootState } from '@/app/reducers';
+import { AppDispatch } from '@/app/store/store';
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined';
 import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
-import { CategoryById } from '@/app/models/category';
-import { AppDispatch } from '@/app/store/store';
-import { useDispatch, useSelector } from 'react-redux';
+import { Box, IconButton, ListItem, ListItemText, SxProps, useTheme } from '@mui/material';
 import { useRouter } from 'next/navigation';
-import { RootState } from '@/app/reducers';
-import React from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 type CategoryListItemProps = {
   category: CategoryById;
@@ -34,7 +35,7 @@ const CategoryListItem = (props: CategoryListItemProps) => {
           />
         </IconButton>
       ) : (
-        <IconButton sx={{ padding: '0.5rem' }} disabled >
+        <IconButton sx={{ padding: '0.5rem' }} disabled>
           <RemoveOutlinedIcon />
         </IconButton>
       )}

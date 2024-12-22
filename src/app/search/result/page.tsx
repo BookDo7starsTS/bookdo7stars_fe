@@ -64,7 +64,6 @@ const ResultPage = () => {
         <SearchResultBooksContainer
           books={books}
           count={count}
-          title={'Search Result'}
           handlePageChange={handlePageChange}
           booksPerPage={booksPerPage}
           currentPage={page}
