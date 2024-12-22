@@ -5,6 +5,9 @@ import {
   GET_ITEMS_IN_CART_REQUEST,
   GET_ITEMS_IN_CART_FAILURE,
   GET_ITEMS_IN_CART_SUCCESS,
+  REMOVE_FROM_CART_REQUEST,
+  REMOVE_FROM_CART_SUCCESS,
+  REMOVE_FROM_CART_FAILURE,
 } from '../actions/constants';
 import { CartActionTypes } from '../actions/types';
 import { CartItem } from '../models/cart';
@@ -20,8 +23,12 @@ interface CartState {
   isGetItemsInCartLoading: boolean;
   isGetItemsInCartDone: boolean;
   isGetItemsInCartError: string;
+  isRemovingFromCartLoading: boolean;
+  isRemovingFromCartDone: boolean;
+  isRemovingFromCartError: string;
   addToCartSuccessMessage: string | null;
   addToCartFailureMessage: string;
+  
 }
 const initialCartState: CartState = {
   items: [],
@@ -34,6 +41,9 @@ const initialCartState: CartState = {
   isAddToCartLoading: false,
   isAddToCartDone: false,
   isAddToCartError: '',
+  isRemovingFromCartLoading: false,
+  isRemovingFromCartDone: false,
+  isRemovingFromCartError: '',
   addToCartSuccessMessage: null,
   addToCartFailureMessage: '',
 };
@@ -65,6 +75,29 @@ function cartReducer(state = initialCartState, action: CartActionTypes): CartSta
     case ADD_TO_CART_FAILURE:
       console.log(action.error);
       return { ...state, isAddToCartLoading: false, isAddToCartDone: false, isAddToCartError: action.error };
+
+    case REMOVE_FROM_CART_REQUEST:
+      return {
+        ...state,
+        isRemovingFromCartLoading: true,
+        isRemovingFromCartDone: false,
+        isRemovingFromCartError: '',
+      }
+
+    case REMOVE_FROM_CART_SUCCESS: {
+      const updatedItems = state.items.filter((item) => item.book.id?.toString() !== action.payload.bookId);
+      const totalItems = updatedItems.reduce((sum, item) => sum + item.quantity, 0);
+      const totalPrice = updatedItems.reduce((sum, item) => sum + item.book.priceSales * item.quantity, 0);
+    
+      return {
+        ...state,
+        isRemovingFromCartLoading: false, 
+        isRemovingFromCartDone: true, 
+        items: updatedItems, 
+        totalItems,
+        totalPrice,
+      };
+    }
 
     // case REMOVE_FROM_CART: {
     //   const updatedItems = state.items.filter((item) => item.id !== action.payload);

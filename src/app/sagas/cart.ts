@@ -9,8 +9,11 @@ import {
   GET_ITEMS_IN_CART_REQUEST,
   GET_ITEMS_IN_CART_SUCCESS,
   GET_ITEMS_IN_CART_FAILURE,
+  REMOVE_FROM_CART_REQUEST,
+  REMOVE_FROM_CART_SUCCESS,
+  REMOVE_FROM_CART_FAILURE,
 } from '../actions/constants';
-import { AddToCartRequestAction } from '../actions/types';
+import { AddToCartRequestAction, RemoveFromCartRequestAction } from '../actions/types';
 
 function getItemsInCartAPI() {
   return axios.get('/cart', { withCredentials: true });
@@ -52,6 +55,25 @@ export function* addToCart(action: AddToCartRequestAction): SagaIterator {
   }
 }
 
+function removeFromCartAPI(data: RemoveFromCartRequestAction['data']) {
+  return axios.delete(`cart/${data}`);
+}
+
+export function* removeFromCart(action: RemoveFromCartRequestAction): SagaIterator {
+  try {
+    const response: any = yield call(removeFromCartAPI, action.data);
+    yield put({
+      type: REMOVE_FROM_CART_SUCCESS,
+      payload: response.data,
+    });
+  } catch (err: any) {
+    yield put({
+      type: REMOVE_FROM_CART_FAILURE,
+      error: err.response.data.message,
+    });
+  }
+}
+
 function* watchGetItemsInCart() {
   yield takeLatest(GET_ITEMS_IN_CART_REQUEST, getItemsInCart);
 }
@@ -60,6 +82,10 @@ function* watchAddCart() {
   yield takeLatest(ADD_TO_CART_REQUEST, addToCart);
 }
 
+function* watchRemoveFromCart() {
+  yield takeLatest(REMOVE_FROM_CART_REQUEST, removeFromCart);
+}
+
 export default function* bookSaga() {
-  yield all([fork(watchAddCart), fork(watchGetItemsInCart)]);
+  yield all([fork(watchAddCart), fork(watchGetItemsInCart), fork(watchRemoveFromCart)] );
 }

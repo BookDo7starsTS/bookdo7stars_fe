@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
 import { Book } from '@/app/models/book';
 import AddIcon from '@mui/icons-material/Add';
@@ -12,10 +12,11 @@ type CartCardProps = {
   quantity: number;
   handleCheckboxChange: (id: string, e: React.ChangeEvent<HTMLInputElement>) => void;
   checkedIds: Record<string, boolean>;
+  handleCartDelete: (bookid: string) => void
 };
 
 const CartCard = (props: CartCardProps) => {
-  const { book, quantity, handleCheckboxChange, checkedIds } = props;
+  const { book, quantity, handleCheckboxChange, checkedIds, handleCartDelete } = props;
 
   return (
     <Card variant="outlined" sx={{ mb: 2 }}>
@@ -58,7 +59,7 @@ const CartCard = (props: CartCardProps) => {
                   <AddIcon />
                 </IconButton>
               </Box>
-              <Button variant="outlined" color="error" size="small" startIcon={<DeleteIcon />}>
+              <Button variant="outlined" color="error" size="small" startIcon={<DeleteIcon />} onClick={()=>handleCartDelete(book.id.toString())} >
                 삭제
               </Button>
             </Box>

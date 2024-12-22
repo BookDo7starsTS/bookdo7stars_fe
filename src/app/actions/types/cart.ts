@@ -7,6 +7,9 @@ import {
   ADD_TO_CART_REQUEST,
   ADD_TO_CART_SUCCESS,
   ADD_TO_CART_FAILURE,
+  REMOVE_FROM_CART_REQUEST,
+  REMOVE_FROM_CART_SUCCESS,
+  REMOVE_FROM_CART_FAILURE,
 } from '../constants';
 
 export interface GetItemsInCartRequestAction {
@@ -38,10 +41,20 @@ export interface AddToCartFailureAction {
   error: string;
 }
 
-// export interface RemoveFromCartAction {
-//   type: typeof REMOVE_FROM_CART;
-//   payload: string; // Book ID
-// }
+export interface RemoveFromCartRequestAction {
+  type: typeof REMOVE_FROM_CART_REQUEST;
+  data: string; // Book ID
+}
+
+export interface RemoveFromCartSuccessAction {
+  type: typeof REMOVE_FROM_CART_SUCCESS;
+  payload: { bookId: string; message: string };
+}
+
+export interface RemoveFromCartFailureAction {
+  type: typeof REMOVE_FROM_CART_FAILURE;
+  error: string;
+}
 
 // export interface UpdateCartItemQuantityAction {
 //   type: typeof UPDATE_CART_ITEM_QUANTITY;
@@ -61,7 +74,10 @@ export type CartActionTypes =
   | GetItemsInCartFailureAction
   | AddToCartRequestAction
   | AddToCartSuccessAction
-  | AddToCartFailureAction;
+  | AddToCartFailureAction
+  | RemoveFromCartRequestAction
+  | RemoveFromCartSuccessAction
+  | RemoveFromCartFailureAction;
 
 export const getItemsInCartRequest = (): GetItemsInCartRequestAction => ({
   type: GET_ITEMS_IN_CART_REQUEST,
@@ -92,10 +108,20 @@ export const addToCartFailure = (error: string): AddToCartFailureAction => ({
   error,
 });
 
-// export const removeFromCart = (bookId: string): RemoveFromCartAction => ({
-//   type: REMOVE_FROM_CART,
-//   payload: bookId,
-// });
+export const removeFromCartRequest = (bookId: string): RemoveFromCartRequestAction => ({
+  type: REMOVE_FROM_CART_REQUEST,
+  data: bookId,
+});
+
+export const removeFromCartSuccess = (payload: RemoveFromCartSuccessAction['payload']): RemoveFromCartSuccessAction => ({
+  type: REMOVE_FROM_CART_SUCCESS,
+  payload: payload,
+});
+
+export const removeFromCartFailure = (error: string): RemoveFromCartFailureAction => ({
+  type: REMOVE_FROM_CART_FAILURE,
+  error
+});
 
 // export const updateCartItemQuantity = (bookId: string, quantity: number): UpdateCartItemQuantityAction => ({
 //   type: UPDATE_CART_ITEM_QUANTITY,
