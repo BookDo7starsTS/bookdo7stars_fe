@@ -26,6 +26,7 @@ import {
   GET_BOOKS_BY_CATEGORY_FAILURE,
   GET_BOOKS_BY_CATEGORY_REQUEST,
   GET_BOOKS_BY_CATEGORY_SUCCESS,
+  RESET_BOOK,
 } from '../constants';
 
 // Action type
@@ -182,6 +183,10 @@ export interface ResetGroupBooksAction {
   type: typeof RESET_GROUP_BOOKS;
 }
 
+export interface ResetBookAction {
+  type: typeof RESET_BOOK;
+}
+
 //Union type
 export type BookActionTypes =
   | GetAllBooksRequestAction
@@ -206,6 +211,7 @@ export type BookActionTypes =
   | GetMainpageBestSellerBooksRequestAction
   | GetMainpageBestSellerBooksSuccessAction
   | GetMainpageBestSellerBooksFailureAction
+  | ResetBookAction
   | GetBooksByCategoryRequestAction
   | GetBooksByCategorySuccessAction
   | GetBooksByCategoryFailureAction;
@@ -282,7 +288,7 @@ export const getBooksByCategorySuccess = (
 });
 
 export const getBooksByCategoryFailure = (error: string): GetBooksByCategoryFailureAction => ({
-  type:GET_BOOKS_BY_CATEGORY_FAILURE,
+  type: GET_BOOKS_BY_CATEGORY_FAILURE,
   error,
 });
 
@@ -353,4 +359,8 @@ export const getMainpageBestSellerBooksFailure = (error: string): GetMainpageBes
 
 export const resetGroupBooks = (): ResetGroupBooksAction => ({
   type: RESET_GROUP_BOOKS,
+});
+
+export const resetBook = (): ResetBookAction => ({
+  type: RESET_BOOK,
 });

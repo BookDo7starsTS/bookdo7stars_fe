@@ -1,4 +1,3 @@
-import { GET_BOOKS_BY_CATEGORY_FAILURE, GET_BOOKS_BY_CATEGORY_SUCCESS } from './../actions/constants/book';
 import axios from 'axios';
 import { SagaIterator } from 'redux-saga';
 import { all, call, fork, put, takeLatest } from 'redux-saga/effects';
@@ -26,6 +25,8 @@ import {
   GET_MAINPAGE_BESTSELLER_BOOKS_SUCCESS,
   GET_MAINPAGE_BESTSELLER_BOOKS_FAILURE,
   GET_BOOKS_BY_CATEGORY_REQUEST,
+  GET_BOOKS_BY_CATEGORY_SUCCESS,
+  GET_BOOKS_BY_CATEGORY_FAILURE,
 } from '../actions/constants';
 import {
   GetAllBooksRequestAction,
@@ -77,15 +78,12 @@ export function* getBooksByGroup(action: GetBooksByGroupRequestAction): SagaIter
 }
 
 function getBooksByCategoryAPI(data: GetBooksByCategoryRequestAction['data']) {
-  console.log('data', data)
   return axios.get(`/book/category/${data.categoryId}?page=${data.page}&pageSize=${data.pageSize}`);
 }
 
 export function* getBooksByCategory(action: GetBooksByCategoryRequestAction): SagaIterator {
   try {
-    //  console.log("겟 북스 서치 사가이다!")
     const response: any = yield call(getBooksByCategoryAPI, action.data);
-    console.log(response)
     yield put({
       type: GET_BOOKS_BY_CATEGORY_SUCCESS,
       payload: response.data.books.rows,
@@ -109,7 +107,6 @@ function getBooksSearchAPI(data: GetBooksSearchRequestAction['data']) {
 
 export function* getBooksSearch(action: GetBooksSearchRequestAction): SagaIterator {
   try {
-    //  console.log("겟 북스 서치 사가이다!")
     const response: any = yield call(getBooksSearchAPI, action.data);
     yield put({
       type: GET_BOOKS_SEARCH_SUCCESS,
