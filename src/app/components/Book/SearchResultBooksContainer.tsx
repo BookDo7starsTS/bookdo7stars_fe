@@ -121,7 +121,7 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
               {pageTitle}
             </Typography>
           </Box>
-
+          {/* // TODO: make it reusable component */}
           <Box mb={2} sx={{ borderBottom: '0.5px solid #ccc', paddingBottom: '0px' }}>
             <ToggleButtonGroup value={sortBy} exclusive onChange={handleSortChange} aria-label="Sort options">
               <ToggleButton value="accuracy" aria-label="정확도순" sx={{ borderBottomLeftRadius: '0px' }}>
@@ -144,7 +144,7 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
               </ToggleButton>
             </ToggleButtonGroup>
           </Box>
-
+          {/* // TODO: make it reusable component */}
           <Box sx={{ display: 'flex', justifyContent: 'center', mb: '20px' }}>
             <Pagination
               count={pageCount}
@@ -165,11 +165,11 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
               }}
             />
           </Box>
-
           <Box sx={{ display: 'flex', width: '100%', alignItems: 'end', justifyContent: 'end', gap: '12px', marginBottom: '20px' }}>
             <Button variant="outlined" onClick={handleSelectAll}>
               {selectedBooks.length === books.length ? '전체 해제' : '전체 선택'}
             </Button>
+            {/* // TODO: make it reusable component (action-button) */}
             <Button variant="outlined" onClick={handleAddToCart} disabled>
               {'장바구니 담기'}
             </Button>

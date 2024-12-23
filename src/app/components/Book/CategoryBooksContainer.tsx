@@ -103,7 +103,7 @@ const CategoryBooksContainer = (props: CategoryBooksContainerProps) => {
             />
           </Box>
 
-          <Box sx={{ display: 'flex', width: '100%', alignItems: 'end', justifyContent: 'end', gap: '12px', marginBottom: '20px' }}>
+          <Box sx={{ display: 'flex', alignItems: 'end', justifyContent: 'end', gap: '12px', marginBottom: '20px' }}>
             <Button variant="outlined">{/* {selectedBooks.length === books.length ? '전체 해제' : '전체 선택'} */}</Button>
             <Button variant="outlined" onClick={handleAddToCart} disabled>
               {'장바구니 담기'}

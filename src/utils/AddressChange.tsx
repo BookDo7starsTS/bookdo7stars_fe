@@ -3,6 +3,7 @@ import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import './daumAPI.style.css';
+import { Typography } from '@mui/material';
 
 declare global {
   interface Window {
@@ -76,7 +77,7 @@ const AddressChange: React.FC<AddressChangeProps> = ({ setAddress }) => {
         <button className="change-button" onClick={togglePostcode}>
           지역 선택 {'▾'}
         </button>
-        <div style={{ color: 'red' }}>수도권과 부산은 하루배송 가능 지역입니다.</div>
+        <Typography sx={{ fontSize: '12px', color: 'red' }}>수도권과 부산은 하루배송 가능 지역입니다.</Typography>
       </div>
       <PostcodeWidget className={`postcode-widget ${isPostcodeOpen ? 'open' : ''}`} ref={elementRef}></PostcodeWidget>
     </DropdownContainer>
