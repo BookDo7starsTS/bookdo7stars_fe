@@ -66,8 +66,6 @@ const BookDetailCard: React.FC<BookDetailCardProps> = ({ book }) => {
     console.log('보관함에 추가');
   };
 
-  console.log('book', book);
-
   return (
     <>
       {loading ? (
@@ -87,7 +85,6 @@ const BookDetailCard: React.FC<BookDetailCardProps> = ({ book }) => {
             width: '100%',
             height: 300,
             padding: 0,
-            marginBottom: '2rem',
           }}
           onClick={() => clickBookCard(book)}>
           <CardMedia
