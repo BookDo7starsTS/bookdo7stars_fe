@@ -148,7 +148,7 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
                   <Box
                     className="book-detail-card"
                     key={index}
-                    sx={{ display: 'flex', alignItems: 'center', marginBottom: '2rem', overflow: 'visible', zIndex: 1 }}>
+                    sx={{ display: 'flex', alignItems: 'center', marginBottom: '2rem', overflow: 'visible', zIndex: 'revert-layer' }}>
                     <Checkbox checked={selectedBooks.includes(book.id)} onChange={() => handleCheckboxChange(book.id)} />
                     <BookDetailCard key={index} book={book} />
                   </Box>
