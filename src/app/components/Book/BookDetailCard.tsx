@@ -13,8 +13,6 @@ import styled from 'styled-components';
 
 import AddressChange from '../../../utils/AddressChange';
 import { currencyFormat } from '../../../utils/helpers';
-import { inherits } from 'util';
-import { flexbox } from '@mui/system';
 
 interface BookDetailCardProps {
   book: Book;
@@ -78,7 +76,7 @@ const BookDetailCard: React.FC<BookDetailCardProps> = ({ book }) => {
             cursor: 'pointer',
             flexDirection: { xs: 'column', md: 'row' },
             alignItems: 'stretch',
-            overflow: 'hidden',
+            overflow: 'visible',
             borderRadius: '12px',
             boxShadow: 3,
             display: 'flex',
@@ -115,6 +113,7 @@ const BookDetailCard: React.FC<BookDetailCardProps> = ({ book }) => {
               alignItems: 'center',
               padding: { xs: '16px', md: '24px' }, // 화면 크기에 따라 패딩 조정
               justifyContent: 'space-between',
+              overflow: 'visible',
             }}>
             <Box sx={{ display: 'flex', flexDirection: 'column', width: '70%', height: '100%', justifyContent: 'space-between' }} className="card-content-info">
               <Typography
@@ -159,8 +158,8 @@ const BookDetailCard: React.FC<BookDetailCardProps> = ({ book }) => {
                   whiteSpace: 'nowrap',
                   flexDirection: 'row',
                   gap: '0.25rem',
-                  zIndex: 1000,
                   padding: '0.5rem 0.25rem 0.5rem 0.25rem',
+                  overflow: 'visible' /* 내부 요소가 잘리지 않도록 */,
                 }}
                 onClick={(event) => event.stopPropagation()}>
                 <Box sx={{ display: 'flex', gap: 5 }}>
@@ -168,7 +167,7 @@ const BookDetailCard: React.FC<BookDetailCardProps> = ({ book }) => {
                   <Typography sx={{ fontSize: '12px', fontWeight: 'bold' }}>{address}</Typography>
                 </Box>
 
-                <Box sx={{ zIndex: 1000 }}>
+                <Box className="address-change-box">
                   <AddressChange setAddress={setAddress} />
                 </Box>
               </Box>

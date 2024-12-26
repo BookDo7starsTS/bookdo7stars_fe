@@ -133,7 +133,6 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
               {pageTitle}
             </Typography>
           </Box>
-          {/* // TODO: make it reusable component */}
           <ToggleButtons sortBy={sortBy} handleSortChange={() => handleSortChange} boxStyle={toggleBoxStyle} buttonStyle={toggleButtonStyle} />
           <CustomPagination pageCount={pageCount} currentPage={currentPage} handlePageChange={() => handlePageChange} style={paginationStyle} />
           <Box sx={{ display: 'flex', width: '100%', alignItems: 'end', justifyContent: 'end', gap: '12px', marginBottom: '20px' }}>
@@ -146,7 +145,10 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
             <Grid item xs={12} md={9}>
               <Box className="book-card-box" sx={{ display: 'flex', flexDirection: 'column', marginLeft: '1rem' }}>
                 {books.map((book, index) => (
-                  <Box className="book-detail-card" key={index} sx={{ display: 'flex', alignItems: 'center', marginBottom: '2rem' }}>
+                  <Box
+                    className="book-detail-card"
+                    key={index}
+                    sx={{ display: 'flex', alignItems: 'center', marginBottom: '2rem', overflow: 'visible', zIndex: 1 }}>
                     <Checkbox checked={selectedBooks.includes(book.id)} onChange={() => handleCheckboxChange(book.id)} />
                     <BookDetailCard key={index} book={book} />
                   </Box>
