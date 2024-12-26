@@ -76,6 +76,8 @@ export interface GetBooksSearchRequestAction {
     pageSize?: number;
     start_price?: number;
     end_price?: number;
+    start_rate?: number;
+    end_rate?: number;
   };
 }
 

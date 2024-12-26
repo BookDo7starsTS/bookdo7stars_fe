@@ -13,6 +13,7 @@ const ResultFilters = () => {
   const [filters, setFilters] = useState({
     dateRange: [undefined, undefined], // Represents the values in months (3M to 60M or 전체)
     priceRange: [0, 100000],
+    rateRange: [0, 10],
   });
 
   // Marks for the date range slider
@@ -34,6 +35,13 @@ const ResultFilters = () => {
   };
 
   const handlePriceSliderChange = (name: string) => (event: Event, value: number | number[]) => {
+    setFilters((prev) => ({
+      ...prev,
+      [name]: value, // value는 배열이어야 함
+    }));
+  };
+
+  const handleRateSliderChange = (name: string) => (event: Event, value: number | number[]) => {
     setFilters((prev) => ({
       ...prev,
       [name]: value, // value는 배열이어야 함
@@ -76,6 +84,8 @@ const ResultFilters = () => {
       ...searchData,
       start_price: filters.priceRange[0],
       end_price: filters.priceRange[1],
+      start_rate: filters.rateRange[0],
+      end_rate: filters.rateRange[1],
     } as any;
 
     if (startDateISO !== undefined) {
@@ -125,6 +135,10 @@ const ResultFilters = () => {
       <Box mb={2}>
         <Typography>판매가</Typography>
         <Slider value={filters.priceRange} onChange={handlePriceSliderChange('priceRange')} valueLabelDisplay="auto" min={0} max={100000} />
+      </Box>
+      <Box mb={2}>
+        <Typography>별점</Typography>
+        <Slider value={filters.rateRange} onChange={handleRateSliderChange('rateRange')} valueLabelDisplay="auto" min={0} max={10} />
       </Box>
 
       <Button variant="contained" color="primary" onClick={applyFilters} fullWidth>
