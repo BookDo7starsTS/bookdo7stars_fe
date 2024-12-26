@@ -145,10 +145,7 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
             <Grid item xs={12} md={9}>
               <Box className="book-card-box" sx={{ display: 'flex', flexDirection: 'column', marginLeft: '1rem' }}>
                 {books.map((book, index) => (
-                  <Box
-                    className="book-detail-card"
-                    key={index}
-                    sx={{ display: 'flex', alignItems: 'center', marginBottom: '2rem', overflow: 'visible', zIndex: 'revert-layer' }}>
+                  <Box className="book-detail-card" key={index} sx={{ display: 'flex', alignItems: 'center', marginBottom: '2rem', zIndex: 'revert-layer' }}>
                     <Checkbox checked={selectedBooks.includes(book.id)} onChange={() => handleCheckboxChange(book.id)} />
                     <BookDetailCard key={index} book={book} />
                   </Box>

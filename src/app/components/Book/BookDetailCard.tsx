@@ -75,7 +75,6 @@ const BookDetailCard: React.FC<BookDetailCardProps> = ({ book }) => {
           sx={{
             cursor: 'pointer',
             flexDirection: { xs: 'column', md: 'row' },
-            alignItems: 'stretch',
             overflow: 'visible',
             borderRadius: '12px',
             boxShadow: 3,
@@ -90,18 +89,11 @@ const BookDetailCard: React.FC<BookDetailCardProps> = ({ book }) => {
             image={book.cover}
             alt={book.title}
             sx={{
-              width: { xs: '100%', md: '240px' },
+              width: { xs: '100%', md: '220px' },
               height: '100%',
               objectFit: 'cover',
               borderTopLeftRadius: '12px',
               borderBottomLeftRadius: '12px',
-
-              // borderTopLeftRadius: { md: '12px' },
-              // borderBottomLeftRadius: { md: '12px' },
-              // paddingTop: { xs: '30px', md: '0px' },
-              // width: 240,
-              // height: 380,
-              // objectFit: 'cover',
             }}
           />
           <CardContent
@@ -113,29 +105,55 @@ const BookDetailCard: React.FC<BookDetailCardProps> = ({ book }) => {
               alignItems: 'center',
               padding: { xs: '16px', md: '24px' }, // 화면 크기에 따라 패딩 조정
               justifyContent: 'space-between',
-              overflow: 'visible',
             }}>
-            <Box sx={{ display: 'flex', flexDirection: 'column', width: '70%', height: '100%', justifyContent: 'space-between' }} className="card-content-info">
-              <Typography
-                variant="h6"
-                onClick={() => clickBookCard(book)}
-                sx={{ cursor: 'pointer', fontWeight: 'bold', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', width: '100%' }}>
-                {book.title.split('-')[0].trim()}
-              </Typography>
-              <Typography variant="body2" color="text.secondary" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', width: '100%' }}>
-                {book.author} | {book.publisher} | {new Date(book.pubDate).toLocaleDateString()}
-              </Typography>
-              <Box sx={{ display: 'flex', justifyContent: 'space-between', mt: 1 }}>
-                <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1 }}>
-                  <Typography variant="subtitle2" color="text.primary">
-                    {currencyFormat(book.priceStandard)}원 →
-                  </Typography>
-                  <Typography sx={{ color: pink[500], fontWeight: 'bold', fontSize: '20px' }}>{currencyFormat(book.priceSales)}원</Typography>
-                  <Typography sx={{ marginLeft: '0.8rem', color: pink[500], fontSize: '16px' }}>
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'space-between',
+                width: '70%',
+                maxWidth: '340px',
+                height: '100%',
+              }}
+              className="card-content-info">
+              <Box
+                className="book-title"
+                sx={{
+                  flexShrink: 0, // 부모 크기에 따라 축소되지 않음
+                }}>
+                <Typography
+                  variant="h6"
+                  onClick={() => clickBookCard(book)}
+                  sx={{ cursor: 'pointer', fontWeight: 'bold', overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', width: '100%' }}>
+                  {book.title.split('-')[0].trim()}
+                </Typography>
+              </Box>
+              <Box className="book-author-publisher" sx={{ flexShrink: 0, width: '100%', overflow: 'hidden' }}>
+                <Typography variant="body2" color="text.secondary" sx={{ overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap', width: '100%' }}>
+                  {book.author} | {book.publisher} | {new Date(book.pubDate).toLocaleDateString()}
+                </Typography>
+              </Box>
+              <Box
+                className="book-price-info"
+                sx={{
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'flex-start',
+                  flexWrap: 'wrap', // 화면 크기에 따라 줄바꿈 가능
+                  gap: 1, // 요소 간 간격
+                  mt: 1,
+                }}>
+                <Typography variant="body2" sx={{ fontSize: '14px' }}>
+                  <span style={{ color: 'black' }}>{currencyFormat(book.priceStandard)}원 →</span>
+
+                  <span style={{ color: pink[500], fontWeight: 'bold', fontSize: '18px' }}> {currencyFormat(book.priceSales)}원</span>
+
+                  <span style={{ marginLeft: '0.5rem', color: pink[500], fontSize: '14px' }}>
                     ({(((book.priceStandard - book.priceSales) / book.priceStandard) * 100).toFixed(2)}% 할인
-                  </Typography>
-                  <Typography sx={{ color: pink[500], fontSize: '16px' }}>{book.mileage}p 적립)</Typography>
-                </Box>
+                  </span>
+
+                  <span style={{ color: pink[500], fontSize: '14px' }}> {book.mileage}p 적립)</span>
+                </Typography>
               </Box>
               <Box sx={{ display: 'flex', flexDirection: 'row', alignItems: 'center', gap: 1, justifyContent: 'flex-end' }}></Box>
 
@@ -149,7 +167,6 @@ const BookDetailCard: React.FC<BookDetailCardProps> = ({ book }) => {
                 alignItems="center"
                 sx={{
                   backgroundColor: `${theme.palette.third.main}`,
-                  width: '100%',
                   fontWeight: 'bold',
                   borderRadius: '4px',
                   position: 'relative',
@@ -159,7 +176,7 @@ const BookDetailCard: React.FC<BookDetailCardProps> = ({ book }) => {
                   flexDirection: 'row',
                   gap: '0.25rem',
                   padding: '0.5rem 0.25rem 0.5rem 0.25rem',
-                  overflow: 'visible' /* 내부 요소가 잘리지 않도록 */,
+                  overflow: 'visible',
                 }}
                 onClick={(event) => event.stopPropagation()}>
                 <Box sx={{ display: 'flex', gap: 5 }}>
