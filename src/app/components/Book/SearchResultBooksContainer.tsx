@@ -110,8 +110,24 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
     borderBottomRightRadius: '0px',
   };
   const actionButtonNames = ['전체 선택', '장바구니 담기', '보관함 담기', '마이리스트 담기'];
-  const handleOnClick = () => {
-    console.log('handleOnClick.');
+  const handleOnClick = (name: string) => {
+    console.log('handleOnClick.', name);
+    switch (name) {
+      case '전체 선택': {
+        if (selectedBooks.length === books.length) {
+          setSelectedBooks([]);
+        } else {
+          setSelectedBooks(books.map((book) => book.id));
+        }
+      }
+    }
+  };
+  const disabledButtons = (name: string): boolean => {
+    if (name === '전체 선택') {
+      return false;
+    } else {
+      return selectedBooks.length === 0;
+    }
   };
 
   return (
@@ -135,8 +151,8 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
           </Box>
           <ToggleButtons sortBy={sortBy} handleSortChange={() => handleSortChange} boxStyle={toggleBoxStyle} buttonStyle={toggleButtonStyle} />
           <CustomPagination pageCount={pageCount} currentPage={currentPage} handlePageChange={() => handlePageChange} style={paginationStyle} />
-          <Box sx={{ display: 'flex', width: '100%', alignItems: 'end', justifyContent: 'end', gap: '12px', marginBottom: '20px' }}>
-            <ActionButtons names={actionButtonNames} handleOnClick={handleOnClick} disabled={false} />
+          <Box sx={{ display: 'flex', width: '100%', justifyContent: 'flex-end', gap: '12px', marginBottom: '20px' }}>
+            <ActionButtons names={actionButtonNames} handleOnClick={handleOnClick} disabledButtons={disabledButtons} />
           </Box>
           <Grid container spacing={3}>
             <Grid item xs={12} md={3}>

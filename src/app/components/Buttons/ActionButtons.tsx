@@ -2,17 +2,17 @@ import { Box, Button } from '@mui/material';
 
 type ActionButtonsProps = {
   names: string[];
-  handleOnClick: () => void;
-  disabled: boolean;
+  handleOnClick: (name: string) => void;
+  disabledButtons: (name: string) => boolean;
 };
 
 const ActionButtons = (props: ActionButtonsProps) => {
-  const { names, handleOnClick, disabled } = props;
+  const { names, handleOnClick, disabledButtons } = props;
   return (
     <>
       {names.map((name) => {
         return (
-          <Button variant="outlined" onClick={handleOnClick} disabled={disabled}>
+          <Button variant="outlined" onClick={() => handleOnClick(name)} disabled={disabledButtons(name)}>
             {name}
           </Button>
         );
