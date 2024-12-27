@@ -27,6 +27,7 @@ import {
   GET_BOOKS_BY_CATEGORY_REQUEST,
   GET_BOOKS_BY_CATEGORY_SUCCESS,
   RESET_BOOK,
+  SET_PAGE,
 } from '../constants';
 
 // Action type
@@ -186,6 +187,10 @@ export interface ResetGroupBooksAction {
 export interface ResetBookAction {
   type: typeof RESET_BOOK;
 }
+export interface SetPageAction {
+  type: typeof SET_PAGE;
+  data: number;
+}
 
 //Union type
 export type BookActionTypes =
@@ -214,7 +219,8 @@ export type BookActionTypes =
   | ResetBookAction
   | GetBooksByCategoryRequestAction
   | GetBooksByCategorySuccessAction
-  | GetBooksByCategoryFailureAction;
+  | GetBooksByCategoryFailureAction
+  | SetPageAction;
 
 // Action creater
 
@@ -363,4 +369,9 @@ export const resetGroupBooks = (): ResetGroupBooksAction => ({
 
 export const resetBook = (): ResetBookAction => ({
   type: RESET_BOOK,
+});
+
+export const setPage = (data: SetPageAction['data']): SetPageAction => ({
+  type: SET_PAGE,
+  data: data,
 });

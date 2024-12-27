@@ -110,6 +110,8 @@ function getBooksSearchAPI(data: GetBooksSearchRequestAction['data']) {
 export function* getBooksSearch(action: GetBooksSearchRequestAction): SagaIterator {
   try {
     const response: any = yield call(getBooksSearchAPI, action.data);
+    console.log('response', response.data);
+
     yield put({
       type: GET_BOOKS_SEARCH_SUCCESS,
       payload: response.data.books,

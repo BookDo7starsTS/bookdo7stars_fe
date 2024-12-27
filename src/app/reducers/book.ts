@@ -25,6 +25,7 @@ import {
   GET_MAINPAGE_BESTSELLER_BOOKS_FAILURE,
   RESET_GROUP_BOOKS,
   RESET_BOOK,
+  SET_PAGE,
 } from '../actions/constants';
 import { BookActionTypes } from '../actions/types';
 import { Book } from '../models/book';
@@ -59,6 +60,7 @@ type InitialState = {
   isGetMainPageBestSellerBooksError: string;
   book: Book | null;
   pageSize: number;
+  currentPage: number;
 };
 
 export const initialState: InitialState = {
@@ -98,6 +100,7 @@ export const initialState: InitialState = {
   isGetMainPageBestSellerBooksError: '',
   book: null,
   pageSize: 20,
+  currentPage: 1,
 };
 
 function bookReducer(state = initialState, action: BookActionTypes) {
@@ -155,6 +158,8 @@ function bookReducer(state = initialState, action: BookActionTypes) {
       return { ...state, book: null };
     case RESET_GROUP_BOOKS:
       return { ...state, groupBooks: [] };
+    case SET_PAGE:
+      return { ...state, currentPage: action.data };
     default:
       return state;
   }

@@ -23,7 +23,7 @@ import { format, subMonths } from 'date-fns';
 import { useRouter } from 'next/navigation';
 import { useDispatch } from 'react-redux';
 
-import { isbnType } from './types/isbnType';
+import { IsbnType } from './types/isbnType';
 import { SearchType } from './types/searchType';
 import { getBookIsbnSearchRequest, getBooksSearchRequest } from '../actions/types';
 import { AppDispatch } from '../store/store';
@@ -60,7 +60,7 @@ const SearchPage = () => {
     // `찾기` 버튼이 비활성화될 조건을 설정하는 데 사용
   }, [formData, dateRange, startYear, endYear, startMonth, endMonth]);
 
-  const [isbn, setIsbn] = useState<isbnType>('');
+  const [isbn, setIsbn] = useState<IsbnType>('');
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));

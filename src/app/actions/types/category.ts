@@ -114,32 +114,32 @@ export const getCategoryFailure = (error: string): GetCategoryFailureAction => (
   error,
 });
 
-export const GetCategoriesByIdRequest = (id: string): GetCategoriesByIdRequestAction => ({
+export const getCategoriesByIdRequest = (id: string): GetCategoriesByIdRequestAction => ({
   type: GET_CATEGORIES_BY_ID_REQUEST,
   id,
 });
 
-export const GetCategoriesByIdSuccess = (payload: GetCategoriesByIdSuccessAction['payload']): GetCategoriesByIdSuccessAction => ({
+export const getCategoriesByIdSuccess = (payload: GetCategoriesByIdSuccessAction['payload']): GetCategoriesByIdSuccessAction => ({
   type: GET_CATEGORIES_BY_ID_SUCCESS,
   payload,
 });
 
-export const GetCategoriesByIdFailure = (error: string): GetCategoriesByIdFailureAction => ({
+export const getCategoriesByIdFailure = (error: string): GetCategoriesByIdFailureAction => ({
   type: GET_CATEGORIES_BY_ID_FAILURE,
   error,
 });
 
-export const GetCategoryByIdRequest = (id: string): GetCategoryByIdRequestAction => ({
+export const getCategoryByIdRequest = (id: string): GetCategoryByIdRequestAction => ({
   type: GET_CATEGORY_BY_ID_REQUEST,
   id,
 });
 
-export const GetCategoryByIdSuccess = (payload: GetCategoryByIdSuccessAction['payload']): GetCategoryByIdSuccessAction => ({
+export const getCategoryByIdSuccess = (payload: GetCategoryByIdSuccessAction['payload']): GetCategoryByIdSuccessAction => ({
   type: GET_CATEGORY_BY_ID_SUCCESS,
   payload,
 });
 
-export const GetCategoryByIdFailure = (error: string): GetCategoryByIdFailureAction => ({
+export const getCategoryByIdFailure = (error: string): GetCategoryByIdFailureAction => ({
   type: GET_CATEGORY_BY_ID_FAILURE,
   error,
 });

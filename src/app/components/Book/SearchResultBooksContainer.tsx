@@ -13,25 +13,24 @@ import ResultFilters from '../Result/ResultFilters';
 import CustomPagination from '../CustomPagination';
 import ToggleButtons from '../Buttons/ToggleButtons';
 import ActionButtons from '../Buttons/ActionButtons';
+import { IsbnType } from '@/app/search/types/isbnType';
 interface SearchResultBooksContainerProps {
   books: Book[];
   count: number;
   booksPerPage: number;
-  handlePageChange: (event: React.ChangeEvent<unknown>, value: number) => void;
-  currentPage: number;
   searchTerm?: string;
   resultCount: number;
   parsedSearchCondition: SearchType;
+  parsedIsbn: IsbnType;
 }
 
 const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
   resultCount,
   books,
   count,
-  handlePageChange,
   booksPerPage,
-  currentPage,
   parsedSearchCondition,
+  parsedIsbn,
 }) => {
   const [selectedBooks, setSelectedBooks] = useState<number[]>([]);
   const [sortBy, setSortBy] = useState('');
@@ -142,7 +141,13 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
             </Typography>
           </Box>
           <ToggleButtons sortBy={sortBy} handleSortChange={() => handleSortChange} boxStyle={toggleBoxStyle} buttonStyle={toggleButtonStyle} />
-          <CustomPagination pageCount={pageCount} currentPage={currentPage} handlePageChange={() => handlePageChange} style={paginationStyle} />
+          <CustomPagination
+            pageCount={pageCount}
+            style={paginationStyle}
+            booksPerPage={booksPerPage}
+            parsedSearchCondition={parsedSearchCondition}
+            parsedIsbn={parsedIsbn}
+          />
           <Box sx={{ display: 'flex', width: '100%', justifyContent: 'flex-end', gap: '12px', marginBottom: '20px' }}>
             <ActionButtons names={actionButtonNames} handleOnClick={handleOnClick} disabledButtons={disabledButtons} />
           </Box>

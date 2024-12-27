@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-import { getBooksByCategoryRequest, GetCategoriesByIdRequest, GetCategoryByIdRequest } from '@/app/actions/types';
+import { getBooksByCategoryRequest, getCategoriesByIdRequest, getCategoryByIdRequest } from '@/app/actions/types';
 import BookDetailCard from '@/app/components/Book/BookDetailCard';
 import CategoryBooksContainer from '@/app/components/Book/CategoryBooksContainer';
 import CategoryList from '@/app/components/Category/CategoryList';
@@ -30,7 +30,7 @@ const CategoryBookPage = () => {
 
   useEffect(() => {
     if (!categoriesById[categoryId]) {
-      dispatch(GetCategoriesByIdRequest(categoryId));
+      dispatch(getCategoriesByIdRequest(categoryId));
     }
   }, [categoriesById, dispatch]);
 
@@ -61,7 +61,7 @@ const CategoryBookPage = () => {
 
   useEffect(() => {
     if (categoryId) {
-      dispatch(GetCategoryByIdRequest(categoryId));
+      dispatch(getCategoryByIdRequest(categoryId));
     }
   }, []);
 
@@ -147,7 +147,7 @@ const CategoryBookPage = () => {
           </Typography>
         </Box>
         <ToggleButtons sortBy={sortBy} handleSortChange={() => handleSortChange} boxStyle={toggleBoxStyle} buttonStyle={toggleButtonStyle} />
-        <CustomPagination pageCount={pageCount} currentPage={page} handlePageChange={() => handlePageChange} style={paginationStyle} />
+        <CustomPagination pageCount={pageCount} style={paginationStyle} booksPerPage={booksPerPage} categoryId={categoryId} />
         <Box sx={{ display: 'flex', width: '100%', justifyContent: 'flex-end', gap: '12px', marginBottom: '20px' }}>
           <ActionButtons names={actionButtonNames} handleOnClick={handleOnClick} disabledButtons={disabledButtons} />
         </Box>

@@ -1,7 +1,7 @@
 'use client';
 import React, { useEffect, useMemo } from 'react';
 
-import { GetCategoriesByIdRequest, setExpandedCategoryIdsRequest, setSelectedCategoryIdsRequest } from '@/app/actions/types';
+import { getCategoriesByIdRequest, setExpandedCategoryIdsRequest, setSelectedCategoryIdsRequest } from '@/app/actions/types';
 import { CategoryById } from '@/app/models/category';
 import { RootState } from '@/app/reducers';
 import { AppDispatch } from '@/app/store/store';
@@ -28,7 +28,7 @@ const CategoryList = (props: CategoryListProps) => {
 
   const onExpandCategory = (id: string) => {
     if (!categories[id] || categories[id].length === 0) {
-      dispatch(GetCategoriesByIdRequest(id.toString()));
+      dispatch(getCategoriesByIdRequest(id.toString()));
     }
     if (expandedIds.includes(id)) {
       dispatch(setExpandedCategoryIdsRequest(expandedIds.filter((expandedId) => expandedId !== id)));
