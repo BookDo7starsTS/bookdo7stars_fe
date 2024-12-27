@@ -11,16 +11,22 @@ import { AppDispatch } from '@/app/store/store';
 import { Box, Checkbox, Container, Grid, Typography } from '@mui/material';
 import { useParams } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
+import ActionButtons from '@/app/components/Buttons/ActionButtons';
+import ToggleButtons from '@/app/components/Buttons/ToggleButtons';
+import CustomPagination from '@/app/components/CustomPagination';
 
 const CategoryBookPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { categoriesById, selectedCategory } = useSelector((store: RootState) => store.category);
   const { categoryBooks, count } = useSelector((store: RootState) => store.book);
+  const [selectedBooks, setSelectedBooks] = useState<number[]>([]);
+  const [sortBy, setSortBy] = useState('');
 
   const { categoryId } = useParams<{ categoryId: string }>();
 
   const [page, setPage] = useState(1);
   const booksPerPage = 20;
+  const pageCount = Math.ceil(count / booksPerPage);
 
   useEffect(() => {
     if (!categoriesById[categoryId]) {
@@ -32,7 +38,22 @@ const CategoryBookPage = () => {
     dispatch(getBooksByCategoryRequest({ categoryId: categoryId, page: page, pageSize: booksPerPage }));
   }, [categoryId]);
 
+  const handleCheckboxChange = (bookId: number) => {
+    setSelectedBooks((prevSelectedBooks) =>
+      prevSelectedBooks.includes(bookId) ? prevSelectedBooks.filter((id) => id !== bookId) : [...prevSelectedBooks, bookId],
+    );
+  };
+
   console.log('categoryBooks', categoryBooks);
+
+  const handleSortChange = (event: React.MouseEvent<HTMLElement>, newSortBy: string) => {
+    setSortBy(newSortBy);
+    // const updatedSearchCondition: SearchType = {
+    //   ...parsedSearchCondition,
+    //   orderTerm: newSortBy,
+    // };
+    // dispatch(getBooksSearchRequest(updatedSearchCondition));
+  };
 
   // const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
   //   setPage(value);
@@ -44,9 +65,48 @@ const CategoryBookPage = () => {
     }
   }, []);
 
+  const paginationStyle = {
+    display: 'flex',
+    justifyContent: 'center',
+    marginBottom: '20px', // 'mb' 대신 표준 CSS 속성 사용
+  };
+  const toggleBoxStyle = {
+    borderBottom: '0.5px solid #ccc',
+    paddingBottom: '0px',
+  };
+  const toggleButtonStyle = {
+    borderBottomLeftRadius: '0px',
+    borderBottomRightRadius: '0px',
+  };
+  const actionButtonNames = ['전체 선택', '장바구니 담기', '보관함 담기', '마이리스트 담기'];
+  const handleOnClick = (name: string) => {
+    console.log('handleOnClick.', name);
+    switch (name) {
+      case '전체 선택': {
+        if (selectedBooks.length === categoryBooks.length) {
+          setSelectedBooks([]);
+        } else {
+          setSelectedBooks(categoryBooks.map((book) => book.id));
+        }
+      }
+    }
+  };
+  const disabledButtons = (name: string): boolean => {
+    if (name === '전체 선택') {
+      return false;
+    } else {
+      return selectedBooks.length === 0;
+    }
+  };
+
+  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
+    setPage(value);
+    //TODO: implement
+  };
+
   return (
     <Grid container spacing={3} sx={{ margin: '1rem' }}>
-      <Grid item xs={2} sm={4} md={4} className="category-list">
+      <Grid item xs={12} md={3} className="category-list">
         <Box sx={{ top: 0, position: 'sticky', zIndex: 1, display: 'flex', flexDirection: 'column', gap: '5rem' }}>
           <Box
             sx={{
@@ -80,20 +140,28 @@ const CategoryBookPage = () => {
           </Box>
         </Box>
       </Grid>
-      <Grid item xs={9} sm={7} md={7} className="category-books-container-grid">
-        <Container sx={{ width: { xs: '460px', sm: '660px', md: 860 } }}>
+      <Grid item xs={12} md={8} className="category-books-container-grid">
+        <Box display="flex" alignItems="center" justifyContent="center" mb={4}>
+          <Typography variant={'h4'} color="textPrimary" sx={{ color: 'gray' }}>
+            {selectedCategory ? selectedCategory.name + '(' + count + ')' : '찾으시는 카테고리는 없습니다.'}
+          </Typography>
+        </Box>
+        <ToggleButtons sortBy={sortBy} handleSortChange={() => handleSortChange} boxStyle={toggleBoxStyle} buttonStyle={toggleButtonStyle} />
+        <CustomPagination pageCount={pageCount} currentPage={page} handlePageChange={() => handlePageChange} style={paginationStyle} />
+        <Box sx={{ display: 'flex', width: '100%', justifyContent: 'flex-end', gap: '12px', marginBottom: '20px' }}>
+          <ActionButtons names={actionButtonNames} handleOnClick={handleOnClick} disabledButtons={disabledButtons} />
+        </Box>
+        <Box className="book-card-box" sx={{ display: 'flex', flexDirection: 'column', marginLeft: '1rem' }}>
           {categoryBooks.map((book, index) => (
-            <BookDetailCard key={index} book={book} />
+            <Box
+              className="book-detail-card"
+              key={index}
+              sx={{ display: 'flex', alignItems: 'center', marginBottom: '2rem', zIndex: 'revert-layer', justifyContent: 'flex-end' }}>
+              <Checkbox checked={selectedBooks.includes(book.id)} onChange={() => handleCheckboxChange(book.id)} />
+              <BookDetailCard key={index} book={book} />
+            </Box>
           ))}
-        </Container>
-
-        {/* <CategoryBooksContainer
-          categoryBooks={categoryBooks}
-          count={count}
-          handlePageChange={handlePageChange}
-          booksPerPage={booksPerPage}
-          currentPage={page}
-        /> */}
+        </Box>
       </Grid>
     </Grid>
   );

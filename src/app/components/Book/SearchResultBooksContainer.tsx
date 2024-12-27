@@ -41,14 +41,6 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
 
   const isWidth900Up = useMediaQuery('(min-width:900px)');
 
-  const handleSelectAll = () => {
-    if (selectedBooks.length === books.length) {
-      setSelectedBooks([]);
-    } else {
-      setSelectedBooks(books.map((book) => book.id));
-    }
-  };
-
   useEffect(() => {
     // console.log('선택된 책들: ', selectedBooks);
   }, [selectedBooks]);
@@ -144,8 +136,8 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
       }}>
       {books.length > 0 ? (
         <>
-          <Box display="flex" alignItems="center" justifyContent="left" mt={6} mb={0.2}>
-            <Typography color="textPrimary" sx={{ color: 'gray' }}>
+          <Box display="flex" alignItems="center" justifyContent="left" mb={4}>
+            <Typography variant={'h4'} color="textPrimary" sx={{ color: 'gray' }}>
               {pageTitle}
             </Typography>
           </Box>

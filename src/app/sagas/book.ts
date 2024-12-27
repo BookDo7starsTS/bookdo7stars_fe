@@ -89,7 +89,7 @@ export function* getBooksByCategory(action: GetBooksByCategoryRequestAction): Sa
     yield put({
       type: GET_BOOKS_BY_CATEGORY_SUCCESS,
       payload: response.data.books.rows,
-      count: response.data.count,
+      count: response.data.books.count,
     });
   } catch (err: any) {
     yield put({

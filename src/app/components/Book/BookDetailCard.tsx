@@ -80,6 +80,7 @@ const BookDetailCard: React.FC<BookDetailCardProps> = ({ book }) => {
             boxShadow: 3,
             display: 'flex',
             width: '100%',
+            maxWidth: 800,
             height: 300,
             padding: 0,
           }}

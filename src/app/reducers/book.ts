@@ -119,6 +119,7 @@ function bookReducer(state = initialState, action: BookActionTypes) {
     case GET_BOOKS_BY_CATEGORY_REQUEST:
       return { ...state, isGetBooksByCategoryLoading: true };
     case GET_BOOKS_BY_CATEGORY_SUCCESS:
+      console.log(action);
       return { ...state, isGetBooksByCategoryLoading: false, isGetBooksByCategoryDone: true, categoryBooks: action.payload, count: action.count };
     case GET_BOOKS_BY_CATEGORY_FAILURE:
       return { ...state, isGetBooksByCategoryLoading: false, isGetBooksByCategoryDone: false, isGetBooksByGroupError: action.error };
