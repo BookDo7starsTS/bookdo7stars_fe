@@ -13,6 +13,7 @@ import styled from 'styled-components';
 
 import AddressChange from '../../../utils/AddressChange';
 import { currencyFormat } from '../../../utils/helpers';
+import ActionButtons from '../Buttons/ActionButtons';
 
 interface BookDetailCardProps {
   book: Book;
@@ -49,20 +50,19 @@ const BookDetailCard: React.FC<BookDetailCardProps> = ({ book }) => {
     router.push(`/book/${book.id}`);
   };
 
-  const handleAddToCart = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    console.log('장바구니에 추가');
+  const actionButtonNames = ['장바구니', '바로구매', '보관함'];
+  const buttonIcons = {
+    장바구니: { component: <ShoppingCartIcon />, style: { color: 'inherit', marginRight: 0.5 } },
+    바로구매: { component: <PaymentIcon />, style: { color: 'primary', marginRight: 0.5 } },
+    보관함: { component: <FavoriteBorderIcon />, style: { color: pink[500], marginRight: 0.5 } },
   };
 
-  const handleAddToBuy = (e: React.MouseEvent) => {
+  const handleOnClick = (e: React.MouseEvent, name: string) => {
     e.stopPropagation();
-    console.log('바로구매');
+    console.log('보관함에 추가', name);
   };
 
-  const handleAddToWishlist = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    console.log('보관함에 추가');
-  };
+  const buttonStyle = { width: '120px', height: '50px', display: 'flex', alignItems: 'center' };
 
   return (
     <>
@@ -199,32 +199,7 @@ const BookDetailCard: React.FC<BookDetailCardProps> = ({ book }) => {
                 width: '30%',
                 height: '100%',
               }}>
-              <Button
-                variant="contained"
-                color="primary"
-                sx={{ width: '110px', height: '50px', display: 'flex', alignItems: 'center' }}
-                onClick={handleAddToCart}>
-                <ShoppingCartIcon sx={{ color: 'inherit', marginRight: 0.5 }} />
-                장바구니
-              </Button>
-
-              <Button sx={{ border: `2px solid ${theme.palette.primary.main}`, width: '110px', height: '50px' }} onClick={handleAddToBuy}>
-                <PaymentIcon sx={{ color: 'primary', marginRight: 0.5 }} />
-                바로구매
-              </Button>
-
-              <Box onClick={(e) => e.stopPropagation()} style={{ cursor: 'default' }}>
-                <Button
-                  variant="contained"
-                  disabled
-                  sx={{
-                    width: '110px',
-                    height: '50px',
-                  }}>
-                  <FavoriteBorderIcon sx={{ color: pink[500], marginRight: 0.5 }} />
-                  보관함
-                </Button>
-              </Box>
+              <ActionButtons names={actionButtonNames} handleOnClick={() => handleOnClick} icons={buttonIcons} style={buttonStyle} />
             </Box>
           </CardContent>
         </Card>
