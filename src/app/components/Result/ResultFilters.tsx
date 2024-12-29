@@ -2,9 +2,10 @@ import { useState } from 'react';
 
 import { RootState } from '@/app/reducers';
 import { SearchType } from '@/app/search/types/searchType';
-import { Container, Box, Typography, Slider, Button } from '@mui/material';
+import { Container, Box, Typography, Button } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 
+import FilterSlider from './FilterSlider';
 import { GET_BOOKS_SEARCH_REQUEST } from '../../actions/constants/book'; // 액션 정의된 경로
 
 const ResultFilters = () => {
@@ -115,26 +116,17 @@ const ResultFilters = () => {
           필터링
         </Typography>
       </Box>
-      <Box mb={2}>
-        <Typography>출간일</Typography>
-        <Slider
-          value={filters.dateRange[0] === undefined ? 60 : filters.dateRange[0]}
-          onChange={handleSliderChange('dateRange')}
-          //   valueLabelDisplay="auto"
-          min={10}
-          max={60} // The maximum value corresponds to '전체'
-          step={null} // Makes the slider snap to marks only
-          marks={dateRangeMarks}
-        />
-      </Box>
-      <Box mb={2}>
-        <Typography>판매가</Typography>
-        <Slider value={filters.priceRange} onChange={handleSliderChange('priceRange')} valueLabelDisplay="auto" min={0} max={100000} />
-      </Box>
-      <Box mb={2}>
-        <Typography>별점</Typography>
-        <Slider value={filters.rateRange} onChange={handleSliderChange('rateRange')} valueLabelDisplay="auto" min={0} max={10} />
-      </Box>
+      <FilterSlider
+        label="출간일"
+        value={filters.dateRange[0] === undefined ? 60 : filters.dateRange[0]}
+        onChange={handleSliderChange('dateRange')}
+        min={10}
+        max={60}
+        step={null}
+        marks={dateRangeMarks}
+      />
+      <FilterSlider label="판매가" value={filters.priceRange} onChange={handleSliderChange('priceRange')} min={0} max={100000} />
+      <FilterSlider label="별점" value={filters.rateRange} onChange={handleSliderChange('rateRange')} min={0} max={10} />
 
       <Button variant="contained" color="primary" onClick={applyFilters} fullWidth>
         적용
