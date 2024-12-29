@@ -174,7 +174,9 @@ const Header = () => {
   const handleHome = () => {
     router.push('/');
   };
-
+  const handleMyPage = async () => {
+    router.push('/mypage');
+  };
   const handleSession = async () => {
     //TODO must be implemented
   };
@@ -273,7 +275,7 @@ const Header = () => {
               ) : !isMobile ? (
                 <>
                   <StyledButton onClick={handleLogout}>Log out</StyledButton>
-                  <StyledButton onClick={handleSession}>My Page</StyledButton>
+                  <StyledButton onClick={handleMyPage}>My Page</StyledButton>
                 </>
               ) : (
                 <>

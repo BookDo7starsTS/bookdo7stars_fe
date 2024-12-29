@@ -25,14 +25,10 @@ const BookToCartButton: React.FC<BookToCartButtonProps> = ({ book }) => {
     console.log('카트에 추가:', book.title);
   };
 
-  const handleFavoriteClick = () => {
+  const handleWishlistClick = () => {
     // 찜하기 기능 구현
     console.log('찜하기: ', book.title);
-  };
-
-  const deleteFavoriteClick = () => {
-    // 찜하기 취소 기능 구현
-    console.log('찜하기 취소: ', book.title);
+    debugger;
   };
 
   return (
@@ -45,7 +41,7 @@ const BookToCartButton: React.FC<BookToCartButtonProps> = ({ book }) => {
         color="primary"
         startIcon={<FavoriteBorderIcon sx={{ color: pink[500] }} />}
         sx={{ height: '60px', flexGrow: 1 }}
-        onClick={handleFavoriteClick}>
+        onClick={handleWishlistClick}>
         찜하기
       </Button>
     </Box>
