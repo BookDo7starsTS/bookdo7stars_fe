@@ -27,25 +27,20 @@ const ResultFilters = () => {
   ];
 
   const handleSliderChange = (name: string) => (event: Event, value: number | number[]) => {
-    const newValue = value === 60 ? [undefined, undefined] : [value];
-    setFilters({
-      ...filters,
-      [name]: newValue,
+    setFilters((prev) => {
+      let newValue;
+
+      if (name === 'dateRange') {
+        newValue = value === 60 ? [undefined, undefined] : [value];
+      } else {
+        newValue = value;
+      }
+
+      return {
+        ...prev,
+        [name]: newValue,
+      };
     });
-  };
-
-  const handlePriceSliderChange = (name: string) => (event: Event, value: number | number[]) => {
-    setFilters((prev) => ({
-      ...prev,
-      [name]: value, // value는 배열이어야 함
-    }));
-  };
-
-  const handleRateSliderChange = (name: string) => (event: Event, value: number | number[]) => {
-    setFilters((prev) => ({
-      ...prev,
-      [name]: value, // value는 배열이어야 함
-    }));
   };
 
   const applyFilters = () => {
@@ -134,11 +129,11 @@ const ResultFilters = () => {
       </Box>
       <Box mb={2}>
         <Typography>판매가</Typography>
-        <Slider value={filters.priceRange} onChange={handlePriceSliderChange('priceRange')} valueLabelDisplay="auto" min={0} max={100000} />
+        <Slider value={filters.priceRange} onChange={handleSliderChange('priceRange')} valueLabelDisplay="auto" min={0} max={100000} />
       </Box>
       <Box mb={2}>
         <Typography>별점</Typography>
-        <Slider value={filters.rateRange} onChange={handleRateSliderChange('rateRange')} valueLabelDisplay="auto" min={0} max={10} />
+        <Slider value={filters.rateRange} onChange={handleSliderChange('rateRange')} valueLabelDisplay="auto" min={0} max={10} />
       </Box>
 
       <Button variant="contained" color="primary" onClick={applyFilters} fullWidth>
