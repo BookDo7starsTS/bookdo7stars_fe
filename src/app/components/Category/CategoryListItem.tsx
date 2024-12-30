@@ -29,7 +29,7 @@ const CategoryListItem = (props: CategoryListItemProps) => {
         <IconButton sx={{ padding: '0.5rem' }} aria-label="expand category" onClick={() => onExpandCategory(category.id.toString())}>
           <ArrowForwardIosOutlinedIcon
             sx={{
-              transform: expandedIds.includes(category.parent_id.toString()) || expandedIds.includes(category.id.toString()) ? 'rotate(90deg)' : 'rotate(0deg)',
+              transform: expandedIds.includes(category.id.toString()) ? 'rotate(90deg)' : 'rotate(0deg)',
               transition: 'transform 0.3s',
             }}
           />
