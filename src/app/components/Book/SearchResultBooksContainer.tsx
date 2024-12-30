@@ -1,11 +1,8 @@
-import { useState, useEffect, ChangeEvent } from 'react';
+import { useState, useEffect } from 'react';
 
-import { getBooksSearchRequest } from '@/app/actions/types';
 import { SearchType } from '@/app/search/types/searchType';
-import { AppDispatch } from '@/app/store/store';
-import { useMediaQuery, Container, Typography, Grid, Box, Pagination, Checkbox, Button, ToggleButtonGroup, ToggleButton } from '@mui/material';
+import { useMediaQuery, Container, Typography, Grid, Box, Checkbox } from '@mui/material';
 import useTheme from '@mui/system/useTheme';
-import { useDispatch } from 'react-redux';
 
 import BookDetailCard from './BookDetailCard';
 import { Book } from '../../models/book';
@@ -129,7 +126,7 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
               {pageTitle}
             </Typography>
           </Box>
-          <ToggleButtons parsedSearchCondition={parsedSearchCondition} boxStyle={toggleBoxStyle} buttonStyle={toggleButtonStyle} />
+          <ToggleButtons boxStyle={toggleBoxStyle} buttonStyle={toggleButtonStyle} />
           <CustomPagination
             pageCount={pageCount}
             style={paginationStyle}

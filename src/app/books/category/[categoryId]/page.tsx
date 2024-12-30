@@ -4,11 +4,10 @@ import { useEffect, useState } from 'react';
 
 import { getBooksByCategoryRequest, getCategoriesByIdRequest, getCategoryByIdRequest } from '@/app/actions/types';
 import BookDetailCard from '@/app/components/Book/BookDetailCard';
-import CategoryBooksContainer from '@/app/components/Book/CategoryBooksContainer';
 import CategoryList from '@/app/components/Category/CategoryList';
 import { RootState } from '@/app/reducers';
 import { AppDispatch } from '@/app/store/store';
-import { Box, Checkbox, Container, Grid, Typography } from '@mui/material';
+import { Box, Checkbox, Grid, Typography } from '@mui/material';
 import { useParams } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import ActionButtons from '@/app/components/Buttons/ActionButtons';

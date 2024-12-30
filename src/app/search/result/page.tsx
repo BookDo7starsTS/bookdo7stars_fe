@@ -2,7 +2,6 @@
 
 import { useEffect, useState, useMemo } from 'react';
 
-import { Container } from '@mui/material';
 import { useSearchParams } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 

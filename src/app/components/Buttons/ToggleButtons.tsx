@@ -1,20 +1,17 @@
-import { getBooksSearchRequest, setSortBy } from '@/app/actions/types';
+import { setSortBy } from '@/app/actions/types';
 import { RootState } from '@/app/reducers';
-import { SearchType } from '@/app/search/types/searchType';
 import { AppDispatch } from '@/app/store/store';
 import { ToggleButtonGroup, ToggleButton } from '@mui/material';
 import { Box, SxProps } from '@mui/system';
-import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 
 type ToggleButtonsProps = {
-  parsedSearchCondition?: SearchType;
   boxStyle: SxProps;
   buttonStyle: SxProps;
 };
 
 const ToggleButtons = (props: ToggleButtonsProps) => {
-  const { parsedSearchCondition, boxStyle, buttonStyle } = props;
+  const { boxStyle, buttonStyle } = props;
   const { sortBy } = useSelector((store: RootState) => store.book);
   const dispatch = useDispatch<AppDispatch>();
 

@@ -1,9 +1,9 @@
 import { Box, SxProps, Pagination } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 import { AppDispatch } from '../store/store';
-import { getAllBooksRequest, getBookIsbnSearchRequest, getBooksByCategoryRequest, getBooksSearchRequest, setPage } from '../actions/types';
+import { getAllBooksRequest, getBooksByCategoryRequest, setPage } from '../actions/types';
 import { RootState } from '../reducers';
-import { useEffect, useMemo } from 'react';
+import { useEffect } from 'react';
 import { SearchType } from '../search/types/searchType';
 import { IsbnType } from '../search/types/isbnType';
 import { ICategory } from '../models/category';
