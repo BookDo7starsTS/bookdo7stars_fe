@@ -33,9 +33,7 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
   parsedIsbn,
 }) => {
   const [selectedBooks, setSelectedBooks] = useState<number[]>([]);
-  const [sortBy, setSortBy] = useState('');
   const pageCount = Math.ceil(count / booksPerPage);
-  const dispatch = useDispatch<AppDispatch>();
   const theme = useTheme();
 
   const isWidth900Up = useMediaQuery('(min-width:900px)');
@@ -58,15 +56,6 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
     setSelectedBooks((prevSelectedBooks) =>
       prevSelectedBooks.includes(bookId) ? prevSelectedBooks.filter((id) => id !== bookId) : [...prevSelectedBooks, bookId],
     );
-  };
-
-  const handleSortChange = (event: React.MouseEvent<HTMLElement>, newSortBy: string) => {
-    setSortBy(newSortBy);
-    const updatedSearchCondition: SearchType = {
-      ...parsedSearchCondition,
-      orderTerm: newSortBy,
-    };
-    dispatch(getBooksSearchRequest(updatedSearchCondition));
   };
 
   const getTitle = (parsedSearchCondition: SearchType) => {
@@ -140,7 +129,7 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
               {pageTitle}
             </Typography>
           </Box>
-          <ToggleButtons sortBy={sortBy} handleSortChange={() => handleSortChange} boxStyle={toggleBoxStyle} buttonStyle={toggleButtonStyle} />
+          <ToggleButtons parsedSearchCondition={parsedSearchCondition} boxStyle={toggleBoxStyle} buttonStyle={toggleButtonStyle} />
           <CustomPagination
             pageCount={pageCount}
             style={paginationStyle}

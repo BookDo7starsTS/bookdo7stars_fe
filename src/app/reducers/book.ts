@@ -26,6 +26,7 @@ import {
   RESET_GROUP_BOOKS,
   RESET_BOOK,
   SET_PAGE,
+  SET_SORTBY,
 } from '../actions/constants';
 import { BookActionTypes } from '../actions/types';
 import { Book } from '../models/book';
@@ -61,6 +62,7 @@ type InitialState = {
   book: Book | null;
   pageSize: number;
   currentPage: number;
+  sortBy: string;
 };
 
 export const initialState: InitialState = {
@@ -101,6 +103,7 @@ export const initialState: InitialState = {
   book: null,
   pageSize: 20,
   currentPage: 1,
+  sortBy: 'accuracy',
 };
 
 function bookReducer(state = initialState, action: BookActionTypes) {
@@ -159,6 +162,8 @@ function bookReducer(state = initialState, action: BookActionTypes) {
       return { ...state, groupBooks: [] };
     case SET_PAGE:
       return { ...state, currentPage: action.data };
+    case SET_SORTBY:
+      return { ...state, sortBy: action.data };
     default:
       return state;
   }

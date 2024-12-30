@@ -28,6 +28,7 @@ import {
   GET_BOOKS_BY_CATEGORY_SUCCESS,
   RESET_BOOK,
   SET_PAGE,
+  SET_SORTBY,
 } from '../constants';
 
 // Action type
@@ -192,6 +193,11 @@ export interface SetPageAction {
   data: number;
 }
 
+export interface SetSortByAction {
+  type: typeof SET_SORTBY;
+  data: string;
+}
+
 //Union type
 export type BookActionTypes =
   | GetAllBooksRequestAction
@@ -220,7 +226,8 @@ export type BookActionTypes =
   | GetBooksByCategoryRequestAction
   | GetBooksByCategorySuccessAction
   | GetBooksByCategoryFailureAction
-  | SetPageAction;
+  | SetPageAction
+  | SetSortByAction;
 
 // Action creater
 
@@ -373,5 +380,10 @@ export const resetBook = (): ResetBookAction => ({
 
 export const setPage = (data: SetPageAction['data']): SetPageAction => ({
   type: SET_PAGE,
+  data: data,
+});
+
+export const setSortBy = (data: SetSortByAction['data']): SetSortByAction => ({
+  type: SET_SORTBY,
   data: data,
 });

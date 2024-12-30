@@ -14,7 +14,7 @@ const ActionButtons = (props: ActionButtonsProps) => {
   const theme = useTheme();
   return (
     <>
-      {names.map((name) => {
+      {names.map((name, index) => {
         const iconData = icons[name];
         let buttonStyle;
         if (name === '바로구매') {
@@ -24,6 +24,7 @@ const ActionButtons = (props: ActionButtonsProps) => {
         }
         return (
           <Button
+            key={index}
             sx={{ ...buttonStyle }}
             variant={name === '장바구니' ? 'contained' : 'outlined'}
             color={name === '장바구니' ? 'primary' : 'inherit'}

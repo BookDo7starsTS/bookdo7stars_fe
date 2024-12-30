@@ -74,13 +74,13 @@ const AddressChange: React.FC<AddressChangeProps> = ({ setAddress }) => {
 
   return (
     <>
-      <div className="address-change-container" style={{ backgroundColor: 'black' }}>
+      <div className="address-change-container">
         <button className="change-button" onClick={togglePostcode}>
           지역 선택 {'▾'}
         </button>
         <Typography sx={{ fontSize: '12px', color: 'red' }}>수도권과 부산은 하루배송 가능 지역입니다.</Typography>
       </div>
-      <PostcodeWidget className={`postcode-widget ${isPostcodeOpen ? 'open' : ''}`} style={{ backgroundColor: 'black' }} ref={elementRef} />
+      <PostcodeWidget className={`postcode-widget ${isPostcodeOpen ? 'open' : ''}`} ref={elementRef} />
     </>
   );
 };

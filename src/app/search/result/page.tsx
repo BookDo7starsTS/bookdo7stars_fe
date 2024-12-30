@@ -18,7 +18,7 @@ const ResultPage = () => {
   const queryParams = useSearchParams();
   const isbn = queryParams.get('isbn');
   const searchCondition = queryParams.get('searchCondition');
-  const { currentPage } = useSelector((store: RootState) => store.book);
+  const { currentPage, sortBy } = useSelector((store: RootState) => store.book);
 
   const parsedIsbn: IsbnType = useMemo(() => {
     return isbn ? JSON.parse(decodeURIComponent(isbn)) : null;
@@ -38,11 +38,11 @@ const ResultPage = () => {
       dispatch(getBookIsbnSearchRequest(parsedIsbn));
     }
     if (parsedSearchCondition) {
-      const updatedCondition = { ...parsedSearchCondition, page: currentPage, pageSize: booksPerPage };
+      const updatedCondition = { ...parsedSearchCondition, page: currentPage, pageSize: booksPerPage, orderTerm: sortBy };
 
       dispatch(getBooksSearchRequest(updatedCondition));
     }
-  }, [parsedIsbn, parsedSearchCondition, dispatch, currentPage]);
+  }, [parsedIsbn, dispatch, currentPage, sortBy]);
 
   return (
     <>

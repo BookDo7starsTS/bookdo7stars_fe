@@ -1,15 +1,40 @@
+import { getBooksSearchRequest, setSortBy } from '@/app/actions/types';
+import { RootState } from '@/app/reducers';
+import { SearchType } from '@/app/search/types/searchType';
+import { AppDispatch } from '@/app/store/store';
 import { ToggleButtonGroup, ToggleButton } from '@mui/material';
 import { Box, SxProps } from '@mui/system';
+import { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 
 type ToggleButtonsProps = {
-  sortBy: string;
-  handleSortChange: () => void;
+  parsedSearchCondition?: SearchType;
   boxStyle: SxProps;
   buttonStyle: SxProps;
 };
 
 const ToggleButtons = (props: ToggleButtonsProps) => {
-  const { sortBy, handleSortChange, boxStyle, buttonStyle } = props;
+  const { parsedSearchCondition, boxStyle, buttonStyle } = props;
+  const { sortBy } = useSelector((store: RootState) => store.book);
+  const dispatch = useDispatch<AppDispatch>();
+
+  const handleSortChange = (event: React.MouseEvent<HTMLElement>, newSortBy: string) => {
+    dispatch(setSortBy(newSortBy));
+    console.log('??');
+  };
+
+  // useEffect(() => {
+  //   if (parsedSearchCondition && sortBy) {
+  //     const updatedSearchCondition: SearchType = {
+  //       ...parsedSearchCondition,
+  //       orderTerm: sortBy,
+  //     };
+  //     console.log(updatedSearchCondition);
+  //     dispatch(getBooksSearchRequest(updatedSearchCondition));
+  //   } else {
+  //     // for category page
+  //   }
+  // }, [parsedSearchCondition, sortBy, dispatch]);
 
   return (
     <Box mb={2} sx={{ ...boxStyle }}>

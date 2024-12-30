@@ -53,10 +53,6 @@ const CategoryBookPage = () => {
     // dispatch(getBooksSearchRequest(updatedSearchCondition));
   };
 
-  // const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-  //   setPage(value);
-  // };
-
   useEffect(() => {
     if (categoryId) {
       dispatch(getCategoryByIdRequest(categoryId));

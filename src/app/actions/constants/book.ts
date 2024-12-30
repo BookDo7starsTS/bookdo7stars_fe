@@ -44,3 +44,5 @@ export const RESET_GROUP_BOOKS = 'RESET_GROUP_BOOKS';
 export const RESET_BOOK = 'RESET_BOOK';
 
 export const SET_PAGE = 'SET_PAGE';
+
+export const SET_SORTBY = 'SET_SORTBY';
