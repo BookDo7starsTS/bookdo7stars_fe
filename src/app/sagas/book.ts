@@ -78,14 +78,12 @@ export function* getBooksByGroup(action: GetBooksByGroupRequestAction): SagaIter
 }
 
 function getBooksByCategoryAPI(data: GetBooksByCategoryRequestAction['data']) {
-  console.log('data', data);
   return axios.get(`/book/category/${data.categoryId}?page=${data.page}&pageSize=${data.pageSize}`);
 }
 
 export function* getBooksByCategory(action: GetBooksByCategoryRequestAction): SagaIterator {
   try {
     const response: any = yield call(getBooksByCategoryAPI, action.data);
-    console.log(response);
     yield put({
       type: GET_BOOKS_BY_CATEGORY_SUCCESS,
       payload: response.data.books.rows,
@@ -110,7 +108,6 @@ function getBooksSearchAPI(data: GetBooksSearchRequestAction['data']) {
 export function* getBooksSearch(action: GetBooksSearchRequestAction): SagaIterator {
   try {
     const response: any = yield call(getBooksSearchAPI, action.data);
-    console.log('response', response.data);
 
     yield put({
       type: GET_BOOKS_SEARCH_SUCCESS,

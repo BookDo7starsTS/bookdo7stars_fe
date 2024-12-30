@@ -45,7 +45,7 @@ const ResultPage = () => {
   }, [parsedIsbn, parsedSearchCondition, dispatch, currentPage]);
 
   return (
-    <Container data-testid="books-container" sx={{ width: '100vw', mt: 3 }}>
+    <>
       {isGetBooksSearchLoading ? (
         <LoadingSpinner />
       ) : (
@@ -59,7 +59,7 @@ const ResultPage = () => {
           parsedIsbn={parsedIsbn}
         />
       )}
-    </Container>
+    </>
   );
 };
 

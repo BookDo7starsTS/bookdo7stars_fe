@@ -27,7 +27,7 @@ const CategoryList = (props: CategoryListProps) => {
   const ids = useMemo(() => Object.keys(categories), [categories]);
 
   const onExpandCategory = (id: string) => {
-    if (!categories[id] || categories[id].length === 0) {
+    if (!categories[id + ' '] || categories[id + ' '].length === 0) {
       dispatch(getCategoriesByIdRequest(id.toString()));
     }
     if (expandedIds.includes(id)) {
@@ -47,11 +47,11 @@ const CategoryList = (props: CategoryListProps) => {
     if (expandedIds.length === 0) {
       const newExpandedIds: string[] = [];
       if (ids.length === 3) {
-        newExpandedIds.push(ids[1]);
+        newExpandedIds.push(ids[1].trim());
       }
       if (ids.length > 3) {
         for (let i = 1; i < ids.length - 1; i++) {
-          newExpandedIds.push(ids[i]);
+          newExpandedIds.push(ids[i].trim());
         }
       }
       dispatch(setExpandedCategoryIdsRequest(newExpandedIds));
@@ -71,7 +71,7 @@ const CategoryList = (props: CategoryListProps) => {
             style={{ padding: '0.25rem' }}
           />
           {expandedIds.length !== 0 &&
-            categories[cat.id]?.map((subCat) => (
+            categories[cat.id + ' ']?.map((subCat) => (
               <CategoryListItem
                 key={subCat.id}
                 category={subCat}

@@ -8,6 +8,7 @@ import { getAllBooksRequest } from '../actions/types';
 import BooksContainer from '../components/Book/BooksContainer';
 import { RootState } from '../reducers';
 import { AppDispatch } from '../store/store';
+import CustomPagination from '../components/CustomPagination';
 
 const Books = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -20,38 +21,7 @@ const Books = () => {
     dispatch(getAllBooksRequest(page, booksPerPage));
   }, []);
 
-  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value);
-    dispatch(getAllBooksRequest(value, booksPerPage));
-  };
-
-  return (
-    <>
-      <Container data-testid="books-container" sx={{ width: '100vw', display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
-        <BooksContainer books={books} title={'All Books'} booksPerPage={booksPerPage} />
-        <Box sx={{ display: 'flex', justifyContent: 'center', mb: '20px' }}>
-          <Pagination
-            count={pageCount}
-            page={page}
-            onChange={handlePageChange}
-            color="primary"
-            showFirstButton
-            showLastButton
-            sx={{
-              justifyContent: 'center',
-              '& .MuiPagination-ul': {
-                flexWrap: 'nowrap',
-              },
-              '& .MuiPaginationItem-root': {
-                minWidth: '32px',
-                height: '32px',
-              },
-            }}
-          />
-        </Box>
-      </Container>
-    </>
-  );
+  return <BooksContainer books={books} title={'All Books'} booksPerPage={booksPerPage} pageCount={pageCount} />;
 };
 
 export default Books;

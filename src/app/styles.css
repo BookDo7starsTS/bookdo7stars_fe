@@ -2,20 +2,23 @@ body {
   font-family: 'IBM Plex Sans KR', sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  min-width: '1030px';
+  min-width: '1200px';
   margin: 0;
 }
 
 @media (min-width: 2560px) {
   body {
-    margin-left: 30%;
-    margin-right: 30%;
+    margin-left: 20%;
+    margin-right: 20%;
   }
 }
 
-/* main {
-  width: '100%';
-} */
+main {
+  display: flex;
+  width: '100vw';
+  justify-content: center;
+  margin-top: 2rem;
+}
 
 code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New', monospace;
@@ -38,4 +41,8 @@ code {
 
 .bestSellerCategory:hover {
   background-color: #f0f0f0;
+}
+
+.MuiContainer-root {
+  margin: auto 0;
 }

@@ -29,7 +29,7 @@ const CategoryBookPage = () => {
   const pageCount = Math.ceil(count / booksPerPage);
 
   useEffect(() => {
-    if (!categoriesById[categoryId]) {
+    if (!categoriesById[categoryId + ' ']) {
       dispatch(getCategoriesByIdRequest(categoryId));
     }
   }, [categoriesById, dispatch]);
@@ -43,8 +43,6 @@ const CategoryBookPage = () => {
       prevSelectedBooks.includes(bookId) ? prevSelectedBooks.filter((id) => id !== bookId) : [...prevSelectedBooks, bookId],
     );
   };
-
-  console.log('categoryBooks', categoryBooks);
 
   const handleSortChange = (event: React.MouseEvent<HTMLElement>, newSortBy: string) => {
     setSortBy(newSortBy);
@@ -80,7 +78,6 @@ const CategoryBookPage = () => {
   };
   const actionButtonNames = ['전체 선택', '장바구니 담기', '보관함 담기', '마이리스트 담기'];
   const handleOnClick = (name: string) => {
-    console.log('handleOnClick.', name);
     switch (name) {
       case '전체 선택': {
         if (selectedBooks.length === categoryBooks.length) {
@@ -97,11 +94,6 @@ const CategoryBookPage = () => {
     } else {
       return selectedBooks.length === 0;
     }
-  };
-
-  const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value);
-    //TODO: implement
   };
 
   return (

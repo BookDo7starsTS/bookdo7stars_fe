@@ -15,6 +15,7 @@ import {
   GET_CATEGORY_BY_ID_REQUEST,
 } from '../actions/constants';
 import { GetCategoriesByIdRequestAction, GetCategoryRequestAction } from '../actions/types';
+import { CategoryById } from '../models/category';
 
 function GetCategoryByIdAPI(id: string) {
   return axios.get(`/category/${id}`);

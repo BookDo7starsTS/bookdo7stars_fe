@@ -2,14 +2,21 @@ import { Container, Typography, Grid, Box } from '@mui/material';
 
 import BookCard from './BookCard';
 import { Book } from '../../models/book';
+import CustomPagination from '../CustomPagination';
 
 interface BookContainerProps {
   books: Book[];
   title: string;
   booksPerPage: number;
+  pageCount: number;
 }
 
-const BooksContainer: React.FC<BookContainerProps> = ({ books, title }) => {
+const BooksContainer: React.FC<BookContainerProps> = ({ books, title, booksPerPage, pageCount }) => {
+  const paginationStyle = {
+    display: 'flex',
+    justifyContent: 'center',
+    marginBottom: '20px', // 'mb' 대신 표준 CSS 속성 사용
+  };
   return (
     <Container
       sx={{
@@ -43,6 +50,7 @@ const BooksContainer: React.FC<BookContainerProps> = ({ books, title }) => {
           ))}
         </Grid>
       </Box>
+      <CustomPagination pageCount={pageCount} style={paginationStyle} booksPerPage={booksPerPage} />
     </Container>
   );
 };

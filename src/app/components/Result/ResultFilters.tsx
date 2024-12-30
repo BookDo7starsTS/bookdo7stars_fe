@@ -71,7 +71,6 @@ const ResultFilters = () => {
       endDateISO = today.toISOString().split('T')[0];
     }
 
-    console.log('222', startDateISO, endDateISO);
     const requestData = {
       ...searchData,
       start_price: filters.priceRange[0],
@@ -90,16 +89,9 @@ const ResultFilters = () => {
       delete requestData.end_date;
     }
 
-    console.log('요청데이타ㅏㅏㅏㅏ ', requestData);
-
     dispatch({
       type: GET_BOOKS_SEARCH_REQUEST,
       data: requestData,
-    });
-
-    console.log('Applied Filters:', {
-      dateRange: [requestData.start_date, requestData.end_date],
-      priceRange: filters.priceRange,
     });
   };
 
