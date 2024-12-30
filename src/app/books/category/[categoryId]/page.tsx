@@ -18,9 +18,8 @@ import CustomPagination from '@/app/components/CustomPagination';
 const CategoryBookPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { categoriesById, selectedCategory } = useSelector((store: RootState) => store.category);
-  const { categoryBooks, count } = useSelector((store: RootState) => store.book);
+  const { categoryBooks, count, sortBy } = useSelector((store: RootState) => store.book);
   const [selectedBooks, setSelectedBooks] = useState<number[]>([]);
-  const [sortBy, setSortBy] = useState('');
 
   const { categoryId } = useParams<{ categoryId: string }>();
 
@@ -35,22 +34,17 @@ const CategoryBookPage = () => {
   }, [categoriesById, dispatch]);
 
   useEffect(() => {
-    dispatch(getBooksByCategoryRequest({ categoryId: categoryId, page: page, pageSize: booksPerPage }));
-  }, [categoryId]);
+    if (selectedCategory) {
+      dispatch(
+        getBooksByCategoryRequest({ categoryId: categoryId, page: page, pageSize: booksPerPage, orderTerm: sortBy, categoryName: selectedCategory.name }),
+      );
+    }
+  }, [categoryId, selectedCategory, sortBy]);
 
   const handleCheckboxChange = (bookId: number) => {
     setSelectedBooks((prevSelectedBooks) =>
       prevSelectedBooks.includes(bookId) ? prevSelectedBooks.filter((id) => id !== bookId) : [...prevSelectedBooks, bookId],
     );
-  };
-
-  const handleSortChange = (event: React.MouseEvent<HTMLElement>, newSortBy: string) => {
-    setSortBy(newSortBy);
-    // const updatedSearchCondition: SearchType = {
-    //   ...parsedSearchCondition,
-    //   orderTerm: newSortBy,
-    // };
-    // dispatch(getBooksSearchRequest(updatedSearchCondition));
   };
 
   useEffect(() => {
@@ -134,7 +128,7 @@ const CategoryBookPage = () => {
             {selectedCategory ? selectedCategory.name + '(' + count + ')' : '찾으시는 카테고리는 없습니다.'}
           </Typography>
         </Box>
-        <ToggleButtons sortBy={sortBy} handleSortChange={() => handleSortChange} boxStyle={toggleBoxStyle} buttonStyle={toggleButtonStyle} />
+        <ToggleButtons boxStyle={toggleBoxStyle} buttonStyle={toggleButtonStyle} />
         <CustomPagination pageCount={pageCount} style={paginationStyle} booksPerPage={booksPerPage} categoryId={categoryId} />
         <Box sx={{ display: 'flex', width: '100%', justifyContent: 'flex-end', gap: '12px', marginBottom: '20px' }}>
           <ActionButtons names={actionButtonNames} handleOnClick={handleOnClick} disabledButtons={disabledButtons} />

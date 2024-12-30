@@ -6,33 +6,43 @@ import { RootState } from '../reducers';
 import { useEffect, useMemo } from 'react';
 import { SearchType } from '../search/types/searchType';
 import { IsbnType } from '../search/types/isbnType';
+import { ICategory } from '../models/category';
 
 type CustomPaginationProps = {
   pageCount: number;
   style?: SxProps;
   booksPerPage: number;
   categoryId?: string;
+  selectedCategory?: ICategory;
   parsedSearchCondition?: SearchType;
   parsedIsbn?: IsbnType;
 };
 
 const CustomPagination = (props: CustomPaginationProps) => {
-  const { pageCount, style, booksPerPage, categoryId, parsedSearchCondition, parsedIsbn } = props;
+  const { pageCount, style, booksPerPage, categoryId, selectedCategory, parsedSearchCondition, parsedIsbn } = props;
   const dispatch = useDispatch<AppDispatch>();
-  const { currentPage } = useSelector((store: RootState) => store.book);
+  const { currentPage, sortBy } = useSelector((store: RootState) => store.book);
 
   const handlePageChange = (event: React.ChangeEvent<unknown>, value: number) => {
     dispatch(setPage(value));
   };
 
   useEffect(() => {
-    if (categoryId && !parsedSearchCondition && !parsedIsbn) {
-      dispatch(getBooksByCategoryRequest({ categoryId: categoryId, page: currentPage, pageSize: booksPerPage }));
+    if (categoryId && selectedCategory && !parsedSearchCondition && !parsedIsbn) {
+      dispatch(
+        getBooksByCategoryRequest({
+          categoryId: categoryId,
+          page: currentPage,
+          pageSize: booksPerPage,
+          orderTerm: sortBy,
+          categoryName: selectedCategory.name,
+        }),
+      );
     }
     if (!categoryId && !parsedSearchCondition && !parsedIsbn) {
       dispatch(getAllBooksRequest(currentPage, booksPerPage));
     }
-  }, [currentPage, parsedSearchCondition, parsedIsbn, categoryId, dispatch]);
+  }, [currentPage, parsedSearchCondition, parsedIsbn, categoryId, selectedCategory, dispatch]);
 
   return (
     <Box sx={{ ...style }}>

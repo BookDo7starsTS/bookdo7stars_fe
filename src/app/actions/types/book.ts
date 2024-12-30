@@ -102,6 +102,8 @@ export interface GetBooksByCategoryRequestAction {
     categoryId: string;
     page?: number;
     pageSize?: number;
+    orderTerm: string;
+    categoryName: string;
   };
 }
 

@@ -20,21 +20,7 @@ const ToggleButtons = (props: ToggleButtonsProps) => {
 
   const handleSortChange = (event: React.MouseEvent<HTMLElement>, newSortBy: string) => {
     dispatch(setSortBy(newSortBy));
-    console.log('??');
   };
-
-  // useEffect(() => {
-  //   if (parsedSearchCondition && sortBy) {
-  //     const updatedSearchCondition: SearchType = {
-  //       ...parsedSearchCondition,
-  //       orderTerm: sortBy,
-  //     };
-  //     console.log(updatedSearchCondition);
-  //     dispatch(getBooksSearchRequest(updatedSearchCondition));
-  //   } else {
-  //     // for category page
-  //   }
-  // }, [parsedSearchCondition, sortBy, dispatch]);
 
   return (
     <Box mb={2} sx={{ ...boxStyle }}>

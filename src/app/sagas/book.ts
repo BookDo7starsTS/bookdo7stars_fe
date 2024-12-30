@@ -78,7 +78,9 @@ export function* getBooksByGroup(action: GetBooksByGroupRequestAction): SagaIter
 }
 
 function getBooksByCategoryAPI(data: GetBooksByCategoryRequestAction['data']) {
-  return axios.get(`/book/category/${data.categoryId}?page=${data.page}&pageSize=${data.pageSize}`);
+  return axios.get(
+    `/book/category/${data.categoryId}?page=${data.page}&pageSize=${data.pageSize}&orderTerm=${data.orderTerm}&categoryName=${data.categoryName}`,
+  );
 }
 
 export function* getBooksByCategory(action: GetBooksByCategoryRequestAction): SagaIterator {
