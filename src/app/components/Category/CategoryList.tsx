@@ -28,14 +28,11 @@ const CategoryList = (props: CategoryListProps) => {
 
   const onExpandCategory = (id: string) => {
     if (!categories[id + ' '] || categories[id + ' '].length === 0) {
-      console.log('여기야?');
       dispatch(getCategoriesByIdRequest(id.toString()));
     }
     if (expandedIds.includes(id)) {
-      console.log('저기야?');
       dispatch(setExpandedCategoryIdsRequest(expandedIds.filter((expandedId) => expandedId !== id)));
     } else {
-      console.log('요기야?');
       dispatch(setExpandedCategoryIdsRequest([...expandedIds, id]));
     }
   };
