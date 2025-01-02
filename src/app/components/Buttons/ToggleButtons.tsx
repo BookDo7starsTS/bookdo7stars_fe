@@ -20,7 +20,7 @@ const ToggleButtons = (props: ToggleButtonsProps) => {
   };
 
   return (
-    <Box mb={2} sx={{ ...boxStyle }}>
+    <Box className="toggle-buttons" mb={2} sx={{ ...boxStyle }}>
       <ToggleButtonGroup value={sortBy} exclusive onChange={handleSortChange} aria-label="Sort options">
         <ToggleButton value="accuracy" aria-label="정확도순" sx={{ ...buttonStyle }}>
           정확도순

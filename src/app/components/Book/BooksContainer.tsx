@@ -19,16 +19,14 @@ const BooksContainer: React.FC<BookContainerProps> = ({ books, title, booksPerPa
   };
   return (
     <Container
+      className="all-books-container"
       sx={{
+        width: '100vw',
         display: 'flex',
         justifyContent: 'center',
         flexDirection: 'column',
-        borderRadius: 2,
-        paddingLeft: '0px',
-        paddingRight: '0px',
-        marginTop: '20px',
       }}>
-      <Box sx={{ display: 'flex', width: '100%', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
+      <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
         <Typography variant="h3" component="div" gutterBottom sx={{ width: '400px', height: '60px', fontWeight: 'bold', textAlign: 'center', margin: '0px' }}>
           {title}
         </Typography>
@@ -44,6 +42,7 @@ const BooksContainer: React.FC<BookContainerProps> = ({ books, title, booksPerPa
               sm={6}
               md={4}
               lg={3}
+              xl={2}
               sx={{ paddingY: '30px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
               <BookCard key={index} book={book} />
             </Grid>

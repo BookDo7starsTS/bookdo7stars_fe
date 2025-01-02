@@ -78,7 +78,7 @@ export default function Home() {
           ))}
         </Carousel>
       </Box>
-      <Container maxWidth={false} disableGutters className="Mainpage-Container" sx={{ marginTop: '2rem', marginBottom: '4rem' }}>
+      <Container maxWidth={false} disableGutters className="Mainpage-Container" sx={{ padding: 2, margin: '4rem' }}>
         <Container
           maxWidth={false}
           disableGutters
@@ -211,6 +211,7 @@ export default function Home() {
                 sm={6}
                 md={4}
                 lg={3}
+                xl={2}
                 sx={{ paddingY: '30px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <BookCard key={index} book={book} />
               </Grid>
@@ -244,6 +245,7 @@ export default function Home() {
                 sm={6}
                 md={4}
                 lg={3}
+                xl={2}
                 sx={{ paddingY: '30px', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
                 <BookCard key={index} book={book} />
               </Grid>

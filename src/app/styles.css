@@ -15,7 +15,6 @@ body {
 
 main {
   display: flex;
-  width: '100vw';
   justify-content: center;
   margin-top: 2rem;
 }
@@ -44,5 +43,7 @@ code {
 }
 
 .MuiContainer-root {
-  margin: auto 0;
+  @media (min-width: 1200px) {
+    max-width: none !important;
+  }
 }

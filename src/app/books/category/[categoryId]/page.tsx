@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import ActionButtons from '@/app/components/Buttons/ActionButtons';
 import ToggleButtons from '@/app/components/Buttons/ToggleButtons';
 import CustomPagination from '@/app/components/CustomPagination';
+import { display } from '@mui/system';
 
 const CategoryBookPage = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -60,6 +61,8 @@ const CategoryBookPage = () => {
   const toggleBoxStyle = {
     borderBottom: '0.5px solid #ccc',
     paddingBottom: '0px',
+    display: 'flex',
+    justifyContent: 'flex-end',
   };
   const toggleButtonStyle = {
     borderBottomLeftRadius: '0px',
@@ -121,7 +124,7 @@ const CategoryBookPage = () => {
           </Box>
         </Box>
       </Grid>
-      <Grid item xs={12} md={8} className="category-books-container-grid">
+      <Grid item xs={12} md={9} className="category-books-container-grid">
         <Box display="flex" alignItems="center" justifyContent="center" mb={4}>
           <Typography variant={'h4'} color="textPrimary" sx={{ color: 'gray' }}>
             {selectedCategory ? selectedCategory.name + '(' + count + ')' : '찾으시는 카테고리는 없습니다.'}
