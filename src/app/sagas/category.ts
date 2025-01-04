@@ -9,13 +9,11 @@ import {
   GET_CATEGORIES_BY_ID_REQUEST,
   GET_CATEGORIES_BY_ID_FAILURE,
   GET_CATEGORIES_BY_ID_SUCCESS,
-  RESET_CATEGORY_BY_ID_REQUEST,
   GET_CATEGORY_BY_ID_FAILURE,
   GET_CATEGORY_BY_ID_SUCCESS,
   GET_CATEGORY_BY_ID_REQUEST,
 } from '../actions/constants';
 import { GetCategoriesByIdRequestAction, GetCategoryRequestAction } from '../actions/types';
-import { CategoryById } from '../models/category';
 
 function GetCategoryByIdAPI(id: string) {
   return axios.get(`/category/${id}`);

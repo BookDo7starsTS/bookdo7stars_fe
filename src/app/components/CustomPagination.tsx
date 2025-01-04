@@ -1,12 +1,14 @@
+import { useEffect } from 'react';
+
 import { Box, SxProps, Pagination } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
-import { AppDispatch } from '../store/store';
+
 import { getAllBooksRequest, getBooksByCategoryRequest, setPage } from '../actions/types';
-import { RootState } from '../reducers';
-import { useEffect } from 'react';
-import { SearchType } from '../search/types/searchType';
-import { IsbnType } from '../search/types/isbnType';
 import { ICategory } from '../models/category';
+import { RootState } from '../reducers';
+import { IsbnType } from '../search/types/isbnType';
+import { SearchType } from '../search/types/searchType';
+import { AppDispatch } from '../store/store';
 
 type CustomPaginationProps = {
   pageCount: number;

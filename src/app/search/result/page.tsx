@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 
 import { useSearchParams } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';

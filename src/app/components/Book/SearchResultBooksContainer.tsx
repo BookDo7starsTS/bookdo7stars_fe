@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
 
+import { IsbnType } from '@/app/search/types/isbnType';
 import { SearchType } from '@/app/search/types/searchType';
 import { useMediaQuery, Container, Typography, Grid, Box, Checkbox } from '@mui/material';
 import useTheme from '@mui/system/useTheme';
 
 import BookDetailCard from './BookDetailCard';
 import { Book } from '../../models/book';
-import ResultFilters from '../Result/ResultFilters';
-import CustomPagination from '../CustomPagination';
-import ToggleButtons from '../Buttons/ToggleButtons';
 import ActionButtons from '../Buttons/ActionButtons';
-import { IsbnType } from '@/app/search/types/isbnType';
+import ToggleButtons from '../Buttons/ToggleButtons';
+import CustomPagination from '../CustomPagination';
+import ResultFilters from '../Result/ResultFilters';
 interface SearchResultBooksContainerProps {
   books: Book[];
   count: number;

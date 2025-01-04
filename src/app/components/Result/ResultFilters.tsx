@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 import { RootState } from '@/app/reducers';
-import { SearchType } from '@/app/search/types/searchType';
 import { Container, Box, Typography, Slider, Button } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 

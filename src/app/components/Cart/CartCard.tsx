@@ -12,7 +12,7 @@ type CartCardProps = {
   quantity: number;
   handleCheckboxChange: (id: string, e: React.ChangeEvent<HTMLInputElement>) => void;
   checkedIds: Record<string, boolean>;
-  handleCartDelete: (bookid: string) => void
+  handleCartDelete: (bookid: string) => void;
 };
 
 const CartCard = (props: CartCardProps) => {
@@ -59,7 +59,7 @@ const CartCard = (props: CartCardProps) => {
                   <AddIcon />
                 </IconButton>
               </Box>
-              <Button variant="outlined" color="error" size="small" startIcon={<DeleteIcon />} onClick={()=>handleCartDelete(book.id.toString())} >
+              <Button variant="outlined" color="error" size="small" startIcon={<DeleteIcon />} onClick={() => handleCartDelete(book.id.toString())}>
                 삭제
               </Button>
             </Box>

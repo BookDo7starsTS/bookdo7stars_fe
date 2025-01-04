@@ -4,26 +4,24 @@ import { useEffect, useState } from 'react';
 
 import { getBooksByCategoryRequest, getCategoriesByIdRequest, getCategoryByIdRequest } from '@/app/actions/types';
 import BookDetailCard from '@/app/components/Book/BookDetailCard';
+import ActionButtons from '@/app/components/Buttons/ActionButtons';
+import ToggleButtons from '@/app/components/Buttons/ToggleButtons';
 import CategoryList from '@/app/components/Category/CategoryList';
+import CustomPagination from '@/app/components/CustomPagination';
 import { RootState } from '@/app/reducers';
 import { AppDispatch } from '@/app/store/store';
 import { Box, Checkbox, Grid, Typography } from '@mui/material';
 import { useParams } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
-import ActionButtons from '@/app/components/Buttons/ActionButtons';
-import ToggleButtons from '@/app/components/Buttons/ToggleButtons';
-import CustomPagination from '@/app/components/CustomPagination';
-import { display } from '@mui/system';
 
 const CategoryBookPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { categoriesById, selectedCategory } = useSelector((store: RootState) => store.category);
-  const { categoryBooks, count, sortBy } = useSelector((store: RootState) => store.book);
+  const { categoryBooks, count, sortBy, currentPage } = useSelector((store: RootState) => store.book);
   const [selectedBooks, setSelectedBooks] = useState<number[]>([]);
 
   const { categoryId } = useParams<{ categoryId: string }>();
 
-  const [page, setPage] = useState(1);
   const booksPerPage = 20;
   const pageCount = Math.ceil(count / booksPerPage);
 
@@ -36,7 +34,13 @@ const CategoryBookPage = () => {
   useEffect(() => {
     if (selectedCategory) {
       dispatch(
-        getBooksByCategoryRequest({ categoryId: categoryId, page: page, pageSize: booksPerPage, orderTerm: sortBy, categoryName: selectedCategory.name }),
+        getBooksByCategoryRequest({
+          categoryId: categoryId,
+          page: currentPage,
+          pageSize: booksPerPage,
+          orderTerm: sortBy,
+          categoryName: selectedCategory.name,
+        }),
       );
     }
   }, [categoryId, selectedCategory, sortBy]);

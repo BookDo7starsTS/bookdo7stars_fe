@@ -1,13 +1,11 @@
 import React from 'react';
 
 import { CategoryById } from '@/app/models/category';
-import { RootState } from '@/app/reducers';
 import { AppDispatch } from '@/app/store/store';
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined';
 import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
-import { Box, IconButton, ListItem, ListItemText, SxProps, useTheme } from '@mui/material';
-import { useRouter } from 'next/navigation';
-import { useDispatch, useSelector } from 'react-redux';
+import { IconButton, ListItem, ListItemText, SxProps, useTheme } from '@mui/material';
+import { useDispatch } from 'react-redux';
 
 type CategoryListItemProps = {
   category: CategoryById;
@@ -20,7 +18,6 @@ type CategoryListItemProps = {
 
 const CategoryListItem = (props: CategoryListItemProps) => {
   const { category, expandedIds, categoryId, onExpandCategory, handleOnClickCategory, style } = props;
-  const dispatch = useDispatch<AppDispatch>();
   const theme = useTheme();
 
   return (

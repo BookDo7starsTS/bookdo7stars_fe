@@ -1,5 +1,6 @@
-import { Box, Button, SxProps, useTheme } from '@mui/material';
 import { ReactNode } from 'react';
+
+import { Box, Button, SxProps, useTheme } from '@mui/material';
 
 type ActionButtonsProps = {
   names: string[];

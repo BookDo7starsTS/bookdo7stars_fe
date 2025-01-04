@@ -1,22 +1,15 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 
+import { Typography } from '@mui/material';
 import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import './daumAPI.style.css';
-import { Typography } from '@mui/material';
 
 declare global {
   interface Window {
     daum: any;
   }
 }
-
-// Styled component for the dropdown container
-const DropdownContainer = styled.div`
-  position: relative;
-  overflow: visible;
-  z-index: 1501;
-`;
 
 const PostcodeWidget = styled.div`
   &.open {

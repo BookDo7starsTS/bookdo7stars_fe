@@ -85,14 +85,6 @@ const CategoryBar = () => {
     router.push(getBooksPageURL(group));
   };
 
-  const selectCategory = (obj: Category, child?: Category) => {
-    if (!child) {
-      router.push('/books/category/' + obj.id.toString());
-    } else {
-      router.push('/books/category/' + child.id.toString());
-    }
-  };
-
   return (
     <div>
       <AppBar position="static" sx={{ backgroundColor: '#fff', borderBottom: '2px solid #035036', borderTop: '2px solid #035036' }}>

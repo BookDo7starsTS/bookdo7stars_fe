@@ -2,14 +2,13 @@
 
 import React, { useEffect, useState } from 'react';
 
+import { removeFromCartRequest, getItemsInCartRequest } from '@/app/actions/types';
 import { RootState } from '@/app/reducers';
 import { AppDispatch } from '@/app/store/store';
 import { Box, Button, Typography, Grid } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getItemsInCartRequest } from '../actions/types';
 import CartCard from '../components/Cart/CartCard';
-import { removeFromCartRequest } from '@/app/actions/types';
 
 const CartPage = () => {
   const dispatch = useDispatch<AppDispatch>();

@@ -4,7 +4,6 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import Footer from './components/Footer';
 import Header from './components/Header';
-import StyledComponentsRegistry from './lib/registry';
 import StoreProvider from './providers/StoreProvider';
 import SessionProvider from './session-provider';
 import ThemeProvider from './theme-provider';
@@ -24,7 +23,6 @@ const RootLayout = ({
   return (
     <html lang="en">
       <body>
-        {/* <StyledComponentsRegistry> */}
         <ThemeProvider>
           <StoreProvider>
             <SessionProvider>
@@ -34,7 +32,6 @@ const RootLayout = ({
             </SessionProvider>
           </StoreProvider>
         </ThemeProvider>
-        {/* </StyledComponentsRegistry> */}
         <ToastContainer
           position="top-right"
           autoClose={5000}
