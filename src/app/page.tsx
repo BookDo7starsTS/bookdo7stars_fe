@@ -34,7 +34,7 @@ export default function Home() {
   };
   return (
     <>
-      <Box>
+      <Container className="banner-carousel-box">
         <Carousel
           itemClass="carousel-item-padding-40-px"
           infinite={true}
@@ -77,8 +77,8 @@ export default function Home() {
             />
           ))}
         </Carousel>
-      </Box>
-      <Container maxWidth={false} disableGutters className="Mainpage-Container" sx={{ padding: 2, margin: '4rem' }}>
+      </Container>
+      <Container maxWidth={false} disableGutters className="Mainpage-Container" sx={{ padding: 2 }}>
         <Container
           maxWidth={false}
           disableGutters
