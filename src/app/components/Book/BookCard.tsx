@@ -14,7 +14,7 @@ import styled from 'styled-components';
 import { v4 as uuidv4 } from 'uuid';
 
 import { currencyFormat } from '../../../utils/helpers';
-import { addToCartRequest } from '../../actions/types';
+import { addToCartRequest, getItemsInCartRequest, setQuantityInLocalstorage } from '../../actions/types';
 
 interface BookCardProps {
   book: Book;
@@ -33,6 +33,7 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const { user } = useSelector((store: RootState) => store.user);
+  const { isAddToCartDone } = useSelector((store: RootState) => store.cart);
 
   const clickBookCard = (book: Book) => {
     router.push(`/book/${book.id}`);
@@ -42,6 +43,9 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
     const cartItem: CartItemDto = { bookId, quantity: 1 };
     if (user) {
       dispatch(addToCartRequest(cartItem));
+      if (isAddToCartDone) {
+        dispatch(getItemsInCartRequest());
+      }
     } else {
       const storedCartItems = localStorage.getItem('cartItems');
       const cartItemsArray: CartItem[] = storedCartItems ? JSON.parse(storedCartItems) : [];
@@ -53,6 +57,7 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
       }
       localStorage.setItem('cartItems', JSON.stringify(cartItemsArray));
       toast.success(`${book.title} is added to cart successfully`);
+      dispatch(setQuantityInLocalstorage({ totalItems: cartItemsArray.length }));
     }
   };
 

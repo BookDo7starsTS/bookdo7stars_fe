@@ -24,6 +24,8 @@ import {
   useMediaQuery,
   useTheme,
   Tooltip,
+  BadgeProps,
+  Badge,
 } from '@mui/material';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -32,6 +34,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import CategoryBar from './CategoryBar';
 import { getBooksSearchRequest, logoutRequest } from '../actions/types';
 import { AppDispatch, AppState } from '../store/store';
+import { fontSize } from '@mui/system';
 
 const StyledSearchField = styled(TextField)(({ theme }) => ({
   position: 'relative',
@@ -127,12 +130,34 @@ const StyledButton = styled(Button)(({ theme }) => ({
   },
 }));
 
+const StyledBadge = styled(Badge)<BadgeProps>(({ theme }) => ({
+  '& .MuiBadge-badge': {
+    right: 20,
+    top: 8,
+    border: `2px solid ${theme.palette.background.paper}`,
+    padding: '0 4px',
+    width: '30px',
+    height: '30px',
+    fontSize: '14px',
+    borderRadius: '20px',
+    [theme.breakpoints.down('md')]: {
+      right: -8,
+      top: 5,
+      width: undefined,
+      height: undefined,
+      fontSize: undefined,
+      borderRadius: undefined,
+    },
+  },
+}));
+
 const Header = () => {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down('md'));
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
   const { user, isLogoutDone } = useSelector((store: AppState) => store.user);
+  const { totalItems } = useSelector((store: AppState) => store.cart);
 
   const [searchTerm, setSearchTerm] = useState('');
 
@@ -290,10 +315,14 @@ const Header = () => {
                 </>
               )}
               {!isMobile ? (
-                <StyledButton onClick={handleGoToCart}>Cart</StyledButton>
+                <StyledBadge badgeContent={totalItems} color="secondary">
+                  <StyledButton onClick={handleGoToCart}>Cart</StyledButton>
+                </StyledBadge>
               ) : (
                 <IconButton size="large">
-                  <ShoppingCartRoundedIcon />
+                  <StyledBadge badgeContent={4} color="secondary">
+                    <ShoppingCartRoundedIcon />
+                  </StyledBadge>
                 </IconButton>
               )}
             </Box>

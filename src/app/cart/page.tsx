@@ -7,7 +7,7 @@ import { AppDispatch } from '@/app/store/store';
 import { Box, Button, Typography, Grid } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { deleteCartItemRequest, getItemsInCartRequest, updateCartItemRequest } from '../actions/types';
+import { deleteCartItemRequest, getItemsInCartRequest, setQuantityInLocalstorage, updateCartItemRequest } from '../actions/types';
 import CartCard from '../components/Cart/CartCard';
 import { CartItem } from '../models/cart';
 
@@ -80,6 +80,7 @@ const CartPage = () => {
       }
       localStorage.setItem('cartItems', JSON.stringify(itemsInArray));
       setItemsFromLocalstorage(itemsInArray);
+      dispatch(setQuantityInLocalstorage({ totalItems: itemsInArray.length }));
     }
   };
 
@@ -95,6 +96,7 @@ const CartPage = () => {
       }
       localStorage.setItem('cartItems', JSON.stringify(itemsInArray));
       setItemsFromLocalstorage(itemsInArray);
+      dispatch(setQuantityInLocalstorage({ totalItems: itemsInArray.length }));
     }
   };
 
@@ -106,6 +108,7 @@ const CartPage = () => {
       const updatedItems = itemsInArray.filter((item: CartItem) => item.book.id.toString() !== id);
       localStorage.setItem('cartItems', JSON.stringify(updatedItems));
       setItemsFromLocalstorage(updatedItems);
+      dispatch(setQuantityInLocalstorage({ totalItems: updatedItems.length }));
     }
   };
 

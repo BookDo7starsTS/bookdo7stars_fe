@@ -13,6 +13,7 @@ import {
   DELETE_CART_ITEM_REQUEST,
   DELETE_CART_ITEM_SUCCESS,
   DELETE_CART_ITEM_FAILURE,
+  SET_QUANTITY_IN_LOCALSTORAGE,
 } from '../constants';
 
 export interface GetItemsInCartRequestAction {
@@ -73,6 +74,11 @@ export interface DeleteCartItemFailureAction {
   error: string;
 }
 
+export interface SetQuantityInLocalstorageAction {
+  type: typeof SET_QUANTITY_IN_LOCALSTORAGE;
+  data: { totalItems: number };
+}
+
 export type CartActionTypes =
   | GetItemsInCartRequestAction
   | GetItemsInCartSuccessAction
@@ -85,7 +91,8 @@ export type CartActionTypes =
   | UpdateCartItemFailureAction
   | DeleteCartItemRequestAction
   | DeleteCartItemSuccessAction
-  | DeleteCartItemFailureAction;
+  | DeleteCartItemFailureAction
+  | SetQuantityInLocalstorageAction;
 
 export const getItemsInCartRequest = (): GetItemsInCartRequestAction => ({
   type: GET_ITEMS_IN_CART_REQUEST,
@@ -143,4 +150,9 @@ export const deleteCartItemSuccess = (): DeleteCartItemSuccessAction => ({
 export const deleteCartItemFailure = (error: string): DeleteCartItemFailureAction => ({
   type: DELETE_CART_ITEM_FAILURE,
   error,
+});
+
+export const setQuantityInLocalstorage = (data: SetQuantityInLocalstorageAction['data']): SetQuantityInLocalstorageAction => ({
+  type: SET_QUANTITY_IN_LOCALSTORAGE,
+  data,
 });

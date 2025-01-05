@@ -11,6 +11,7 @@ import {
   DELETE_CART_ITEM_FAILURE,
   DELETE_CART_ITEM_REQUEST,
   DELETE_CART_ITEM_SUCCESS,
+  SET_QUANTITY_IN_LOCALSTORAGE,
 } from '../actions/constants';
 import { CartActionTypes } from '../actions/types';
 import { CartItem } from '../models/cart';
@@ -61,7 +62,7 @@ function cartReducer(state = initialCartState, action: CartActionTypes): CartSta
       return { ...state, isGetItemsInCartLoading: true };
 
     case GET_ITEMS_IN_CART_SUCCESS: {
-      return { ...state, isGetItemsInCartLoading: false, isGetItemsInCartDone: true, items: action.payload };
+      return { ...state, isGetItemsInCartLoading: false, isGetItemsInCartDone: true, items: action.payload, totalItems: action.payload.length };
     }
 
     case GET_ITEMS_IN_CART_FAILURE:
@@ -110,6 +111,11 @@ function cartReducer(state = initialCartState, action: CartActionTypes): CartSta
 
     case DELETE_CART_ITEM_FAILURE:
       return { ...state, isDeleteCartItemLoading: false, isDeleteCartItemDone: false, isDeleteCartItemError: action.error };
+
+    case SET_QUANTITY_IN_LOCALSTORAGE: {
+      return { ...state, totalItems: action.data.totalItems };
+    }
+
     default:
       return state;
   }
