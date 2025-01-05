@@ -17,7 +17,6 @@ const CartPage = () => {
   const { user } = useSelector((store: RootState) => store.user);
   const [itemsFromLocalstorage, setItemsFromLocalstorage] = useState<CartItem[]>([]);
 
-  // const [checkedItems, setCheckedItems] = useState<string[]>([]);
   const [checkedIds, setCheckedIds] = useState<Record<string, boolean>>({});
   const handleChange = (id: string, isChecked: boolean) => {
     setCheckedIds((prev) => ({
