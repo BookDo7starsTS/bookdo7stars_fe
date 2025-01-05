@@ -1,4 +1,6 @@
 import { Book } from '@/app/models/book';
+import { CartItem, CartItemDto } from '@/app/models/cart';
+import { RootState } from '@/app/reducers';
 import { AppDispatch } from '@/app/store/store';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -6,8 +8,10 @@ import { Box, Card, CardContent, CardMedia, Typography } from '@mui/material';
 import { pink } from '@mui/material/colors';
 import IconButton from '@mui/material/IconButton';
 import { useRouter } from 'next/navigation';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 import styled from 'styled-components';
+import { v4 as uuidv4 } from 'uuid';
 
 import { currencyFormat } from '../../../utils/helpers';
 import { addToCartRequest } from '../../actions/types';
@@ -28,13 +32,28 @@ const StyledTypography = styled(Typography)`
 const BookCard: React.FC<BookCardProps> = ({ book }) => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
+  const { user } = useSelector((store: RootState) => store.user);
+
   const clickBookCard = (book: Book) => {
     router.push(`/book/${book.id}`);
   };
 
   const handleAddToCart = (bookId: number) => {
-    const cartItem = { bookId, quantity: 1 };
-    dispatch(addToCartRequest(cartItem));
+    const cartItem: CartItemDto = { bookId, quantity: 1 };
+    if (user) {
+      dispatch(addToCartRequest(cartItem));
+    } else {
+      const storedCartItems = localStorage.getItem('cartItems');
+      const cartItemsArray: CartItem[] = storedCartItems ? JSON.parse(storedCartItems) : [];
+      const existingCartItemIndex = cartItemsArray.findIndex((item: CartItem) => item.book.id === cartItem.bookId);
+      if (existingCartItemIndex !== -1) {
+        cartItemsArray[existingCartItemIndex].quantity += cartItem.quantity;
+      } else {
+        cartItemsArray.push({ id: uuidv4(), book: book, quantity: cartItem.quantity });
+      }
+      localStorage.setItem('cartItems', JSON.stringify(cartItemsArray));
+      toast.success(`${book.title} is added to cart successfully`);
+    }
   };
 
   return (

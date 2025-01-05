@@ -5,6 +5,12 @@ import {
   GET_ITEMS_IN_CART_REQUEST,
   GET_ITEMS_IN_CART_FAILURE,
   GET_ITEMS_IN_CART_SUCCESS,
+  UPDATE_CART_ITEM_REQUEST,
+  UPDATE_CART_ITEM_SUCCESS,
+  UPDATE_CART_ITEM_FAILURE,
+  DELETE_CART_ITEM_FAILURE,
+  DELETE_CART_ITEM_REQUEST,
+  DELETE_CART_ITEM_SUCCESS,
 } from '../actions/constants';
 import { CartActionTypes } from '../actions/types';
 import { CartItem } from '../models/cart';
@@ -22,6 +28,12 @@ interface CartState {
   isGetItemsInCartError: string;
   addToCartSuccessMessage: string | null;
   addToCartFailureMessage: string;
+  isUpdateCartItemLoading: boolean;
+  isUpdateCartItemDone: boolean;
+  isUpdateCartItemError: string;
+  isDeleteCartItemLoading: boolean;
+  isDeleteCartItemDone: boolean;
+  isDeleteCartItemError: string;
 }
 const initialCartState: CartState = {
   items: [],
@@ -36,6 +48,12 @@ const initialCartState: CartState = {
   isAddToCartError: '',
   addToCartSuccessMessage: null,
   addToCartFailureMessage: '',
+  isUpdateCartItemLoading: false,
+  isUpdateCartItemDone: false,
+  isUpdateCartItemError: '',
+  isDeleteCartItemLoading: false,
+  isDeleteCartItemDone: false,
+  isDeleteCartItemError: '',
 };
 function cartReducer(state = initialCartState, action: CartActionTypes): CartState {
   switch (action.type) {
@@ -63,32 +81,35 @@ function cartReducer(state = initialCartState, action: CartActionTypes): CartSta
     }
 
     case ADD_TO_CART_FAILURE:
-      console.log(action.error);
       return { ...state, isAddToCartLoading: false, isAddToCartDone: false, isAddToCartError: action.error };
 
-    // case REMOVE_FROM_CART: {
-    //   const updatedItems = state.items.filter((item) => item.id !== action.payload);
+    case UPDATE_CART_ITEM_REQUEST:
+      return { ...state, isUpdateCartItemLoading: true, isUpdateCartItemDone: false };
 
-    //   const totalItems = updatedItems.reduce((sum, item) => sum + item.quantity, 0);
-    //   const totalPrice = updatedItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
+    case UPDATE_CART_ITEM_SUCCESS: {
+      return {
+        ...state,
+        isUpdateCartItemLoading: false,
+        isUpdateCartItemDone: true,
+      };
+    }
 
-    //   return { ...state, items: updatedItems, totalItems, totalPrice };
-    // }
+    case UPDATE_CART_ITEM_FAILURE:
+      return { ...state, isUpdateCartItemLoading: false, isUpdateCartItemDone: false, isUpdateCartItemError: action.error };
 
-    // case UPDATE_CART_ITEM_QUANTITY: {
-    //   const { bookId, quantity } = action.payload;
+    case DELETE_CART_ITEM_REQUEST:
+      return { ...state, isDeleteCartItemLoading: true, isDeleteCartItemDone: false };
 
-    //   const updatedItems = state.items.map((item) => (item.id === bookId ? { ...item, quantity } : item));
+    case DELETE_CART_ITEM_SUCCESS: {
+      return {
+        ...state,
+        isDeleteCartItemLoading: false,
+        isDeleteCartItemDone: true,
+      };
+    }
 
-    //   const totalItems = updatedItems.reduce((sum, item) => sum + item.quantity, 0);
-    //   const totalPrice = updatedItems.reduce((sum, item) => sum + item.price * item.quantity, 0);
-
-    //   return { ...state, items: updatedItems, totalItems, totalPrice };
-    // }
-
-    // case CLEAR_CART:
-    //   return { ...initialCartState };
-
+    case DELETE_CART_ITEM_FAILURE:
+      return { ...state, isDeleteCartItemLoading: false, isDeleteCartItemDone: false, isDeleteCartItemError: action.error };
     default:
       return state;
   }
