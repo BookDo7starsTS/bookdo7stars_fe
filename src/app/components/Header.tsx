@@ -319,8 +319,8 @@ const Header = () => {
                   <StyledButton onClick={handleGoToCart}>Cart</StyledButton>
                 </StyledBadge>
               ) : (
-                <IconButton size="large">
-                  <StyledBadge badgeContent={4} color="secondary">
+                <IconButton size="large" onClick={handleGoToCart}>
+                  <StyledBadge badgeContent={totalItems} color="secondary">
                     <ShoppingCartRoundedIcon />
                   </StyledBadge>
                 </IconButton>
