@@ -3,7 +3,7 @@ import { Container, Box, Typography, Button } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 
 import FilterSlider from './FilterSlider';
-import { GET_BOOKS_SEARCH_REQUEST,SET_FILTERS } from '../../actions/constants/book'; // 액션 정의된 경로
+import { GET_BOOKS_SEARCH_REQUEST, SET_FILTERS } from '../../actions/constants/book'; // 액션 정의된 경로
 
 const ResultFilters = () => {
   const dispatch = useDispatch();
