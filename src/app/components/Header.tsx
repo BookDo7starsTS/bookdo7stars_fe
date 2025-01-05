@@ -34,7 +34,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import CategoryBar from './CategoryBar';
 import { getBooksSearchRequest, logoutRequest } from '../actions/types';
 import { AppDispatch, AppState } from '../store/store';
-import { fontSize } from '@mui/system';
 
 const StyledSearchField = styled(TextField)(({ theme }) => ({
   position: 'relative',
