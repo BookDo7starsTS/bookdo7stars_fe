@@ -1,7 +1,4 @@
-import { useState } from 'react';
-
 import { RootState } from '@/app/reducers';
-import { SearchType } from '@/app/search/types/searchType';
 import { Container, Box, Typography, Button } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -11,11 +8,7 @@ import { GET_BOOKS_SEARCH_REQUEST } from '../../actions/constants/book'; // 액�
 const ResultFilters = () => {
   const dispatch = useDispatch();
   const searchData = useSelector((store: RootState) => store.book.searchData);
-  const [filters, setFilters] = useState({
-    dateRange: [undefined, undefined], // Represents the values in months (3M to 60M or 전체)
-    priceRange: [0, 100000],
-    rateRange: [0, 10],
-  });
+  const filters = useSelector((store: RootState) => store.book.filters);
 
   // Marks for the date range slider
   const dateRangeMarks = [
@@ -28,19 +21,14 @@ const ResultFilters = () => {
   ];
 
   const handleSliderChange = (name: string) => (event: Event, value: number | number[]) => {
-    setFilters((prev) => {
-      let newValue;
+    const newFilters = {
+      ...filters,
+      [name]: value,
+    };
 
-      if (name === 'dateRange') {
-        newValue = value === 60 ? [undefined, undefined] : [value];
-      } else {
-        newValue = value;
-      }
-
-      return {
-        ...prev,
-        [name]: newValue,
-      };
+    dispatch({
+      type: 'SET_FILTERS',
+      data: newFilters,
     });
   };
 
@@ -75,7 +63,6 @@ const ResultFilters = () => {
       endDateISO = today.toISOString().split('T')[0];
     }
 
-    console.log('222', startDateISO, endDateISO);
     const requestData = {
       ...searchData,
       start_price: filters.priceRange[0],
@@ -96,16 +83,9 @@ const ResultFilters = () => {
       delete requestData.end_date;
     }
 
-    console.log('요청데이타ㅏㅏㅏㅏ ', requestData);
-
     dispatch({
       type: GET_BOOKS_SEARCH_REQUEST,
       data: requestData,
-    });
-
-    console.log('Applied Filters:', {
-      dateRange: [requestData.start_date, requestData.end_date],
-      priceRange: filters.priceRange,
     });
   };
 

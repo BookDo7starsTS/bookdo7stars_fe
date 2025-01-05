@@ -24,6 +24,7 @@ import {
   GET_MAINPAGE_BESTSELLER_BOOKS_FAILURE,
   RESET_GROUP_BOOKS,
   RESET_BOOK,
+  SET_FILTERS,
 } from '../constants';
 
 // Action type
@@ -165,6 +166,15 @@ export interface ResetBookAction {
   type: typeof RESET_BOOK;
 }
 
+export interface SetFiltersAction {
+  type: typeof SET_FILTERS;
+  data: {
+    dateRange: [number | undefined, number | undefined];
+    priceRange: [number, number];
+    rateRange: [number, number];
+  };
+}
+
 //Union type
 export type BookActionTypes =
   | GetAllBooksRequestAction
@@ -189,7 +199,8 @@ export type BookActionTypes =
   | GetMainpageBestSellerBooksRequestAction
   | GetMainpageBestSellerBooksSuccessAction
   | GetMainpageBestSellerBooksFailureAction
-  | ResetBookAction;
+  | ResetBookAction
+  | SetFiltersAction;
 
 // Action creater
 
@@ -318,4 +329,9 @@ export const resetGroupBooks = (): ResetGroupBooksAction => ({
 
 export const resetBook = (): ResetBookAction => ({
   type: RESET_BOOK,
+});
+
+export const setFilters = (data: SetFiltersAction['data']): SetFiltersAction => ({
+  type: SET_FILTERS,
+  data,
 });

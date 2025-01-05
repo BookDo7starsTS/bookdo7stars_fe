@@ -22,6 +22,7 @@ import {
   GET_MAINPAGE_BESTSELLER_BOOKS_FAILURE,
   RESET_GROUP_BOOKS,
   RESET_BOOK,
+  SET_FILTERS,
 } from '../actions/constants';
 import { BookActionTypes } from '../actions/types';
 import { Book } from '../models/book';
@@ -52,6 +53,11 @@ type InitialState = {
   isGetMainPageBestSellerBooksError: string;
   book: Book | null;
   pageSize: number;
+  filters: {
+    dateRange: [undefined | number, undefined | number];
+    priceRange: [number, number];
+    rateRange: [number, number];
+  };
 };
 
 export const initialState: InitialState = {
@@ -87,6 +93,11 @@ export const initialState: InitialState = {
   isGetMainPageBestSellerBooksError: '',
   book: null,
   pageSize: 20,
+  filters: {
+    dateRange: [undefined, undefined], // Represents the values in months (3M to 60M or 전체)
+    priceRange: [0, 100000],
+    rateRange: [0, 10],
+  },
 };
 
 function bookReducer(state = initialState, action: BookActionTypes) {
@@ -138,6 +149,9 @@ function bookReducer(state = initialState, action: BookActionTypes) {
       return { ...state, book: null };
     case RESET_GROUP_BOOKS:
       return { ...state, groupBooks: [] };
+
+    case SET_FILTERS:
+      return { ...state, filters: action.data };
     default:
       return state;
   }
