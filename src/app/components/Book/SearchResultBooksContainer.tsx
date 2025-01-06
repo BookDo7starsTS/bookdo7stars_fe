@@ -11,6 +11,7 @@ import ActionButtons from '../Buttons/ActionButtons';
 import ToggleButtons from '../Buttons/ToggleButtons';
 import CustomPagination from '../CustomPagination';
 import ResultFilters from '../Result/ResultFilters';
+import { getTitle } from '@/utils/pageUtils';
 interface SearchResultBooksContainerProps {
   books: Book[];
   count: number;
@@ -55,25 +56,8 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
     );
   };
 
-  const getTitle = (parsedSearchCondition: SearchType) => {
-    if (parsedSearchCondition.searchTerm) {
-      return parsedSearchCondition.searchTerm + ` 의 검색 결과 총 ${resultCount}건`;
-    } else {
-      const resultString = Object.entries(parsedSearchCondition)
-        .filter(([key, value]) => value !== '' && key !== 'page' && key !== 'pageSize' && key !== 'orderTerm')
-        .map(([_, value]) => `${value}`)
-        .join(' + ');
-      return (
-        <span>
-          <span style={{ color: theme.palette.primary.main, fontWeight: 'bold' }}>{resultString}</span> 검색 결과 총{' '}
-          <span style={{ fontWeight: 'bold' }}>{resultCount}</span>건
-        </span>
-      );
-    }
-  };
+  const pageTitle = getTitle(resultCount, parsedSearchCondition);
 
-  const pageTitle = getTitle(parsedSearchCondition);
-  console.log(parsedSearchCondition);
   const paginationStyle = {
     display: 'flex',
     justifyContent: 'center',

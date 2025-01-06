@@ -13,10 +13,12 @@ import { AppDispatch } from '@/app/store/store';
 import { Box, Checkbox, Grid, Typography, useTheme } from '@mui/material';
 import { useParams } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
+import { getTitle } from '@/utils/pageUtils';
+import LoadingSpinner from '@/app/components/LoadingSpinner';
 
 const CategoryBookPage = () => {
   const dispatch = useDispatch<AppDispatch>();
-  const { categoriesById, selectedCategory } = useSelector((store: RootState) => store.category);
+  const { categoriesById, selectedCategory, isGetCategoryByIdLoading, isGetCategoryByIdDone } = useSelector((store: RootState) => store.category);
   const { categoryBooks, count, sortBy, currentPage } = useSelector((store: RootState) => store.book);
   const [selectedBooks, setSelectedBooks] = useState<number[]>([]);
   const theme = useTheme();
@@ -96,72 +98,80 @@ const CategoryBookPage = () => {
     border: `1px solid ${theme.palette.primary.main}`,
   };
 
+  const pageTitle = getTitle(count, undefined, isGetCategoryByIdDone && selectedCategory ? selectedCategory : undefined);
+
   return (
-    <Grid container spacing={3} sx={{ marginTop: '1rem', paddingLeft: '1rem', paddingRight: '1rem' }}>
-      <Grid item xs={12} md={3} className="category-list">
-        <Box sx={{ top: 0, position: 'sticky', zIndex: 1, display: 'flex', flexDirection: 'column', gap: '5rem' }}>
-          <Box
-            sx={{
-              display: 'flex',
-              justifyContent: 'center',
-              alignItems: 'center',
-              marginBottom: '1rem',
-              boxShadow: '0px 4px 10px #AFC6AA',
-              borderRadius: '4px',
-              minWidth: '250px',
-              height: '80px',
-              maxWidth: '350px',
-            }}>
-            <Typography variant="h4" style={{ fontWeight: 600 }}>
-              {selectedCategory ? selectedCategory.name : '찾으시는 카테고리는 없습니다.'}
-            </Typography>
-          </Box>
-          <Box
-            sx={{
-              boxShadow: '0px 4px 10px #AFC6AA',
-              borderRadius: '4px',
-              minWidth: { xs: '200px', sm: '200px', md: '250px', lg: '250px' }, // Breakpoints에 따라 조정
-              maxWidth: { xs: '300px', sm: '300px', md: '350px', lg: '350px' },
-              minHeight: { xs: '400px', sm: '500px', md: '400px', lg: '800px' },
-              maxHeight: { xs: '600px', sm: '700px', md: '500px', lg: '1000px' },
-              overflowY: 'auto',
-              marginBottom: '1rem',
-            }}
-            className="category-list">
-            <CategoryList categories={categoriesById} categoryId={categoryId} />
-          </Box>
-        </Box>
-      </Grid>
-      <Grid item xs={12} md={9} className="category-books-container-grid">
-        <Box display="flex" alignItems="center" justifyContent="center" mb={4}>
-          <Typography variant={'h4'} color="textPrimary" sx={{ color: 'gray' }}>
-            {selectedCategory ? selectedCategory.name + '(' + count + ')' : '찾으시는 카테고리는 없습니다.'}
-          </Typography>
-        </Box>
-        <ToggleButtons boxStyle={toggleBoxStyle} buttonStyle={toggleButtonStyle} />
-        <CustomPagination
-          pageCount={pageCount}
-          style={paginationStyle}
-          booksPerPage={booksPerPage}
-          categoryId={categoryId}
-          selectedCategory={selectedCategory}
-        />
-        <Box sx={{ display: 'flex', width: '100%', justifyContent: 'flex-end', gap: '12px', marginBottom: '20px' }}>
-          <ActionButtons names={actionButtonNames} handleOnClick={handleOnClick} disabledButtons={disabledButtons} style={actionButtonStyle} />
-        </Box>
-        <Box className="book-card-box" sx={{ display: 'flex', flexDirection: 'column' }}>
-          {categoryBooks.map((book, index) => (
-            <Box
-              className="book-detail-card"
-              key={index}
-              sx={{ display: 'flex', alignItems: 'center', marginBottom: '2rem', zIndex: 'revert-layer', justifyContent: 'center' }}>
-              <Checkbox checked={selectedBooks.includes(book.id)} onChange={() => handleCheckboxChange(book.id)} />
-              <BookDetailCard key={index} book={book} />
+    <>
+      {isGetCategoryByIdLoading ? (
+        <LoadingSpinner />
+      ) : (
+        <Grid container spacing={3} sx={{ marginTop: '1rem', paddingLeft: '1rem', paddingRight: '1rem' }}>
+          <Grid item xs={12} md={3} className="category-list">
+            <Box sx={{ top: 0, position: 'sticky', zIndex: 1, display: 'flex', flexDirection: 'column', gap: '5rem' }}>
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                  marginBottom: '1rem',
+                  boxShadow: '0px 4px 10px #AFC6AA',
+                  borderRadius: '4px',
+                  minWidth: '250px',
+                  height: '80px',
+                  maxWidth: '350px',
+                }}>
+                <Typography variant="h4" sx={{ color: 'gray' }}>
+                  {pageTitle}
+                </Typography>
+              </Box>
+              <Box
+                sx={{
+                  boxShadow: '0px 4px 10px #AFC6AA',
+                  borderRadius: '4px',
+                  minWidth: { xs: '200px', sm: '200px', md: '250px', lg: '250px' }, // Breakpoints에 따라 조정
+                  maxWidth: { xs: '300px', sm: '300px', md: '350px', lg: '350px' },
+                  minHeight: { xs: '400px', sm: '500px', md: '400px', lg: '800px' },
+                  maxHeight: { xs: '600px', sm: '700px', md: '500px', lg: '1000px' },
+                  overflowY: 'auto',
+                  marginBottom: '1rem',
+                }}
+                className="category-list">
+                <CategoryList categories={categoriesById} categoryId={categoryId} />
+              </Box>
             </Box>
-          ))}
-        </Box>
-      </Grid>
-    </Grid>
+          </Grid>
+          <Grid item xs={12} md={9} className="category-books-container-grid">
+            <Box display="flex" alignItems="center" justifyContent="center" mb={4}>
+              <Typography variant={'h4'} color="textPrimary" sx={{ color: 'gray' }}>
+                {pageTitle}
+              </Typography>
+            </Box>
+            <ToggleButtons boxStyle={toggleBoxStyle} buttonStyle={toggleButtonStyle} />
+            <CustomPagination
+              pageCount={pageCount}
+              style={paginationStyle}
+              booksPerPage={booksPerPage}
+              categoryId={categoryId}
+              selectedCategory={selectedCategory}
+            />
+            <Box sx={{ display: 'flex', width: '100%', justifyContent: 'flex-end', gap: '12px', marginBottom: '20px' }}>
+              <ActionButtons names={actionButtonNames} handleOnClick={handleOnClick} disabledButtons={disabledButtons} style={actionButtonStyle} />
+            </Box>
+            <Box className="book-card-box" sx={{ display: 'flex', flexDirection: 'column' }}>
+              {categoryBooks.map((book, index) => (
+                <Box
+                  className="book-detail-card"
+                  key={index}
+                  sx={{ display: 'flex', alignItems: 'center', marginBottom: '2rem', zIndex: 'revert-layer', justifyContent: 'center' }}>
+                  <Checkbox checked={selectedBooks.includes(book.id)} onChange={() => handleCheckboxChange(book.id)} />
+                  <BookDetailCard key={index} book={book} />
+                </Box>
+              ))}
+            </Box>
+          </Grid>
+        </Grid>
+      )}
+    </>
   );
 };
 export default CategoryBookPage;

@@ -34,7 +34,7 @@ export default function Home() {
   };
   return (
     <>
-      <Container className="banner-carousel-box">
+      <Container className="banner-carousel-box" sx={{ padding: '0 !important' }}>
         <Carousel
           itemClass="carousel-item-padding-40-px"
           infinite={true}
