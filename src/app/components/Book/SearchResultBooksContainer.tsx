@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { IsbnType } from '@/app/search/types/isbnType';
 import { SearchType } from '@/app/search/types/searchType';
 import { useMediaQuery, Container, Typography, Grid, Box, Checkbox } from '@mui/material';
-import useTheme from '@mui/system/useTheme';
+import { useTheme } from '@mui/material/styles';
 
 import BookDetailCard from './BookDetailCard';
 import { Book } from '../../models/book';
@@ -88,7 +88,6 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
   };
   const actionButtonNames = ['전체 선택', '장바구니 담기', '보관함 담기', '마이리스트 담기'];
   const handleOnClick = (name: string) => {
-    console.log('handleOnClick.', name);
     switch (name) {
       case '전체 선택': {
         if (selectedBooks.length === books.length) {

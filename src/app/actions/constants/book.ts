@@ -43,6 +43,9 @@ export const RESET_GROUP_BOOKS = 'RESET_GROUP_BOOKS';
 
 export const RESET_BOOK = 'RESET_BOOK';
 
+// 도서 필터
+export const SET_FILTERS = 'SET_FILTERS';
+
 export const SET_PAGE = 'SET_PAGE';
 
 export const SET_SORTBY = 'SET_SORTBY';

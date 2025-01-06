@@ -27,6 +27,7 @@ import {
   GET_BOOKS_BY_CATEGORY_REQUEST,
   GET_BOOKS_BY_CATEGORY_SUCCESS,
   RESET_BOOK,
+  SET_FILTERS,
   SET_PAGE,
   SET_SORTBY,
 } from '../constants';
@@ -81,6 +82,8 @@ export interface GetBooksSearchRequestAction {
     pageSize?: number;
     start_price?: number;
     end_price?: number;
+    start_rate?: number;
+    end_rate?: number;
   };
 }
 
@@ -190,6 +193,15 @@ export interface ResetGroupBooksAction {
 export interface ResetBookAction {
   type: typeof RESET_BOOK;
 }
+
+export interface SetFiltersAction {
+  type: typeof SET_FILTERS;
+  data: {
+    dateRange: [number | undefined, number | undefined];
+    priceRange: [number, number];
+    rateRange: [number, number];
+  };
+}
 export interface SetPageAction {
   type: typeof SET_PAGE;
   data: number;
@@ -225,6 +237,7 @@ export type BookActionTypes =
   | GetMainpageBestSellerBooksSuccessAction
   | GetMainpageBestSellerBooksFailureAction
   | ResetBookAction
+  | SetFiltersAction
   | GetBooksByCategoryRequestAction
   | GetBooksByCategorySuccessAction
   | GetBooksByCategoryFailureAction
@@ -378,6 +391,11 @@ export const resetGroupBooks = (): ResetGroupBooksAction => ({
 
 export const resetBook = (): ResetBookAction => ({
   type: RESET_BOOK,
+});
+
+export const setFilters = (data: SetFiltersAction['data']): SetFiltersAction => ({
+  type: SET_FILTERS,
+  data,
 });
 
 export const setPage = (data: SetPageAction['data']): SetPageAction => ({

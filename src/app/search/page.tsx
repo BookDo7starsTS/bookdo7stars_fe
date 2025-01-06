@@ -186,7 +186,15 @@ const SearchPage = () => {
       dispatch(getBooksSearchRequest(formData));
     }
 
-    const searchConditionString = encodeURIComponent(JSON.stringify(formData));
+    const trimmedData = {
+      ...formData,
+      searchTerm: formData.searchTerm?.trim(),
+      title: formData.title?.trim(),
+      author: formData.author?.trim(),
+      publisher: formData.publisher?.trim(),
+    };
+
+    const searchConditionString = encodeURIComponent(JSON.stringify(trimmedData));
     const isbnString = encodeURIComponent(JSON.stringify(isbn));
     router.push(`/search/result?isbn=${isbnString}&searchCondition=${searchConditionString}`);
 
