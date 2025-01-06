@@ -10,7 +10,7 @@ import CategoryList from '@/app/components/Category/CategoryList';
 import CustomPagination from '@/app/components/CustomPagination';
 import { RootState } from '@/app/reducers';
 import { AppDispatch } from '@/app/store/store';
-import { Box, Checkbox, Grid, Typography } from '@mui/material';
+import { Box, Checkbox, Grid, Typography, useTheme } from '@mui/material';
 import { useParams } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -19,6 +19,7 @@ const CategoryBookPage = () => {
   const { categoriesById, selectedCategory } = useSelector((store: RootState) => store.category);
   const { categoryBooks, count, sortBy, currentPage } = useSelector((store: RootState) => store.book);
   const [selectedBooks, setSelectedBooks] = useState<number[]>([]);
+  const theme = useTheme();
 
   const { categoryId } = useParams<{ categoryId: string }>();
 
@@ -91,9 +92,12 @@ const CategoryBookPage = () => {
       return selectedBooks.length === 0;
     }
   };
+  const actionButtonStyle = {
+    border: `1px solid ${theme.palette.primary.main}`,
+  };
 
   return (
-    <Grid container spacing={3} sx={{ margin: '1rem' }}>
+    <Grid container spacing={3} sx={{ marginTop: '1rem', paddingLeft: '1rem', paddingRight: '1rem' }}>
       <Grid item xs={12} md={3} className="category-list">
         <Box sx={{ top: 0, position: 'sticky', zIndex: 1, display: 'flex', flexDirection: 'column', gap: '5rem' }}>
           <Box
@@ -135,16 +139,22 @@ const CategoryBookPage = () => {
           </Typography>
         </Box>
         <ToggleButtons boxStyle={toggleBoxStyle} buttonStyle={toggleButtonStyle} />
-        <CustomPagination pageCount={pageCount} style={paginationStyle} booksPerPage={booksPerPage} categoryId={categoryId} />
+        <CustomPagination
+          pageCount={pageCount}
+          style={paginationStyle}
+          booksPerPage={booksPerPage}
+          categoryId={categoryId}
+          selectedCategory={selectedCategory}
+        />
         <Box sx={{ display: 'flex', width: '100%', justifyContent: 'flex-end', gap: '12px', marginBottom: '20px' }}>
-          <ActionButtons names={actionButtonNames} handleOnClick={handleOnClick} disabledButtons={disabledButtons} />
+          <ActionButtons names={actionButtonNames} handleOnClick={handleOnClick} disabledButtons={disabledButtons} style={actionButtonStyle} />
         </Box>
-        <Box className="book-card-box" sx={{ display: 'flex', flexDirection: 'column', marginLeft: '1rem' }}>
+        <Box className="book-card-box" sx={{ display: 'flex', flexDirection: 'column' }}>
           {categoryBooks.map((book, index) => (
             <Box
               className="book-detail-card"
               key={index}
-              sx={{ display: 'flex', alignItems: 'center', marginBottom: '2rem', zIndex: 'revert-layer', justifyContent: 'flex-end' }}>
+              sx={{ display: 'flex', alignItems: 'center', marginBottom: '2rem', zIndex: 'revert-layer', justifyContent: 'center' }}>
               <Checkbox checked={selectedBooks.includes(book.id)} onChange={() => handleCheckboxChange(book.id)} />
               <BookDetailCard key={index} book={book} />
             </Box>

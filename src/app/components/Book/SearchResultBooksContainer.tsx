@@ -73,6 +73,7 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
   };
 
   const pageTitle = getTitle(parsedSearchCondition);
+  console.log(parsedSearchCondition);
   const paginationStyle = {
     display: 'flex',
     justifyContent: 'center',
@@ -87,6 +88,10 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
     borderBottomRightRadius: '0px',
   };
   const actionButtonNames = ['전체 선택', '장바구니 담기', '보관함 담기', '마이리스트 담기'];
+
+  const actionButtonStyle = {
+    border: `1px solid ${theme.palette.primary.main}`,
+  };
   const handleOnClick = (name: string) => {
     switch (name) {
       case '전체 선택': {
@@ -134,7 +139,7 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
             parsedIsbn={parsedIsbn}
           />
           <Box sx={{ display: 'flex', width: '100%', justifyContent: 'flex-end', gap: '12px', marginBottom: '20px' }}>
-            <ActionButtons names={actionButtonNames} handleOnClick={handleOnClick} disabledButtons={disabledButtons} />
+            <ActionButtons names={actionButtonNames} handleOnClick={handleOnClick} disabledButtons={disabledButtons} style={actionButtonStyle} />
           </Box>
           <Grid container spacing={3}>
             <Grid item xs={12} md={3}>
