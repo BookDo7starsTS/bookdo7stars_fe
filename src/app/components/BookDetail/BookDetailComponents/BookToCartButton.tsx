@@ -5,16 +5,9 @@ import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { Button, Box } from '@mui/material';
 import { pink } from '@mui/material/colors';
 import { useRouter } from 'next/navigation';
+import { Book } from '@/app/models/book';
 
 // Props 타입 정의
-
-interface Book {
-  title: string;
-  author: string;
-  priceStandard: number;
-  cover: string;
-  publisher: string;
-}
 
 interface BookToCartButtonProps {
   book: Book;
