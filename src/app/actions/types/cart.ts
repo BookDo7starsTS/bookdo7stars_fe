@@ -1,4 +1,4 @@
-import { CartItem } from '@/app/models/cart';
+import { CartItem, CartItemDto } from '@/app/models/cart';
 
 import {
   GET_ITEMS_IN_CART_SUCCESS,
@@ -32,12 +32,12 @@ export interface GetItemsInCartFailureAction {
 
 export interface AddToCartRequestAction {
   type: typeof ADD_TO_CART_REQUEST;
-  data: { bookId: number; quantity: number };
+  data: CartItemDto[];
 }
 
 export interface AddToCartSuccessAction {
   type: typeof ADD_TO_CART_SUCCESS;
-  payload: { cartItem: CartItem; message: string };
+  payload: { cartItems: CartItem[]; message: string };
 }
 
 export interface AddToCartFailureAction {
