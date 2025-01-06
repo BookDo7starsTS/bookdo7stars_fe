@@ -164,14 +164,15 @@ const Header = () => {
   const initialPage = 1;
 
   const handleSearch = () => {
-    if (searchTerm.trim() === '') {
+    const trimmedSearchTerm = searchTerm.trim();
+    if (trimmedSearchTerm === '') {
       alert('Please enter a search term.');
       return;
     }
-    const searchCondition = encodeURIComponent(JSON.stringify({ searchTerm, page: 1, pageSize: 20 }));
+    const searchCondition = encodeURIComponent(JSON.stringify({ searchTerm: trimmedSearchTerm, page: 1, pageSize: 20 }));
     router.push(`/search/result?searchCondition=${searchCondition}`);
-    dispatch(getBooksSearchRequest({ page: initialPage, pageSize: initialPageSize, searchTerm }));
-    setSearchTerm('');
+    dispatch(getBooksSearchRequest({ page: initialPage, pageSize: initialPageSize, searchTerm: trimmedSearchTerm }));
+    setTimeout(() => setSearchTerm(''), 0);
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
