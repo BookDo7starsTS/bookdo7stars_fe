@@ -148,7 +148,7 @@ const Header = () => {
     const searchCondition = encodeURIComponent(JSON.stringify({ searchTerm: trimmedSearchTerm, page: 1, pageSize: 20 }));
     router.push(`/search/result?searchCondition=${searchCondition}`);
     dispatch(getBooksSearchRequest({ page: initialPage, pageSize: initialPageSize, searchTerm: trimmedSearchTerm }));
-    setSearchTerm('');
+    setTimeout(() => setSearchTerm(''), 0);
   };
 
   const handleKeyDown = (event: KeyboardEvent<HTMLInputElement>) => {
