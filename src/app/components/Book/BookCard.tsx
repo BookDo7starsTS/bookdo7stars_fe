@@ -1,5 +1,4 @@
 import { Book } from '@/app/models/book';
-import { CartItem, CartItemDto } from '@/app/models/cart';
 import { RootState } from '@/app/reducers';
 import { AppDispatch } from '@/app/store/store';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -9,12 +8,10 @@ import { pink } from '@mui/material/colors';
 import IconButton from '@mui/material/IconButton';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
-import { toast } from 'react-toastify';
 import styled from 'styled-components';
-import { v4 as uuidv4 } from 'uuid';
 
 import { currencyFormat } from '../../../utils/helpers';
-import { addToCartRequest, getItemsInCartRequest, setQuantityInLocalstorage } from '../../actions/types';
+import { handleAddToCart } from '@/utils/cartUtils';
 
 interface BookCardProps {
   book: Book;
@@ -39,26 +36,32 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
     router.push(`/book/${book.id}`);
   };
 
-  const handleAddToCart = (bookId: number) => {
-    const cartItem: CartItemDto = { bookId, quantity: 1 };
+  const handleOnClickAddToCart = (bookId: number) => {
     if (user) {
-      dispatch(addToCartRequest(cartItem));
-      if (isAddToCartDone) {
-        dispatch(getItemsInCartRequest());
-      }
+      handleAddToCart(bookId, book, dispatch, isAddToCartDone, user);
     } else {
-      const storedCartItems = localStorage.getItem('cartItems');
-      const cartItemsArray: CartItem[] = storedCartItems ? JSON.parse(storedCartItems) : [];
-      const existingCartItemIndex = cartItemsArray.findIndex((item: CartItem) => item.book.id === cartItem.bookId);
-      if (existingCartItemIndex !== -1) {
-        cartItemsArray[existingCartItemIndex].quantity += cartItem.quantity;
-      } else {
-        cartItemsArray.push({ id: uuidv4(), book: book, quantity: cartItem.quantity });
-      }
-      localStorage.setItem('cartItems', JSON.stringify(cartItemsArray));
-      toast.success(`${book.title} is added to cart successfully`);
-      dispatch(setQuantityInLocalstorage({ totalItems: cartItemsArray.length }));
+      handleAddToCart(bookId, book, dispatch, isAddToCartDone);
     }
+
+    // const cartItem: CartItemDto = { bookId, quantity: 1 };
+    // if (user) {
+    //   dispatch(addToCartRequest(cartItem));
+    //   if (isAddToCartDone) {
+    //     dispatch(getItemsInCartRequest());
+    //   }
+    // } else {
+    //   const storedCartItems = localStorage.getItem('cartItems');
+    //   const cartItemsArray: CartItem[] = storedCartItems ? JSON.parse(storedCartItems) : [];
+    //   const existingCartItemIndex = cartItemsArray.findIndex((item: CartItem) => item.book.id === cartItem.bookId);
+    //   if (existingCartItemIndex !== -1) {
+    //     cartItemsArray[existingCartItemIndex].quantity += cartItem.quantity;
+    //   } else {
+    //     cartItemsArray.push({ id: uuidv4(), book: book, quantity: cartItem.quantity });
+    //   }
+    //   localStorage.setItem('cartItems', JSON.stringify(cartItemsArray));
+    //   toast.success(`${book.title} is added to cart successfully`);
+    //   dispatch(setQuantityInLocalstorage({ totalItems: cartItemsArray.length }));
+    // }
   };
 
   return (
@@ -102,7 +105,7 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
               <IconButton sx={{ padding: '5px' }} aria-label="add to favorites">
                 <FavoriteBorderIcon fontSize="small" sx={{ color: pink[500] }} />
               </IconButton>
-              <IconButton sx={{ padding: '5px' }} aria-label="add to cart" onClick={() => handleAddToCart(book.id)}>
+              <IconButton sx={{ padding: '5px' }} aria-label="add to cart" onClick={() => handleOnClickAddToCart(book.id)}>
                 <ShoppingCartIcon fontSize="small" />
               </IconButton>
             </Box>

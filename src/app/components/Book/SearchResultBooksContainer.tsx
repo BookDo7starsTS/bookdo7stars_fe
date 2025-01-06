@@ -51,7 +51,7 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
     // console.log('선택된 책들: ', selectedBooks);
   }, [selectedBooks]);
 
-  const handleAddToCart = () => {
+  const handleOnClickAddToCart = () => {
     console.log('여기는 handleAddToCart입니다.');
   };
   const handleAddToWishlist = () => {
@@ -109,15 +109,6 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
       }}>
       {books.length > 0 ? (
         <>
-          {/* <Box sx={{ display: 'flex', width: '100%', alignItems: 'center', justifyContent: 'center', marginBottom: '20px' }}>
-            <Typography
-              variant="h3"
-              component="div"
-              gutterBottom
-              sx={{ width: '400px', height: '60px', fontWeight: 'bold', textAlign: 'center', margin: '0px' }}>
-              {title}
-            </Typography>
-          </Box> */}
           <Box display="flex" alignItems="center" justifyContent="left" mt={6} mb={0.2}>
             <Typography color="textPrimary" sx={{ color: 'gray' }}>
               {pageTitle}
@@ -172,7 +163,7 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
             <Button variant="outlined" onClick={handleSelectAll}>
               {selectedBooks.length === books.length ? '전체 해제' : '전체 선택'}
             </Button>
-            <Button variant="outlined" onClick={handleAddToCart} disabled>
+            <Button variant="outlined" onClick={handleOnClickAddToCart} disabled>
               {'장바구니 담기'}
             </Button>
             <Button variant="outlined" onClick={handleAddToWishlist} disabled>
