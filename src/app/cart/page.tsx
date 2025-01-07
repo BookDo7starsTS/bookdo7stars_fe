@@ -18,12 +18,7 @@ const CartPage = () => {
   const [itemsFromLocalstorage, setItemsFromLocalstorage] = useState<CartItem[]>([]);
 
   const [checkedIds, setCheckedIds] = useState<Record<string, boolean>>({});
-  const handleChange = (id: string, isChecked: boolean) => {
-    setCheckedIds((prev) => ({
-      ...prev,
-      [id]: isChecked,
-    }));
-  };
+
   const itemsInLocalStorage = localStorage.getItem('cartItems');
   const itemsInArray = itemsInLocalStorage ? JSON.parse(itemsInLocalStorage) : [];
 
@@ -67,6 +62,7 @@ const CartPage = () => {
   const checkedItems = Object.entries(checkedIds)
     .filter(([key, value]) => value)
     .map(([key]) => key);
+  console.log(checkedItems);
 
   // 수량 증가
   const handleIncrease = (id: string, quantity: number) => {
@@ -113,7 +109,7 @@ const CartPage = () => {
   };
 
   // 총 금액 및 상품 수 계산
-  const selectedItems = items.filter((item) => checkedItems.includes(item.book.id.toString()));
+  const selectedItems = cartItems.filter((item) => checkedItems.includes(item.book.id.toString()));
 
   let totalPrice;
   let totalItems;
