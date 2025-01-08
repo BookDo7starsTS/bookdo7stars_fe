@@ -18,7 +18,7 @@ import { CartItem } from '../models/cart';
 
 interface CartState {
   items: CartItem[];
-  addedItem: CartItem | null;
+  addedItem: CartItem[];
   totalItems: number;
   totalPrice: number;
   isAddToCartLoading: boolean;
@@ -38,7 +38,7 @@ interface CartState {
 }
 const initialCartState: CartState = {
   items: [],
-  addedItem: null,
+  addedItem: [],
   totalItems: 0,
   totalPrice: 0,
   isGetItemsInCartLoading: false,
@@ -76,7 +76,7 @@ function cartReducer(state = initialCartState, action: CartActionTypes): CartSta
         ...state,
         isAddToCartLoading: false,
         isAddToCartDone: true,
-        addedItem: action.payload.cartItem,
+        addedItem: action.payload.cartItems,
         addToCartSuccessMessage: action.payload.message,
       };
     }

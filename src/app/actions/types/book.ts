@@ -23,8 +23,13 @@ import {
   GET_MAINPAGE_BESTSELLER_BOOKS_SUCCESS,
   GET_MAINPAGE_BESTSELLER_BOOKS_FAILURE,
   RESET_GROUP_BOOKS,
+  GET_BOOKS_BY_CATEGORY_FAILURE,
+  GET_BOOKS_BY_CATEGORY_REQUEST,
+  GET_BOOKS_BY_CATEGORY_SUCCESS,
   RESET_BOOK,
   SET_FILTERS,
+  SET_PAGE,
+  SET_SORTBY,
 } from '../constants';
 
 // Action type
@@ -71,8 +76,8 @@ export interface GetBooksSearchRequestAction {
     author?: string;
     publisher?: string;
     orderTerm?: string;
-    start_date?: string;
-    end_date?: string;
+    start_date?: string | null;
+    end_date?: string | null;
     page?: number;
     pageSize?: number;
     start_price?: number;
@@ -90,6 +95,29 @@ export interface GetBooksSearchSuccessAction {
 
 export interface GetBooksSearchFailureAction {
   type: typeof GET_BOOKS_SEARCH_FAILURE;
+  error: string;
+}
+
+// Books by Category
+export interface GetBooksByCategoryRequestAction {
+  type: typeof GET_BOOKS_BY_CATEGORY_REQUEST;
+  data: {
+    categoryId: string;
+    page?: number;
+    pageSize?: number;
+    orderTerm: string;
+    categoryName: string;
+  };
+}
+
+export interface GetBooksByCategorySuccessAction {
+  type: typeof GET_BOOKS_BY_CATEGORY_SUCCESS;
+  payload: Book[];
+  count: number;
+}
+
+export interface GetBooksByCategoryFailureAction {
+  type: typeof GET_BOOKS_BY_CATEGORY_FAILURE;
   error: string;
 }
 
@@ -174,6 +202,15 @@ export interface SetFiltersAction {
     rateRange: [number, number];
   };
 }
+export interface SetPageAction {
+  type: typeof SET_PAGE;
+  data: number;
+}
+
+export interface SetSortByAction {
+  type: typeof SET_SORTBY;
+  data: string;
+}
 
 //Union type
 export type BookActionTypes =
@@ -200,7 +237,12 @@ export type BookActionTypes =
   | GetMainpageBestSellerBooksSuccessAction
   | GetMainpageBestSellerBooksFailureAction
   | ResetBookAction
-  | SetFiltersAction;
+  | SetFiltersAction
+  | GetBooksByCategoryRequestAction
+  | GetBooksByCategorySuccessAction
+  | GetBooksByCategoryFailureAction
+  | SetPageAction
+  | SetSortByAction;
 
 // Action creater
 
@@ -255,6 +297,26 @@ export const getBooksSearchSuccess = (
 
 export const getBooksSearchFailure = (error: string): GetBooksSearchFailureAction => ({
   type: GET_BOOKS_SEARCH_FAILURE,
+  error,
+});
+
+//Books by Category
+export const getBooksByCategoryRequest = (data: GetBooksByCategoryRequestAction['data']): GetBooksByCategoryRequestAction => ({
+  type: GET_BOOKS_BY_CATEGORY_REQUEST,
+  data,
+});
+
+export const getBooksByCategorySuccess = (
+  payload: GetBooksByCategorySuccessAction['payload'],
+  count: GetBooksByCategorySuccessAction['count'],
+): GetBooksByCategorySuccessAction => ({
+  type: GET_BOOKS_BY_CATEGORY_SUCCESS,
+  payload,
+  count,
+});
+
+export const getBooksByCategoryFailure = (error: string): GetBooksByCategoryFailureAction => ({
+  type: GET_BOOKS_BY_CATEGORY_FAILURE,
   error,
 });
 
@@ -334,4 +396,14 @@ export const resetBook = (): ResetBookAction => ({
 export const setFilters = (data: SetFiltersAction['data']): SetFiltersAction => ({
   type: SET_FILTERS,
   data,
+});
+
+export const setPage = (data: SetPageAction['data']): SetPageAction => ({
+  type: SET_PAGE,
+  data: data,
+});
+
+export const setSortBy = (data: SetSortByAction['data']): SetSortByAction => ({
+  type: SET_SORTBY,
+  data: data,
 });

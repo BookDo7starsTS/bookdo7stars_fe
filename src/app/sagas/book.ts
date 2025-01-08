@@ -24,6 +24,9 @@ import {
   GET_MAINPAGE_BESTSELLER_BOOKS_REQUEST,
   GET_MAINPAGE_BESTSELLER_BOOKS_SUCCESS,
   GET_MAINPAGE_BESTSELLER_BOOKS_FAILURE,
+  GET_BOOKS_BY_CATEGORY_REQUEST,
+  GET_BOOKS_BY_CATEGORY_SUCCESS,
+  GET_BOOKS_BY_CATEGORY_FAILURE,
 } from '../actions/constants';
 import {
   GetAllBooksRequestAction,
@@ -32,6 +35,7 @@ import {
   GetBooksSearchRequestAction,
   GetBookIsbnSearchRequestAction,
   GetMainpageBestSellerBooksRequestAction,
+  GetBooksByCategoryRequestAction,
 } from '../actions/types';
 
 function getAllBooksAPI(page: number, pageSize: number) {
@@ -73,6 +77,28 @@ export function* getBooksByGroup(action: GetBooksByGroupRequestAction): SagaIter
   }
 }
 
+function getBooksByCategoryAPI(data: GetBooksByCategoryRequestAction['data']) {
+  return axios.get(
+    `/book/category/${data.categoryId}?page=${data.page}&pageSize=${data.pageSize}&orderTerm=${data.orderTerm}&categoryName=${data.categoryName}`,
+  );
+}
+
+export function* getBooksByCategory(action: GetBooksByCategoryRequestAction): SagaIterator {
+  try {
+    const response: any = yield call(getBooksByCategoryAPI, action.data);
+    yield put({
+      type: GET_BOOKS_BY_CATEGORY_SUCCESS,
+      payload: response.data.books.rows,
+      count: response.data.books.count,
+    });
+  } catch (err: any) {
+    yield put({
+      type: GET_BOOKS_BY_CATEGORY_FAILURE,
+      error: err.response.data.message,
+    });
+  }
+}
+
 function getBooksSearchAPI(data: GetBooksSearchRequestAction['data']) {
   const queryString: string = new URLSearchParams({
     ...data,
@@ -84,6 +110,7 @@ function getBooksSearchAPI(data: GetBooksSearchRequestAction['data']) {
 export function* getBooksSearch(action: GetBooksSearchRequestAction): SagaIterator {
   try {
     const response: any = yield call(getBooksSearchAPI, action.data);
+
     yield put({
       type: GET_BOOKS_SEARCH_SUCCESS,
       payload: response.data.books,
@@ -184,6 +211,10 @@ function* watchGetBooksByGroup() {
   yield takeLatest(GET_BOOKS_BY_GROUP_REQUEST, getBooksByGroup);
 }
 
+function* watchGetBooksByCategory() {
+  yield takeLatest(GET_BOOKS_BY_CATEGORY_REQUEST, getBooksByCategory);
+}
+
 function* watchGetBooksSearch() {
   yield takeLatest(GET_BOOKS_SEARCH_REQUEST, getBooksSearch);
 }
@@ -213,5 +244,6 @@ export default function* bookSaga() {
     fork(watchGetBookIsbnSearch),
     fork(watchGetMainpageBooks),
     fork(watchGetMainpageBestSellerBooks),
+    fork(watchGetBooksByCategory),
   ]);
 }

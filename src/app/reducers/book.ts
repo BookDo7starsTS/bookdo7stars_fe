@@ -8,6 +8,9 @@ import {
   GET_BOOKS_BY_GROUP_FAILURE,
   GET_BOOKS_BY_GROUP_REQUEST,
   GET_BOOKS_BY_GROUP_SUCCESS,
+  GET_BOOKS_BY_CATEGORY_FAILURE,
+  GET_BOOKS_BY_CATEGORY_REQUEST,
+  GET_BOOKS_BY_CATEGORY_SUCCESS,
   GET_BOOKS_SEARCH_REQUEST,
   GET_BOOKS_SEARCH_SUCCESS,
   GET_BOOKS_SEARCH_FAILURE,
@@ -23,6 +26,8 @@ import {
   RESET_GROUP_BOOKS,
   RESET_BOOK,
   SET_FILTERS,
+  SET_PAGE,
+  SET_SORTBY,
 } from '../actions/constants';
 import { BookActionTypes } from '../actions/types';
 import { Book } from '../models/book';
@@ -33,12 +38,16 @@ type InitialState = {
   searchData: {};
   count: number;
   groupBooks: Book[];
+  categoryBooks: Book[];
   isGetAllBooksLoading: boolean;
   isGetAllBooksDone: boolean;
   isGetAllBooksError: string;
   isGetBooksByGroupLoading: boolean;
   isGetBooksByGroupDone: boolean;
   isGetBooksByGroupError: string;
+  isGetBooksByCategoryLoading: boolean;
+  isGetBooksByCategoryDone: boolean;
+  isGetBooksByCategoryError: string;
   isGetBooksSearchLoading: boolean;
   isGetBooksSearchDone: boolean;
   isGetBooksSearchError: string;
@@ -58,6 +67,8 @@ type InitialState = {
     priceRange: [number, number];
     rateRange: [number, number];
   };
+  currentPage: number;
+  sortBy: string;
 };
 
 export const initialState: InitialState = {
@@ -73,12 +84,16 @@ export const initialState: InitialState = {
   },
   count: 0,
   groupBooks: [],
+  categoryBooks: [],
   isGetAllBooksLoading: false,
   isGetAllBooksDone: false,
   isGetAllBooksError: '',
   isGetBooksByGroupLoading: false,
   isGetBooksByGroupDone: false,
   isGetBooksByGroupError: '',
+  isGetBooksByCategoryLoading: false,
+  isGetBooksByCategoryDone: false,
+  isGetBooksByCategoryError: '',
   isGetBooksSearchLoading: false,
   isGetBooksSearchDone: false,
   isGetBooksSearchError: '',
@@ -98,6 +113,8 @@ export const initialState: InitialState = {
     priceRange: [0, 100000],
     rateRange: [0, 10],
   },
+  currentPage: 1,
+  sortBy: 'accuracy',
 };
 
 function bookReducer(state = initialState, action: BookActionTypes) {
@@ -115,6 +132,13 @@ function bookReducer(state = initialState, action: BookActionTypes) {
       return { ...state, isGetBooksByGroupLoading: false, isGetBooksByGroupDone: true, groupBooks: state.groupBooks.concat(action.payload) };
     case GET_BOOKS_BY_GROUP_FAILURE:
       return { ...state, isGetBooksByGroupLoading: false, isGetBooksByGroupDone: false, isGetBooksByGroupError: action.error };
+
+    case GET_BOOKS_BY_CATEGORY_REQUEST:
+      return { ...state, isGetBooksByCategoryLoading: true };
+    case GET_BOOKS_BY_CATEGORY_SUCCESS:
+      return { ...state, isGetBooksByCategoryLoading: false, isGetBooksByCategoryDone: true, categoryBooks: action.payload, count: action.count };
+    case GET_BOOKS_BY_CATEGORY_FAILURE:
+      return { ...state, isGetBooksByCategoryLoading: false, isGetBooksByCategoryDone: false, isGetBooksByGroupError: action.error };
 
     case GET_BOOKS_SEARCH_REQUEST:
       return { ...state, isGetBooksSearchLoading: true, searchData: action.data };
@@ -150,6 +174,10 @@ function bookReducer(state = initialState, action: BookActionTypes) {
 
     case SET_FILTERS:
       return { ...state, filters: action.data };
+    case SET_PAGE:
+      return { ...state, currentPage: action.data };
+    case SET_SORTBY:
+      return { ...state, sortBy: action.data };
     default:
       return state;
   }
