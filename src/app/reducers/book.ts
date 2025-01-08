@@ -28,6 +28,7 @@ import {
   SET_FILTERS,
   SET_PAGE,
   SET_SORTBY,
+  SET_SELECTED_BOOKS,
 } from '../actions/constants';
 import { BookActionTypes } from '../actions/types';
 import { Book } from '../models/book';
@@ -69,6 +70,7 @@ type InitialState = {
   };
   currentPage: number;
   sortBy: string;
+  selectedBooks: Book[];
 };
 
 export const initialState: InitialState = {
@@ -115,6 +117,7 @@ export const initialState: InitialState = {
   },
   currentPage: 1,
   sortBy: 'accuracy',
+  selectedBooks: [],
 };
 
 function bookReducer(state = initialState, action: BookActionTypes) {
@@ -178,6 +181,8 @@ function bookReducer(state = initialState, action: BookActionTypes) {
       return { ...state, currentPage: action.data };
     case SET_SORTBY:
       return { ...state, sortBy: action.data };
+    case SET_SELECTED_BOOKS:
+      return { ...state, selectedBooks: action.data };
     default:
       return state;
   }

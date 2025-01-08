@@ -12,6 +12,12 @@ import ToggleButtons from '../Buttons/ToggleButtons';
 import CustomPagination from '../CustomPagination';
 import ResultFilters from '../Result/ResultFilters';
 import { getTitle } from '@/utils/pageUtils';
+import { RootState } from '@/app/reducers';
+import { useDispatch, useSelector } from 'react-redux';
+import { addToCart } from '@/utils/cartUtils';
+import { CartItemDto } from '@/app/models/cart';
+import { AppDispatch } from '@/app/store/store';
+import { setSelectedBooks } from '@/app/actions/types';
 interface SearchResultBooksContainerProps {
   books: Book[];
   count: number;
@@ -30,29 +36,26 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
   parsedSearchCondition,
   parsedIsbn,
 }) => {
-  const [selectedBooks, setSelectedBooks] = useState<number[]>([]);
+  const { user } = useSelector((store: RootState) => store.user);
+  const { isAddToCartDone } = useSelector((store: RootState) => store.cart);
+  const { selectedBooks } = useSelector((store: RootState) => store.book);
+  const dispatch = useDispatch<AppDispatch>();
+  const [selectedBookIds, setSelectedBookIds] = useState<number[]>([]);
   const pageCount = Math.ceil(count / booksPerPage);
   const theme = useTheme();
 
   const isWidth900Up = useMediaQuery('(min-width:900px)');
 
   useEffect(() => {
-    // console.log('선택된 책들: ', selectedBooks);
-  }, [selectedBooks]);
-
-  const handleOnClickAddToCart = () => {
-    console.log('여기는 handleAddToCart입니다.');
-  };
-  const handleAddToWishlist = () => {
-    console.log('여기는 handleAddToWishlist입니다.');
-  };
-  const handleAddToMyList = () => {
-    console.log('여기는 handleAddToMyList입니다.');
-  };
+    if (selectedBookIds.length !== 0) {
+      const selectedBooks = books.filter((book) => selectedBookIds.includes(book.id));
+      dispatch(setSelectedBooks(selectedBooks));
+    }
+  }, [selectedBookIds]);
 
   const handleCheckboxChange = (bookId: number) => {
-    setSelectedBooks((prevSelectedBooks) =>
-      prevSelectedBooks.includes(bookId) ? prevSelectedBooks.filter((id) => id !== bookId) : [...prevSelectedBooks, bookId],
+    setSelectedBookIds((prevSelectedBookIds) =>
+      prevSelectedBookIds.includes(bookId) ? prevSelectedBookIds.filter((id) => id !== bookId) : [...prevSelectedBookIds, bookId],
     );
   };
 
@@ -76,13 +79,27 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
   const actionButtonStyle = {
     border: `1px solid ${theme.palette.primary.main}`,
   };
+
   const handleOnClick = (name: string) => {
     switch (name) {
       case '전체 선택': {
-        if (selectedBooks.length === books.length) {
-          setSelectedBooks([]);
+        if (selectedBookIds.length === books.length) {
+          setSelectedBookIds([]);
         } else {
-          setSelectedBooks(books.map((book) => book.id));
+          setSelectedBookIds(books.map((book) => book.id));
+        }
+      }
+      case '장바구니 담기': {
+        const cartItem: CartItemDto[] = [];
+        selectedBookIds.map((bookId) => {
+          return cartItem.push({ bookId: bookId, quantity: 1 });
+        });
+        if (user) {
+          addToCart(cartItem, selectedBooks, dispatch, isAddToCartDone, user);
+          setSelectedBookIds([]);
+        } else {
+          addToCart(cartItem, selectedBooks, dispatch, isAddToCartDone);
+          setSelectedBookIds([]);
         }
       }
     }
@@ -91,7 +108,7 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
     if (name === '전체 선택') {
       return false;
     } else {
-      return selectedBooks.length === 0;
+      return selectedBookIds.length === 0;
     }
   };
 
@@ -133,7 +150,7 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
               <Box className="book-card-box" sx={{ display: 'flex', flexDirection: 'column', marginLeft: '1rem' }}>
                 {books.map((book, index) => (
                   <Box className="book-detail-card" key={index} sx={{ display: 'flex', alignItems: 'center', marginBottom: '2rem', zIndex: 'revert-layer' }}>
-                    <Checkbox checked={selectedBooks.includes(book.id)} onChange={() => handleCheckboxChange(book.id)} />
+                    <Checkbox checked={selectedBookIds.includes(book.id)} onChange={() => handleCheckboxChange(book.id)} />
                     <BookDetailCard key={index} book={book} />
                   </Box>
                 ))}

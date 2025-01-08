@@ -9,9 +9,6 @@ import { v4 as uuidv4 } from 'uuid';
 export const addToCart = (cartItem: CartItemDto[], books: Book[], dispatch: AppDispatch, isAddToCartDone: boolean, user?: User) => {
   if (user) {
     dispatch(addToCartRequest(cartItem));
-    if (isAddToCartDone) {
-      dispatch(getItemsInCartRequest());
-    }
   } else {
     const storedCartItems = localStorage.getItem('cartItems');
     const cartItemsArray: CartItem[] = storedCartItems ? JSON.parse(storedCartItems) : [];
@@ -19,20 +16,37 @@ export const addToCart = (cartItem: CartItemDto[], books: Book[], dispatch: AppD
     const matchingAddedItemIndexes = cartItemsArray.map((cartItemArrayEl) => cartItem.findIndex((cartItemEl) => cartItemEl.bookId === cartItemArrayEl.book.id));
 
     if (matchingAddedItemIndexes.some((index) => index !== -1)) {
-      const indexes = matchingAddedItemIndexes.reduce((result: number[], value, index) => {
+      console.log('한권이라도 기존 책');
+
+      // matchedIndexes: -1이 아닌 인덱스만 추출
+      const matchedIndexes = matchingAddedItemIndexes.reduce((result: number[], value, index) => {
         if (value !== -1) {
           result.push(index);
         }
         return result;
       }, []);
 
-      indexes.forEach((i) => (cartItemsArray[i].quantity += cartItem[matchingAddedItemIndexes[i]].quantity));
-    } else {
-      cartItem.map((c) =>
-        books.map((book) => {
-          return cartItemsArray.push({ id: uuidv4(), book: book, quantity: c.quantity });
-        }),
+      // 기존 책의 수량 업데이트
+      matchedIndexes.forEach((i) => (cartItemsArray[i].quantity += cartItem[matchingAddedItemIndexes[i]].quantity));
+
+      // cartItem에서 matchedIndexes의 값과 비교하여 추가되지 않은 항목만 추출
+      const unMatchedItems = cartItem.filter(
+        (_, cartItemIndex) => !matchedIndexes.some((matchedIndex) => matchingAddedItemIndexes[matchedIndex] === cartItemIndex),
       );
+
+      // unMatchedItems에서 새로운 책 추가
+      unMatchedItems.forEach((item) => {
+        const book = books.find((book) => book.id === item.bookId);
+        if (book) {
+          cartItemsArray.push({ id: uuidv4(), book: book, quantity: 1 });
+        }
+      });
+    }
+    if (matchingAddedItemIndexes.every((index) => index === -1)) {
+      console.log('모두 새책');
+      books.map((book) => {
+        return cartItemsArray.push({ id: uuidv4(), book: book, quantity: 1 });
+      });
     }
     localStorage.setItem('cartItems', JSON.stringify(cartItemsArray));
     if (cartItem.length === 1) {

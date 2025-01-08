@@ -17,7 +17,13 @@ const SessionProvider = ({
   const dispatch = useDispatch<AppDispatch>();
   const { user } = useSelector((store: RootState) => store.user);
   const { isAddToCartDone, addToCartSuccessMessage } = useSelector((store: RootState) => store.cart);
-  const _items = localStorage.getItem('cartItems');
+
+  let _items: string | null = null;
+
+  if (typeof window !== 'undefined') {
+    _items = localStorage.getItem('cartItems');
+  }
+
   const items = _items ? JSON.parse(_items) : [];
   useEffect(() => {
     if (isAddToCartDone) {

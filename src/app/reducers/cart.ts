@@ -62,7 +62,9 @@ function cartReducer(state = initialCartState, action: CartActionTypes): CartSta
       return { ...state, isGetItemsInCartLoading: true };
 
     case GET_ITEMS_IN_CART_SUCCESS: {
-      return { ...state, isGetItemsInCartLoading: false, isGetItemsInCartDone: true, items: action.payload, totalItems: action.payload.length };
+      const cartItems = action.payload;
+      cartItems.sort((a, b) => a.book.id - b.book.id);
+      return { ...state, isGetItemsInCartLoading: false, isGetItemsInCartDone: true, items: cartItems, totalItems: action.payload.length };
     }
 
     case GET_ITEMS_IN_CART_FAILURE:

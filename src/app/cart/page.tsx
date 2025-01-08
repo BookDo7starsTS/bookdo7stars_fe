@@ -62,7 +62,6 @@ const CartPage = () => {
   const checkedItems = Object.entries(checkedIds)
     .filter(([key, value]) => value)
     .map(([key]) => key);
-  console.log(checkedItems);
 
   // 수량 증가
   const handleIncrease = (id: string, quantity: number) => {
