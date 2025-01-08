@@ -87,5 +87,5 @@ function* watchRemoveFromCart() {
 }
 
 export default function* bookSaga() {
-  yield all([fork(watchAddCart), fork(watchGetItemsInCart), fork(watchRemoveFromCart)] );
+  yield all([fork(watchAddCart), fork(watchGetItemsInCart), fork(watchRemoveFromCart)]);
 }

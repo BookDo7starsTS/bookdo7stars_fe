@@ -2,14 +2,13 @@
 
 import React, { useEffect, useState } from 'react';
 
+import { removeFromCartRequest, getItemsInCartRequest } from '@/app/actions/types';
 import { RootState } from '@/app/reducers';
 import { AppDispatch } from '@/app/store/store';
 import { Box, Button, Typography, Grid } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { getItemsInCartRequest } from '../actions/types';
 import CartCard from '../components/Cart/CartCard';
-import {removeFromCartRequest} from '@/app/actions/types';
 
 const CartPage = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -23,17 +22,14 @@ const CartPage = () => {
     }));
   };
 
-  console.log("items는? =>   ", items)
   useEffect(() => {
     dispatch(getItemsInCartRequest());
   }, []);
 
-
   const handleCartDelete = (bookId: string) => {
-    dispatch(removeFromCartRequest(bookId))
+    dispatch(removeFromCartRequest(bookId));
     dispatch(getItemsInCartRequest());
-  }
-  
+  };
 
   // 전체 선택/해제
   const handleToggleSelectAll = () => {
@@ -106,7 +102,14 @@ const CartPage = () => {
       {/* Cart Items */}
       {items.length > 0 ? (
         items.map((item) => (
-          <CartCard key={item.id} book={item.book} quantity={item.quantity} handleCheckboxChange={handleCheckboxChange} checkedIds={checkedIds} handleCartDelete={handleCartDelete}/>
+          <CartCard
+            key={item.id}
+            book={item.book}
+            quantity={item.quantity}
+            handleCheckboxChange={handleCheckboxChange}
+            checkedIds={checkedIds}
+            handleCartDelete={handleCartDelete}
+          />
         ))
       ) : (
         <Typography variant="h6" textAlign="center">

@@ -120,7 +120,7 @@ export const removeFromCartSuccess = (payload: RemoveFromCartSuccessAction['payl
 
 export const removeFromCartFailure = (error: string): RemoveFromCartFailureAction => ({
   type: REMOVE_FROM_CART_FAILURE,
-  error
+  error,
 });
 
 // export const updateCartItemQuantity = (bookId: string, quantity: number): UpdateCartItemQuantityAction => ({

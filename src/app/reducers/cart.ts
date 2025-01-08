@@ -28,7 +28,6 @@ interface CartState {
   isRemovingFromCartError: string;
   addToCartSuccessMessage: string | null;
   addToCartFailureMessage: string;
-  
 }
 const initialCartState: CartState = {
   items: [],
@@ -73,7 +72,6 @@ function cartReducer(state = initialCartState, action: CartActionTypes): CartSta
     }
 
     case ADD_TO_CART_FAILURE:
-      console.log(action.error);
       return { ...state, isAddToCartLoading: false, isAddToCartDone: false, isAddToCartError: action.error };
 
     case REMOVE_FROM_CART_REQUEST:
@@ -82,18 +80,18 @@ function cartReducer(state = initialCartState, action: CartActionTypes): CartSta
         isRemovingFromCartLoading: true,
         isRemovingFromCartDone: false,
         isRemovingFromCartError: '',
-      }
+      };
 
     case REMOVE_FROM_CART_SUCCESS: {
       const updatedItems = state.items.filter((item) => item.book.id?.toString() !== action.payload.bookId);
       const totalItems = updatedItems.reduce((sum, item) => sum + item.quantity, 0);
       const totalPrice = updatedItems.reduce((sum, item) => sum + item.book.priceSales * item.quantity, 0);
-    
+
       return {
         ...state,
-        isRemovingFromCartLoading: false, 
-        isRemovingFromCartDone: true, 
-        items: updatedItems, 
+        isRemovingFromCartLoading: false,
+        isRemovingFromCartDone: true,
+        items: updatedItems,
         totalItems,
         totalPrice,
       };
