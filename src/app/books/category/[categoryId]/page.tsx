@@ -8,16 +8,15 @@ import ActionButtons from '@/app/components/Buttons/ActionButtons';
 import ToggleButtons from '@/app/components/Buttons/ToggleButtons';
 import CategoryList from '@/app/components/Category/CategoryList';
 import CustomPagination from '@/app/components/CustomPagination';
+import LoadingSpinner from '@/app/components/LoadingSpinner';
+import { CartItemDto } from '@/app/models/cart';
 import { RootState } from '@/app/reducers';
 import { AppDispatch } from '@/app/store/store';
+import { addToCart } from '@/utils/cartUtils';
+import { getTitle } from '@/utils/pageUtils';
 import { Box, Checkbox, Grid, Typography, useTheme } from '@mui/material';
 import { useParams } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTitle } from '@/utils/pageUtils';
-import LoadingSpinner from '@/app/components/LoadingSpinner';
-import { CartItemDto } from '@/app/models/cart';
-import user from '@/app/reducers/user';
-import { addToCart } from '@/utils/cartUtils';
 
 const CategoryBookPage = () => {
   const dispatch = useDispatch<AppDispatch>();
@@ -87,7 +86,7 @@ const CategoryBookPage = () => {
     borderBottomLeftRadius: '0px',
     borderBottomRightRadius: '0px',
   };
-  const actionButtonNames = ['전체 선택', '장바구니 담기', '보관함 담기', '마이리스트 담기'];
+  const actionButtonNames = ['전체 선택', '장바구니 담기', '보관함 담기'];
   const handleOnClick = (name: string) => {
     switch (name) {
       case '전체 선택': {
@@ -96,6 +95,7 @@ const CategoryBookPage = () => {
         } else {
           setSelectedBookIds(categoryBooks.map((book) => book.id));
         }
+        break;
       }
       case '장바구니 담기': {
         const cartItem: CartItemDto[] = [];
@@ -109,6 +109,7 @@ const CategoryBookPage = () => {
           addToCart(cartItem, selectedBooks, dispatch, isAddToCartDone);
           setSelectedBookIds([]);
         }
+        break;
       }
     }
   };

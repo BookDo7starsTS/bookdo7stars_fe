@@ -74,7 +74,7 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
     borderBottomLeftRadius: '0px',
     borderBottomRightRadius: '0px',
   };
-  const actionButtonNames = ['전체 선택', '장바구니 담기', '보관함 담기', '마이리스트 담기'];
+  const actionButtonNames = ['전체 선택', '장바구니 담기', '보관함 담기'];
 
   const actionButtonStyle = {
     border: `1px solid ${theme.palette.primary.main}`,
