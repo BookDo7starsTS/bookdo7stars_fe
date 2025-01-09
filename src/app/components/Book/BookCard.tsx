@@ -1,6 +1,8 @@
 import { Book } from '@/app/models/book';
+import { CartItemDto } from '@/app/models/cart';
 import { RootState } from '@/app/reducers';
 import { AppDispatch } from '@/app/store/store';
+import { addToCart } from '@/utils/cartUtils';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Box, Card, CardContent, CardMedia, Typography } from '@mui/material';
@@ -11,8 +13,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { currencyFormat } from '../../../utils/helpers';
-import { addToCart } from '@/utils/cartUtils';
-import { CartItemDto } from '@/app/models/cart';
 
 interface BookCardProps {
   book: Book;
