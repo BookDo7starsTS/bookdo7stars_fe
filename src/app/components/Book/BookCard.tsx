@@ -10,10 +10,12 @@ import { Box, Card, CardContent, CardMedia, Typography } from '@mui/material';
 import { pink } from '@mui/material/colors';
 import IconButton from '@mui/material/IconButton';
 import { useRouter } from 'next/navigation';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 
 import { currencyFormat } from '../../../utils/helpers';
+import { addToCartRequest } from '../../actions/types';
+
 interface BookCardProps {
   book: Book;
 }
@@ -33,6 +35,11 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
   const router = useRouter();
   const clickBookCard = (book: Book) => {
     router.push(`/book/${book.id}`);
+  };
+
+  const handleAddToCart = (bookId: number) => {
+    const cartItem = { bookId, quantity: 1 };
+    dispatch(addToCartRequest(cartItem));
   };
 
   const handleFavoriteButton = () => {
@@ -84,7 +91,7 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
                   <FavoriteBorderIcon fontSize="small" sx={{ color: pink[500] }} onClick={handleFavoriteButton} />
                 )}
               </IconButton>
-              <IconButton sx={{ padding: '5px' }} aria-label="add to cart">
+              <IconButton sx={{ padding: '5px' }} aria-label="add to cart" onClick={() => handleAddToCart(book.id)}>
                 <ShoppingCartIcon fontSize="small" />
               </IconButton>
             </Box>
