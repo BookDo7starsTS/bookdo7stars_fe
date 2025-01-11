@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import { toggleWishlistRequest } from '@/app/actions/types';
 import { Book } from '@/app/models/book';
 import { AppDispatch } from '@/app/store/store';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Box, Card, CardContent, CardMedia, Typography } from '@mui/material';
@@ -78,7 +79,11 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
             <Box>
               {/* favorite이 있으면 : 없으면 삼항연산자 넣어서 처리 */}
               <IconButton sx={{ padding: '5px' }} aria-label="add to favorites">
-                <FavoriteBorderIcon fontSize="small" sx={{ color: pink[500] }} onClick={handleFavoriteButton} />
+                {book.isBookmarked ? (
+                  <FavoriteIcon fontSize="small" sx={{ color: pink[500] }} onClick={handleFavoriteButton} />
+                ) : (
+                  <FavoriteBorderIcon fontSize="small" sx={{ color: pink[500] }} />
+                )}
               </IconButton>
               <IconButton sx={{ padding: '5px' }} aria-label="add to cart">
                 <ShoppingCartIcon fontSize="small" />
