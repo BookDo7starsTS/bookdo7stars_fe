@@ -29,15 +29,15 @@ const StyledTypography = styled(Typography)`
 
 const BookCard: React.FC<BookCardProps> = ({ book }) => {
   const dispatch = useDispatch<AppDispatch>();
-
+  const [isBookmarked, setIsBookmarked] = useState<boolean>(book.isBookmarked);
   const router = useRouter();
   const clickBookCard = (book: Book) => {
     router.push(`/book/${book.id}`);
   };
 
   const handleFavoriteButton = () => {
-    alert(book.id);
     dispatch(toggleWishlistRequest(book.id));
+    setIsBookmarked(!isBookmarked);
   };
 
   return (
@@ -77,12 +77,11 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
               ₩ {currencyFormat(book.priceStandard)}
             </Typography>
             <Box>
-              {/* favorite이 있으면 : 없으면 삼항연산자 넣어서 처리 */}
               <IconButton sx={{ padding: '5px' }} aria-label="add to favorites">
-                {book.isBookmarked ? (
+                {isBookmarked ? (
                   <FavoriteIcon fontSize="small" sx={{ color: pink[500] }} onClick={handleFavoriteButton} />
                 ) : (
-                  <FavoriteBorderIcon fontSize="small" sx={{ color: pink[500] }} />
+                  <FavoriteBorderIcon fontSize="small" sx={{ color: pink[500] }} onClick={handleFavoriteButton} />
                 )}
               </IconButton>
               <IconButton sx={{ padding: '5px' }} aria-label="add to cart">
