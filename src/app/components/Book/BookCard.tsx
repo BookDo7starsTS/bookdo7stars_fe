@@ -1,10 +1,15 @@
+import { useEffect, useState } from 'react';
+
+import { toggleWishlistRequest } from '@/app/actions/types';
 import { Book } from '@/app/models/book';
+import { AppDispatch } from '@/app/store/store';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Box, Card, CardContent, CardMedia, Typography } from '@mui/material';
 import { pink } from '@mui/material/colors';
 import IconButton from '@mui/material/IconButton';
 import { useRouter } from 'next/navigation';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { currencyFormat } from '../../../utils/helpers';
@@ -22,10 +27,18 @@ const StyledTypography = styled(Typography)`
 `;
 
 const BookCard: React.FC<BookCardProps> = ({ book }) => {
+  const dispatch = useDispatch<AppDispatch>();
+
   const router = useRouter();
   const clickBookCard = (book: Book) => {
     router.push(`/book/${book.id}`);
   };
+
+  const handleFavoriteButton = () => {
+    alert(book.id);
+    dispatch(toggleWishlistRequest(book.id));
+  };
+
   return (
     <Card
       sx={{
@@ -65,7 +78,7 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
             <Box>
               {/* favorite이 있으면 : 없으면 삼항연산자 넣어서 처리 */}
               <IconButton sx={{ padding: '5px' }} aria-label="add to favorites">
-                <FavoriteBorderIcon fontSize="small" sx={{ color: pink[500] }} />
+                <FavoriteBorderIcon fontSize="small" sx={{ color: pink[500] }} onClick={handleFavoriteButton} />
               </IconButton>
               <IconButton sx={{ padding: '5px' }} aria-label="add to cart">
                 <ShoppingCartIcon fontSize="small" />

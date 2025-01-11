@@ -35,7 +35,7 @@ export function* getWishlistRequest(action: GetWishlistRequestAction): SagaItera
 }
 
 function toggleWishlistRequestAPI(bookId: ToggleWishlistRequestAction['bookId']) {
-  return axios.post('/toggle', bookId);
+  return axios.post('/wishlist/toggle', { bookId: bookId });
 }
 
 function* toggleWishlistRequest(action: ToggleWishlistRequestAction): SagaIterator {
