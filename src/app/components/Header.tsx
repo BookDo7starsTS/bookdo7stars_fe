@@ -175,9 +175,7 @@ const Header = () => {
   const handleHome = () => {
     router.push('/');
   };
-  const handleMyPage = async () => {
-    router.push('/mypage');
-  };
+
   const handleGoToCart = async () => {
     router.push('/cart');
   };
