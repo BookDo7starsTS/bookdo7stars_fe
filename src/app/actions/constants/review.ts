@@ -1,0 +1,4 @@
+//add review
+export const ADD_REVIEW_REQUEST = 'ADD_REVIEW_REQUEST';
+export const ADD_REVIEW_SUCCESS = 'ADD_REVIEW_SUCCESS';
+export const ADD_REVIEW_FAILURE = 'ADD_REVIEW_FAILURE';

@@ -8,13 +8,13 @@ import ActionButtons from '@/app/components/Buttons/ActionButtons';
 import ToggleButtons from '@/app/components/Buttons/ToggleButtons';
 import CategoryList from '@/app/components/Category/CategoryList';
 import CustomPagination from '@/app/components/CustomPagination';
+import LoadingSpinner from '@/app/components/LoadingSpinner';
 import { RootState } from '@/app/reducers';
 import { AppDispatch } from '@/app/store/store';
+import { getTitle } from '@/utils/pageUtils';
 import { Box, Checkbox, Grid, Typography, useTheme } from '@mui/material';
 import { useParams } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
-import { getTitle } from '@/utils/pageUtils';
-import LoadingSpinner from '@/app/components/LoadingSpinner';
 
 const CategoryBookPage = () => {
   const dispatch = useDispatch<AppDispatch>();

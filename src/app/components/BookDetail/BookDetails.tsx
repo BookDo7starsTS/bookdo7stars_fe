@@ -9,6 +9,12 @@ import BookDetailOtherByAuthor from './BookDetailComponents/BookDetailOtherByAut
 import BookDetailReview from './BookDetailComponents/BookDetailReview';
 import BookDetailShippingPolicy from './BookDetailComponents/BookDetailShippingPolicy';
 import { Book } from '../../models/book';
+import Review from './Review';
+import { AppDispatch } from '@/app/store/store';
+import { useDispatch, useSelector } from 'react-redux';
+import { addReviewRequest } from '@/app/actions/types';
+import { RootState } from '@/app/reducers';
+import { toast } from 'react-toastify';
 
 interface BookDetailsProps {
   book: Book;
@@ -16,8 +22,11 @@ interface BookDetailsProps {
 
 const BookDetails: React.FC<BookDetailsProps> = ({ book }) => {
   const [activeTab, setActiveTab] = useState<string>('bookIntro');
+  const [review, setReview] = useState<string>('');
+  const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { isAddReviewError, isAddReviewDone } = useSelector((store: RootState) => store.review);
 
   const section = searchParams.get('section') || 'bookIntro';
 
@@ -35,10 +44,29 @@ const BookDetails: React.FC<BookDetailsProps> = ({ book }) => {
     router.push(`?${params.toString()}`);
   };
 
-  // {
-  //   pathname: '/book/[bookId]',
-  //   query: { section: newValue },
-  // }
+  useEffect(() => {
+    if (isAddReviewError) {
+      toast.error(isAddReviewError);
+    }
+  }, [isAddReviewError]);
+
+  useEffect(() => {
+    if (isAddReviewDone) {
+      toast.success('Your review is posted Successfully!');
+    }
+  }, [isAddReviewDone]);
+
+  const handleOnChangeReview = (event: React.ChangeEvent<HTMLInputElement>) => {
+    console.log('event.target.value', event.target.value);
+    setReview(event.target.value);
+  };
+
+  const postReview = () => {
+    console.log('hahaha', review);
+    dispatch(addReviewRequest({ bookId: book.id, content: review }));
+
+    setReview('');
+  };
 
   if (!book) {
     return <p>책 정보를 읽어오지 못했습니다.</p>;
@@ -99,7 +127,8 @@ const BookDetails: React.FC<BookDetailsProps> = ({ book }) => {
         </Box>
         <Box id="reviews" my={4}>
           <Typography variant="h4">Reviews</Typography>
-          <BookDetailReview />
+          <Review handleOnClick={postReview} handleOnChange={(event: React.ChangeEvent<HTMLInputElement>) => handleOnChangeReview(event)} review={review} />
+          {/* <BookDetailReview /> */}
         </Box>
         <Box id="delivery" my={4}>
           <Typography variant="h4">Shipping/Returns/Exchanges Policy</Typography>
