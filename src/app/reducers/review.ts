@@ -1,10 +1,20 @@
-import { ADD_REVIEW_REQUEST, ADD_REVIEW_SUCCESS, ADD_REVIEW_FAILURE } from '../actions/constants';
+import {
+  ADD_REVIEW_REQUEST,
+  ADD_REVIEW_SUCCESS,
+  ADD_REVIEW_FAILURE,
+  GET_ALL_REVIEWS_OF_BOOK_FAILURE,
+  GET_ALL_REVIEWS_OF_BOOK_REQUEST,
+  GET_ALL_REVIEWS_OF_BOOK_SUCCESS,
+} from '../actions/constants';
 import { ReviewActionTypes } from '../actions/types';
 import { Review } from '../models/review';
 
 interface ReviewState {
   reviews: Review[];
   addedReview: Review | null;
+  isGetAllReviewsOfBookLoading: boolean;
+  isGetAllReviewsOfBookDone: boolean;
+  isGetAllReviewsOfBookError: string | null;
   isAddReviewLoading: boolean;
   isAddReviewDone: boolean;
   isAddReviewError: string | null;
@@ -12,12 +22,25 @@ interface ReviewState {
 const initialCartState: ReviewState = {
   reviews: [],
   addedReview: null,
+  isGetAllReviewsOfBookLoading: false,
+  isGetAllReviewsOfBookDone: false,
+  isGetAllReviewsOfBookError: null,
   isAddReviewLoading: false,
   isAddReviewDone: false,
   isAddReviewError: null,
 };
 function reviewReducer(state = initialCartState, action: ReviewActionTypes): ReviewState {
   switch (action.type) {
+    case GET_ALL_REVIEWS_OF_BOOK_REQUEST:
+      return { ...state, isGetAllReviewsOfBookLoading: true };
+
+    case GET_ALL_REVIEWS_OF_BOOK_SUCCESS: {
+      return { ...state, isGetAllReviewsOfBookLoading: false, isGetAllReviewsOfBookDone: true, reviews: action.payload };
+    }
+
+    case GET_ALL_REVIEWS_OF_BOOK_FAILURE: {
+      return { ...state, isGetAllReviewsOfBookLoading: false, isGetAllReviewsOfBookError: action.error };
+    }
     case ADD_REVIEW_REQUEST:
       return { ...state, isAddReviewLoading: true };
 

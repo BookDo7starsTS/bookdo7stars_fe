@@ -1,6 +1,13 @@
 import { Review, ReviewDto } from '@/app/models/review';
 
-import { ADD_REVIEW_REQUEST, ADD_REVIEW_SUCCESS, ADD_REVIEW_FAILURE } from '../constants';
+import {
+  ADD_REVIEW_REQUEST,
+  ADD_REVIEW_SUCCESS,
+  ADD_REVIEW_FAILURE,
+  GET_ALL_REVIEWS_OF_BOOK_REQUEST,
+  GET_ALL_REVIEWS_OF_BOOK_SUCCESS,
+  GET_ALL_REVIEWS_OF_BOOK_FAILURE,
+} from '../constants';
 
 export interface AddReviewRequestAction {
   type: typeof ADD_REVIEW_REQUEST;
@@ -17,7 +24,28 @@ export interface AddReviewFailureAction {
   error: string;
 }
 
-export type ReviewActionTypes = AddReviewRequestAction | AddReviewSuccessAction | AddReviewFailureAction;
+export interface GetAllReviewsOfBookRequestAction {
+  type: typeof GET_ALL_REVIEWS_OF_BOOK_REQUEST;
+  data: { bookId: number };
+}
+
+export interface GetAllReviewsOfBookSuccessAction {
+  type: typeof GET_ALL_REVIEWS_OF_BOOK_SUCCESS;
+  payload: Review[];
+}
+
+export interface GetAllReviewsOfBookFailureAction {
+  type: typeof GET_ALL_REVIEWS_OF_BOOK_FAILURE;
+  error: string;
+}
+
+export type ReviewActionTypes =
+  | AddReviewRequestAction
+  | AddReviewSuccessAction
+  | AddReviewFailureAction
+  | GetAllReviewsOfBookRequestAction
+  | GetAllReviewsOfBookSuccessAction
+  | GetAllReviewsOfBookFailureAction;
 
 export const addReviewRequest = (data: AddReviewRequestAction['data']): AddReviewRequestAction => ({
   type: ADD_REVIEW_REQUEST,
@@ -31,5 +59,20 @@ export const addReviewSuccess = (review: Review): AddReviewSuccessAction => ({
 
 export const addReviewFailure = (error: string): AddReviewFailureAction => ({
   type: ADD_REVIEW_FAILURE,
+  error,
+});
+
+export const getAllReviewsOfBookRequest = (data: GetAllReviewsOfBookRequestAction['data']): GetAllReviewsOfBookRequestAction => ({
+  type: GET_ALL_REVIEWS_OF_BOOK_REQUEST,
+  data: data,
+});
+
+export const getAllReviewsOfBookSuccess = (payload: GetAllReviewsOfBookSuccessAction['payload']): GetAllReviewsOfBookSuccessAction => ({
+  type: GET_ALL_REVIEWS_OF_BOOK_SUCCESS,
+  payload: payload,
+});
+
+export const getAllReviewsOfBookFailure = (error: string): GetAllReviewsOfBookFailureAction => ({
+  type: GET_ALL_REVIEWS_OF_BOOK_FAILURE,
   error,
 });

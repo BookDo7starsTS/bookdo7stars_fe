@@ -9,12 +9,13 @@ import BookDetailOtherByAuthor from './BookDetailComponents/BookDetailOtherByAut
 import BookDetailReview from './BookDetailComponents/BookDetailReview';
 import BookDetailShippingPolicy from './BookDetailComponents/BookDetailShippingPolicy';
 import { Book } from '../../models/book';
-import Review from './Review';
+import Review from './BookDetailComponents/Review/Review';
 import { AppDispatch } from '@/app/store/store';
 import { useDispatch, useSelector } from 'react-redux';
-import { addReviewRequest } from '@/app/actions/types';
+import { addReviewRequest, getAllReviewsOfBookRequest } from '@/app/actions/types';
 import { RootState } from '@/app/reducers';
 import { toast } from 'react-toastify';
+import ReviewCard from './BookDetailComponents/Review/ReviewCard';
 
 interface BookDetailsProps {
   book: Book;
@@ -26,9 +27,14 @@ const BookDetails: React.FC<BookDetailsProps> = ({ book }) => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { isAddReviewError, isAddReviewDone } = useSelector((store: RootState) => store.review);
+  const { isAddReviewError, isAddReviewDone, reviews } = useSelector((store: RootState) => store.review);
 
   const section = searchParams.get('section') || 'bookIntro';
+
+  useEffect(() => {
+    dispatch(getAllReviewsOfBookRequest({ bookId: book.id }));
+  }, [isAddReviewDone]);
+  console.log(reviews);
 
   useEffect(() => {
     if (section && section !== activeTab) {
@@ -126,7 +132,10 @@ const BookDetails: React.FC<BookDetailsProps> = ({ book }) => {
           <BookDetailOtherByAuthor />
         </Box>
         <Box id="reviews" my={4}>
-          <Typography variant="h4">Reviews</Typography>
+          <Typography variant="h4" sx={{ marginBottom: '1rem' }}>
+            Reviews
+          </Typography>
+          {reviews.length > 0 && reviews.map((review) => <ReviewCard review={review} />)}
           <Review handleOnClick={postReview} handleOnChange={(event: React.ChangeEvent<HTMLInputElement>) => handleOnChangeReview(event)} review={review} />
           {/* <BookDetailReview /> */}
         </Box>
