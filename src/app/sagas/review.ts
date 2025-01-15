@@ -3,23 +3,17 @@ import { SagaIterator } from 'redux-saga';
 import { all, call, fork, put, takeLatest } from 'redux-saga/effects';
 
 import {
-  ADD_TO_CART_REQUEST,
-  ADD_TO_CART_SUCCESS,
-  ADD_TO_CART_FAILURE,
-  GET_ITEMS_IN_CART_REQUEST,
-  GET_ITEMS_IN_CART_SUCCESS,
-  GET_ITEMS_IN_CART_FAILURE,
-  REMOVE_FROM_CART_REQUEST,
-  REMOVE_FROM_CART_SUCCESS,
-  REMOVE_FROM_CART_FAILURE,
   ADD_REVIEW_REQUEST,
   ADD_REVIEW_FAILURE,
   ADD_REVIEW_SUCCESS,
   GET_ALL_REVIEWS_OF_BOOK_REQUEST,
   GET_ALL_REVIEWS_OF_BOOK_SUCCESS,
   GET_ALL_REVIEWS_OF_BOOK_FAILURE,
+  EDIT_REVIEW_REQUEST,
+  EDIT_REVIEW_FAILURE,
+  EDIT_REVIEW_SUCCESS,
 } from '../actions/constants';
-import { AddReviewRequestAction, AddToCartRequestAction, RemoveFromCartRequestAction } from '../actions/types';
+import { AddReviewRequestAction, EditReviewRequestAction } from '../actions/types';
 
 function getAllReviewsOfBookAPI(data: AddReviewRequestAction['data']) {
   return axios.get(`/review/${data.bookId}`);
@@ -49,7 +43,6 @@ function addReviewAPI(data: AddReviewRequestAction['data']) {
 
 export function* addReview(action: AddReviewRequestAction): SagaIterator {
   try {
-    console.log(action.data);
     const response: any = yield call(addReviewAPI, action.data);
     yield put({
       type: ADD_REVIEW_SUCCESS,
@@ -63,6 +56,27 @@ export function* addReview(action: AddReviewRequestAction): SagaIterator {
   }
 }
 
+function editReviewAPI(data: EditReviewRequestAction['data']) {
+  return axios.put(`/review/${data.bookId}`, data, {
+    withCredentials: true,
+  });
+}
+
+export function* editReview(action: EditReviewRequestAction): SagaIterator {
+  try {
+    const response: any = yield call(editReviewAPI, action.data);
+    yield put({
+      type: EDIT_REVIEW_SUCCESS,
+      payload: response.data,
+    });
+  } catch (err: any) {
+    yield put({
+      type: EDIT_REVIEW_FAILURE,
+      error: err.response.data.message,
+    });
+  }
+}
+
 function* watchGetAllReviewsOfBook() {
   yield takeLatest(GET_ALL_REVIEWS_OF_BOOK_REQUEST, getAllReviewsOfBook);
 }
@@ -71,6 +85,10 @@ function* watchAddReview() {
   yield takeLatest(ADD_REVIEW_REQUEST, addReview);
 }
 
+function* watchEditReview() {
+  yield takeLatest(EDIT_REVIEW_REQUEST, editReview);
+}
+
 export default function* bookSaga() {
-  yield all([fork(watchAddReview), fork(watchGetAllReviewsOfBook)]);
+  yield all([fork(watchAddReview), fork(watchGetAllReviewsOfBook), fork(watchEditReview)]);
 }

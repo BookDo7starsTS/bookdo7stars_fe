@@ -1,8 +1,16 @@
 import { Review } from '@/app/models/review';
-import { Avatar, Box, Card, Typography, Container } from '@mui/material';
+import DeleteIcon from '@mui/icons-material/Delete';
+import EditIcon from '@mui/icons-material/Edit';
+import { Avatar, Box, Card, Typography, Container, IconButton, TextField, Button } from '@mui/material';
 
 type ReviewCardProps = {
   review: Review;
+  handleEditReview: (reviewId: string) => void;
+  handleDeleteReview: (reviewId: string) => void;
+  handleOnChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  handleOnClick: () => void;
+  handleOnClickCancel: () => void;
+  isEditing: boolean;
 };
 function stringToColor(string: string) {
   let hash = 0;
@@ -35,8 +43,10 @@ function stringAvatar(name: string) {
 }
 
 const ReviewCard = (props: ReviewCardProps) => {
-  const { review } = props;
+  const { review, handleEditReview, handleDeleteReview, isEditing, handleOnChange, handleOnClick, handleOnClickCancel } = props;
 
+  const date = review.createdAt === review.updatedAt ? review.createdAt : review.updatedAt;
+  const isUpdated = review.createdAt !== review.updatedAt;
   return (
     <Container>
       <Card
@@ -44,10 +54,37 @@ const ReviewCard = (props: ReviewCardProps) => {
           marginBottom: '1rem',
           padding: '1rem',
           boxShadow: 3,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
         }}>
         <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: '0.5rem' }}>
           <Avatar alt={review.user.name} {...stringAvatar(`${review.user.name}`)} />
-          <Typography variant="body1">{review.content}</Typography>
+          {!isEditing ? (
+            <>
+              <Typography variant="body1">{review.content}</Typography>
+              {isUpdated && <span style={{ marginLeft: '0.5rem', color: 'gray' }}>(수정됨)</span>}
+            </>
+          ) : (
+            <Box>
+              <TextField value={review} onChange={handleOnChange} fullWidth variant="outlined" />
+              <Button variant="outlined" onClick={handleOnClick}>
+                Edit
+              </Button>
+              <Button variant="outlined" onClick={handleOnClickCancel}>
+                Cancel
+              </Button>
+            </Box>
+          )}
+        </Box>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
+          <IconButton aria-label="edit" color="primary" onClick={() => handleEditReview(review.id)}>
+            <EditIcon />
+          </IconButton>
+          <IconButton aria-label="delete" color="primary" sx={{ marginRight: '1rem' }} onClick={() => handleDeleteReview(review.id)}>
+            <DeleteIcon />
+          </IconButton>
+          <Typography>{date.toLocaleString().slice(0, 10)}</Typography>
         </Box>
       </Card>
     </Container>

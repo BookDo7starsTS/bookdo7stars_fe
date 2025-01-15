@@ -7,6 +7,9 @@ import {
   GET_ALL_REVIEWS_OF_BOOK_REQUEST,
   GET_ALL_REVIEWS_OF_BOOK_SUCCESS,
   GET_ALL_REVIEWS_OF_BOOK_FAILURE,
+  EDIT_REVIEW_REQUEST,
+  EDIT_REVIEW_SUCCESS,
+  EDIT_REVIEW_FAILURE,
 } from '../constants';
 
 export interface AddReviewRequestAction {
@@ -21,6 +24,21 @@ export interface AddReviewSuccessAction {
 
 export interface AddReviewFailureAction {
   type: typeof ADD_REVIEW_FAILURE;
+  error: string;
+}
+
+export interface EditReviewRequestAction {
+  type: typeof EDIT_REVIEW_REQUEST;
+  data: ReviewDto;
+}
+
+export interface EditReviewSuccessAction {
+  type: typeof EDIT_REVIEW_SUCCESS;
+  payload: Review;
+}
+
+export interface EditReviewFailureAction {
+  type: typeof EDIT_REVIEW_FAILURE;
   error: string;
 }
 
@@ -45,7 +63,10 @@ export type ReviewActionTypes =
   | AddReviewFailureAction
   | GetAllReviewsOfBookRequestAction
   | GetAllReviewsOfBookSuccessAction
-  | GetAllReviewsOfBookFailureAction;
+  | GetAllReviewsOfBookFailureAction
+  | EditReviewRequestAction
+  | EditReviewSuccessAction
+  | EditReviewFailureAction;
 
 export const addReviewRequest = (data: AddReviewRequestAction['data']): AddReviewRequestAction => ({
   type: ADD_REVIEW_REQUEST,
@@ -59,6 +80,21 @@ export const addReviewSuccess = (review: Review): AddReviewSuccessAction => ({
 
 export const addReviewFailure = (error: string): AddReviewFailureAction => ({
   type: ADD_REVIEW_FAILURE,
+  error,
+});
+
+export const editReviewRequest = (data: EditReviewRequestAction['data']): EditReviewRequestAction => ({
+  type: EDIT_REVIEW_REQUEST,
+  data: data,
+});
+
+export const editReviewSuccess = (review: Review): EditReviewSuccessAction => ({
+  type: EDIT_REVIEW_SUCCESS,
+  payload: review,
+});
+
+export const editReviewFailure = (error: string): EditReviewFailureAction => ({
+  type: EDIT_REVIEW_FAILURE,
   error,
 });
 

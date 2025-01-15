@@ -1,21 +1,20 @@
 'use client';
 import { useEffect, useState } from 'react';
 
+import { addReviewRequest, editReviewRequest, getAllReviewsOfBookRequest } from '@/app/actions/types';
+import { RootState } from '@/app/reducers';
+import { AppDispatch } from '@/app/store/store';
 import { Box, Container, Tabs, Tab, Typography, Paper } from '@mui/material';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import BookDetailBookInfo from './BookDetailComponents/BookDetailBookInfo';
 import BookDetailOtherByAuthor from './BookDetailComponents/BookDetailOtherByAuthor';
-import BookDetailReview from './BookDetailComponents/BookDetailReview';
 import BookDetailShippingPolicy from './BookDetailComponents/BookDetailShippingPolicy';
-import { Book } from '../../models/book';
 import Review from './BookDetailComponents/Review/Review';
-import { AppDispatch } from '@/app/store/store';
-import { useDispatch, useSelector } from 'react-redux';
-import { addReviewRequest, getAllReviewsOfBookRequest } from '@/app/actions/types';
-import { RootState } from '@/app/reducers';
-import { toast } from 'react-toastify';
 import ReviewCard from './BookDetailComponents/Review/ReviewCard';
+import { Book } from '../../models/book';
 
 interface BookDetailsProps {
   book: Book;
@@ -24,17 +23,17 @@ interface BookDetailsProps {
 const BookDetails: React.FC<BookDetailsProps> = ({ book }) => {
   const [activeTab, setActiveTab] = useState<string>('bookIntro');
   const [review, setReview] = useState<string>('');
+  const [isEditing, setIsEditing] = useState<boolean>(false);
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { isAddReviewError, isAddReviewDone, reviews } = useSelector((store: RootState) => store.review);
+  const { isAddReviewError, isAddReviewDone, reviews, isEditReviewDone } = useSelector((store: RootState) => store.review);
 
   const section = searchParams.get('section') || 'bookIntro';
 
   useEffect(() => {
     dispatch(getAllReviewsOfBookRequest({ bookId: book.id }));
-  }, [isAddReviewDone]);
-  console.log(reviews);
+  }, [book.id, dispatch, isAddReviewDone, isEditReviewDone]);
 
   useEffect(() => {
     if (section && section !== activeTab) {
@@ -63,15 +62,28 @@ const BookDetails: React.FC<BookDetailsProps> = ({ book }) => {
   }, [isAddReviewDone]);
 
   const handleOnChangeReview = (event: React.ChangeEvent<HTMLInputElement>) => {
-    console.log('event.target.value', event.target.value);
     setReview(event.target.value);
   };
 
   const postReview = () => {
-    console.log('hahaha', review);
-    dispatch(addReviewRequest({ bookId: book.id, content: review }));
-
+    if (!isEditing) {
+      dispatch(addReviewRequest({ bookId: book.id, content: review }));
+    } else {
+      dispatch(editReviewRequest({ bookId: book.id, content: review }));
+    }
     setReview('');
+  };
+
+  const editReview = () => {
+    setIsEditing(true);
+  };
+
+  const deleteReview = (reviewId: string) => {
+    console.log('delete', reviewId);
+  };
+
+  const cancelEditReview = () => {
+    setIsEditing(false);
   };
 
   if (!book) {
@@ -135,7 +147,19 @@ const BookDetails: React.FC<BookDetailsProps> = ({ book }) => {
           <Typography variant="h4" sx={{ marginBottom: '1rem' }}>
             Reviews
           </Typography>
-          {reviews.length > 0 && reviews.map((review) => <ReviewCard review={review} />)}
+          {reviews.length > 0 &&
+            reviews.map((review, index) => (
+              <ReviewCard
+                key={index}
+                review={review}
+                handleDeleteReview={deleteReview}
+                handleEditReview={editReview}
+                isEditing={isEditing}
+                handleOnChange={(event: React.ChangeEvent<HTMLInputElement>) => handleOnChangeReview(event)}
+                handleOnClick={postReview}
+                handleOnClickCancel={cancelEditReview}
+              />
+            ))}
           <Review handleOnClick={postReview} handleOnChange={(event: React.ChangeEvent<HTMLInputElement>) => handleOnChangeReview(event)} review={review} />
           {/* <BookDetailReview /> */}
         </Box>
