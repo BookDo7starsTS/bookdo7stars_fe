@@ -67,29 +67,36 @@ function reviewReducer(state = initialCartState, action: ReviewActionTypes): Rev
     }
 
     case ADD_REVIEW_FAILURE: {
-      return { ...state, isAddReviewLoading: false, isAddReviewError: action.error };
+      return { ...state, isAddReviewLoading: false, isAddReviewDone: false, isAddReviewError: action.error };
     }
 
     case EDIT_REVIEW_REQUEST:
-      return { ...state, isEditReviewLoading: true };
+      return { ...state, isEditReviewLoading: true, isAddReviewDone: false };
 
     case EDIT_REVIEW_SUCCESS: {
-      return { ...state, isEditReviewLoading: false, isEditReviewDone: true };
+      return { ...state, isEditReviewLoading: false, isAddReviewDone: false, isEditReviewDone: true };
     }
 
     case EDIT_REVIEW_FAILURE: {
-      return { ...state, isEditReviewLoading: false, isEditReviewError: action.error };
+      return { ...state, isEditReviewLoading: false, isAddReviewDone: false, isEditReviewDone: false, isEditReviewError: action.error };
     }
 
     case DELETE_REVIEW_REQUEST:
       return { ...state, isDeleteReviewLoading: true };
 
     case DELETE_REVIEW_SUCCESS: {
-      return { ...state, isDeleteReviewLoading: false, isDeleteReviewDone: true };
+      return { ...state, isDeleteReviewLoading: false, isAddReviewDone: false, isEditReviewDone: false, isDeleteReviewDone: true };
     }
 
     case DELETE_REVIEW_FAILURE: {
-      return { ...state, isDeleteReviewLoading: false, isDeleteReviewError: action.error };
+      return {
+        ...state,
+        isDeleteReviewLoading: false,
+        isAddReviewDone: false,
+        isEditReviewDone: false,
+        isDeleteReviewDone: false,
+        isDeleteReviewError: action.error,
+      };
     }
 
     default:

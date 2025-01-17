@@ -1,7 +1,7 @@
 'use client';
 import { useEffect, useState } from 'react';
 
-import { addReviewRequest, editReviewRequest, getAllReviewsOfBookRequest } from '@/app/actions/types';
+import { addReviewRequest, deleteReviewRequest, editReviewRequest, getAllReviewsOfBookRequest } from '@/app/actions/types';
 import { RootState } from '@/app/reducers';
 import { AppDispatch } from '@/app/store/store';
 import { Box, Container, Tabs, Tab, Typography, Paper } from '@mui/material';
@@ -15,12 +15,14 @@ import BookDetailShippingPolicy from './BookDetailComponents/BookDetailShippingP
 import Review from './BookDetailComponents/Review/Review';
 import ReviewCard from './BookDetailComponents/Review/ReviewCard';
 import { Book } from '../../models/book';
+import { User } from '@/app/models/user';
 
 interface BookDetailsProps {
   book: Book;
+  user: User | null;
 }
 
-const BookDetails: React.FC<BookDetailsProps> = ({ book }) => {
+const BookDetails: React.FC<BookDetailsProps> = ({ book, user }) => {
   const [activeTab, setActiveTab] = useState<string>('bookIntro');
   const [review, setReview] = useState<string>('');
   const [editedReview, setEditedReview] = useState<string>('');
@@ -28,13 +30,15 @@ const BookDetails: React.FC<BookDetailsProps> = ({ book }) => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { isAddReviewError, isAddReviewDone, reviews, isEditReviewDone, isEditReviewError } = useSelector((store: RootState) => store.review);
+  const { isAddReviewError, isAddReviewDone, reviews, isEditReviewDone, isEditReviewError, isDeleteReviewDone, isDeleteReviewError } = useSelector(
+    (store: RootState) => store.review,
+  );
 
   const section = searchParams.get('section') || 'bookIntro';
 
   useEffect(() => {
     dispatch(getAllReviewsOfBookRequest({ bookId: book.id }));
-  }, [book.id, dispatch, isAddReviewDone, isEditReviewDone]);
+  }, [book.id, isAddReviewDone, isEditReviewDone]);
 
   useEffect(() => {
     if (section && section !== activeTab) {
@@ -57,16 +61,23 @@ const BookDetails: React.FC<BookDetailsProps> = ({ book }) => {
     if (isEditReviewError) {
       toast.error(isEditReviewError);
     }
-  }, [isAddReviewError, isEditReviewError]);
+
+    if (isDeleteReviewError) {
+      toast.error(isDeleteReviewError);
+    }
+  }, [isAddReviewError, isEditReviewError, isDeleteReviewError]);
 
   useEffect(() => {
     if (isAddReviewDone) {
       toast.success('Your review is posted Successfully!');
     }
+  }, [isAddReviewDone]);
+
+  useEffect(() => {
     if (isEditReviewDone) {
       toast.success('Your review is edited Successfully!');
     }
-  }, [isAddReviewDone, isEditReviewDone]);
+  }, [isEditReviewDone]);
 
   const handleOnChangeReview = (event: React.ChangeEvent<HTMLInputElement>) => {
     setReview(event.target.value);
@@ -79,8 +90,10 @@ const BookDetails: React.FC<BookDetailsProps> = ({ book }) => {
   const postReview = (reviewId?: string) => {
     if (!isEditing[reviewId!]) {
       dispatch(addReviewRequest({ bookId: book.id, content: review }));
+      dispatch(getAllReviewsOfBookRequest({ bookId: book.id }));
     } else {
       dispatch(editReviewRequest({ bookId: book.id, reviewId: reviewId, content: editedReview }));
+      dispatch(getAllReviewsOfBookRequest({ bookId: book.id }));
     }
     setReview('');
     setEditedReview('');
@@ -100,7 +113,8 @@ const BookDetails: React.FC<BookDetailsProps> = ({ book }) => {
   };
 
   const deleteReview = (reviewId: string) => {
-    console.log('delete', reviewId);
+    dispatch(deleteReviewRequest({ bookId: book.id, reviewId: reviewId }));
+    dispatch(getAllReviewsOfBookRequest({ bookId: book.id }));
   };
 
   const cancelEditReview = (reviewId: string) => {
@@ -176,6 +190,7 @@ const BookDetails: React.FC<BookDetailsProps> = ({ book }) => {
             reviews.map((review, index) => (
               <ReviewCard
                 key={index}
+                user={user}
                 review={review}
                 editedReviewContent={editedReview}
                 handleDeleteReview={deleteReview}

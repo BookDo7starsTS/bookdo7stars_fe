@@ -1,4 +1,6 @@
 import { Review } from '@/app/models/review';
+import { User } from '@/app/models/user';
+import { RootState } from '@/app/reducers';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -6,6 +8,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import { Avatar, Box, Card, Typography, Container, IconButton, TextField } from '@mui/material';
 
 type ReviewCardProps = {
+  user: User | null;
   review: Review;
   editedReviewContent: string;
   handleEditReview: (reviewId: string) => void;
@@ -41,13 +44,12 @@ function stringAvatar(name: string) {
       bgcolor: stringToColor(name),
       marginRight: '1rem',
     },
-    children: `${name.split(' ')[0][0]}${name.split(' ')[1][0]}`,
+    children: name.split(' ').length > 1 ? `${name.split(' ')[0][0]}${name.split(' ')[1][0]}` : `${name.split(' ')[0][0]}${name.split(' ')[0][1]}`,
   };
 }
 
 const ReviewCard = (props: ReviewCardProps) => {
-  const { review, editedReviewContent, handleEditReview, handleDeleteReview, isEditing, handleOnChange, handleOnClick, handleOnClickCancel } = props;
-
+  const { user, review, editedReviewContent, handleEditReview, handleDeleteReview, isEditing, handleOnChange, handleOnClick, handleOnClickCancel } = props;
   const date = review.createdAt === review.updatedAt ? review.createdAt : review.updatedAt;
   const isUpdated = review.createdAt !== review.updatedAt;
   return (
@@ -56,11 +58,10 @@ const ReviewCard = (props: ReviewCardProps) => {
         sx={{
           marginBottom: '1rem',
           padding: '1rem',
-          boxShadow: 3,
           display: 'flex',
           alignItems: 'center',
         }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', width: '70%' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', width: '80%' }}>
           <Avatar alt={review.user.name} {...stringAvatar(`${review.user.name}`)} />
           {!isEditing[review.id] ? (
             <>
@@ -75,11 +76,18 @@ const ReviewCard = (props: ReviewCardProps) => {
             </Box>
           )}
         </Box>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.25rem', justifyContent: 'flex-end' }}>
-          {!isEditing[review.id] ? (
-            <IconButton aria-label="edit" color="primary" onClick={() => handleEditReview(review.id)}>
-              <EditIcon />
-            </IconButton>
+
+        {user && user.id === review.user.id ? (
+          !isEditing[review.id] ? (
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.25rem', justifyContent: 'flex-end' }}>
+              <IconButton aria-label="edit" color="primary" onClick={() => handleEditReview(review.id)}>
+                <EditIcon />
+              </IconButton>
+              <IconButton aria-label="delete" color="primary" sx={{ marginRight: '1rem' }} onClick={() => handleDeleteReview(review.id)}>
+                <DeleteIcon />
+              </IconButton>
+              <Typography>{date.toLocaleString().slice(0, 10)}</Typography>
+            </Box>
           ) : (
             <Box sx={{ display: 'flex', flexDirection: 'row' }}>
               <IconButton
@@ -97,13 +105,12 @@ const ReviewCard = (props: ReviewCardProps) => {
                 <CloseIcon />
               </IconButton>
             </Box>
-          )}
-
-          <IconButton aria-label="delete" color="primary" sx={{ marginRight: '1rem' }} onClick={() => handleDeleteReview(review.id)}>
-            <DeleteIcon />
-          </IconButton>
-          <Typography>{date.toLocaleString().slice(0, 10)}</Typography>
-        </Box>
+          )
+        ) : (
+          <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'flex-end', marginLeft: '6.5rem' }}>
+            <Typography>{date.toLocaleString().slice(0, 10)}</Typography>
+          </Box>
+        )}
       </Card>
     </Container>
   );

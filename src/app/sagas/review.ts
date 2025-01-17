@@ -59,7 +59,6 @@ export function* addReview(action: AddReviewRequestAction): SagaIterator {
 }
 
 function editReviewAPI(data: EditReviewRequestAction['data']) {
-  console.log(data);
   return axios.put(`/review/${data.bookId}/${data.reviewId}`, data, {
     withCredentials: true,
   });
@@ -81,7 +80,6 @@ export function* editReview(action: EditReviewRequestAction): SagaIterator {
 }
 
 function deleteReviewAPI(data: DeleteReviewRequestAction['data']) {
-  console.log(data);
   return axios.delete(`/review/${data.bookId}/${data.reviewId}`, {
     withCredentials: true,
   });
