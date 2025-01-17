@@ -10,6 +10,9 @@ import {
   EDIT_REVIEW_REQUEST,
   EDIT_REVIEW_SUCCESS,
   EDIT_REVIEW_FAILURE,
+  DELETE_REVIEW_REQUEST,
+  DELETE_REVIEW_SUCCESS,
+  DELETE_REVIEW_FAILURE,
 } from '../constants';
 
 export interface AddReviewRequestAction {
@@ -42,6 +45,20 @@ export interface EditReviewFailureAction {
   error: string;
 }
 
+export interface DeleteReviewRequestAction {
+  type: typeof DELETE_REVIEW_REQUEST;
+  data: ReviewDto;
+}
+
+export interface DeleteReviewSuccessAction {
+  type: typeof DELETE_REVIEW_SUCCESS;
+}
+
+export interface DeleteReviewFailureAction {
+  type: typeof DELETE_REVIEW_FAILURE;
+  error: string;
+}
+
 export interface GetAllReviewsOfBookRequestAction {
   type: typeof GET_ALL_REVIEWS_OF_BOOK_REQUEST;
   data: { bookId: number };
@@ -66,7 +83,10 @@ export type ReviewActionTypes =
   | GetAllReviewsOfBookFailureAction
   | EditReviewRequestAction
   | EditReviewSuccessAction
-  | EditReviewFailureAction;
+  | EditReviewFailureAction
+  | DeleteReviewRequestAction
+  | DeleteReviewSuccessAction
+  | DeleteReviewFailureAction;
 
 export const addReviewRequest = (data: AddReviewRequestAction['data']): AddReviewRequestAction => ({
   type: ADD_REVIEW_REQUEST,
@@ -95,6 +115,20 @@ export const editReviewSuccess = (review: Review): EditReviewSuccessAction => ({
 
 export const editReviewFailure = (error: string): EditReviewFailureAction => ({
   type: EDIT_REVIEW_FAILURE,
+  error,
+});
+
+export const deleteReviewRequest = (data: DeleteReviewRequestAction['data']): DeleteReviewRequestAction => ({
+  type: DELETE_REVIEW_REQUEST,
+  data: data,
+});
+
+export const deleteReviewSuccess = (): DeleteReviewSuccessAction => ({
+  type: DELETE_REVIEW_SUCCESS,
+});
+
+export const deleteReviewFailure = (error: string): DeleteReviewFailureAction => ({
+  type: DELETE_REVIEW_FAILURE,
   error,
 });
 

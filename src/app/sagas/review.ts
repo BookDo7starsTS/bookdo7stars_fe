@@ -12,8 +12,11 @@ import {
   EDIT_REVIEW_REQUEST,
   EDIT_REVIEW_FAILURE,
   EDIT_REVIEW_SUCCESS,
+  DELETE_REVIEW_REQUEST,
+  DELETE_REVIEW_SUCCESS,
+  DELETE_REVIEW_FAILURE,
 } from '../actions/constants';
-import { AddReviewRequestAction, EditReviewRequestAction } from '../actions/types';
+import { AddReviewRequestAction, DeleteReviewRequestAction, EditReviewRequestAction } from '../actions/types';
 
 function getAllReviewsOfBookAPI(data: AddReviewRequestAction['data']) {
   return axios.get(`/review/${data.bookId}`);
@@ -77,6 +80,27 @@ export function* editReview(action: EditReviewRequestAction): SagaIterator {
   }
 }
 
+function deleteReviewAPI(data: DeleteReviewRequestAction['data']) {
+  console.log(data);
+  return axios.delete(`/review/${data.bookId}/${data.reviewId}`, {
+    withCredentials: true,
+  });
+}
+
+export function* deleteReview(action: DeleteReviewRequestAction): SagaIterator {
+  try {
+    const response: any = yield call(deleteReviewAPI, action.data);
+    yield put({
+      type: DELETE_REVIEW_SUCCESS,
+    });
+  } catch (err: any) {
+    yield put({
+      type: DELETE_REVIEW_FAILURE,
+      error: err.response.data.message,
+    });
+  }
+}
+
 function* watchGetAllReviewsOfBook() {
   yield takeLatest(GET_ALL_REVIEWS_OF_BOOK_REQUEST, getAllReviewsOfBook);
 }
@@ -89,6 +113,10 @@ function* watchEditReview() {
   yield takeLatest(EDIT_REVIEW_REQUEST, editReview);
 }
 
+function* watchDeleteReview() {
+  yield takeLatest(DELETE_REVIEW_REQUEST, deleteReview);
+}
+
 export default function* bookSaga() {
-  yield all([fork(watchAddReview), fork(watchGetAllReviewsOfBook), fork(watchEditReview)]);
+  yield all([fork(watchAddReview), fork(watchGetAllReviewsOfBook), fork(watchEditReview), fork(watchDeleteReview)]);
 }

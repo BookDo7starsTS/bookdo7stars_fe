@@ -8,6 +8,9 @@ import {
   EDIT_REVIEW_FAILURE,
   EDIT_REVIEW_REQUEST,
   EDIT_REVIEW_SUCCESS,
+  DELETE_REVIEW_FAILURE,
+  DELETE_REVIEW_REQUEST,
+  DELETE_REVIEW_SUCCESS,
 } from '../actions/constants';
 import { ReviewActionTypes } from '../actions/types';
 import { Review } from '../models/review';
@@ -24,6 +27,9 @@ interface ReviewState {
   isEditReviewLoading: boolean;
   isEditReviewDone: boolean;
   isEditReviewError: string | null;
+  isDeleteReviewLoading: boolean;
+  isDeleteReviewDone: boolean;
+  isDeleteReviewError: string | null;
 }
 const initialCartState: ReviewState = {
   reviews: [],
@@ -37,6 +43,9 @@ const initialCartState: ReviewState = {
   isEditReviewLoading: false,
   isEditReviewDone: false,
   isEditReviewError: null,
+  isDeleteReviewLoading: false,
+  isDeleteReviewDone: false,
+  isDeleteReviewError: null,
 };
 function reviewReducer(state = initialCartState, action: ReviewActionTypes): ReviewState {
   switch (action.type) {
@@ -70,6 +79,17 @@ function reviewReducer(state = initialCartState, action: ReviewActionTypes): Rev
 
     case EDIT_REVIEW_FAILURE: {
       return { ...state, isEditReviewLoading: false, isEditReviewError: action.error };
+    }
+
+    case DELETE_REVIEW_REQUEST:
+      return { ...state, isDeleteReviewLoading: true };
+
+    case DELETE_REVIEW_SUCCESS: {
+      return { ...state, isDeleteReviewLoading: false, isDeleteReviewDone: true };
+    }
+
+    case DELETE_REVIEW_FAILURE: {
+      return { ...state, isDeleteReviewLoading: false, isDeleteReviewError: action.error };
     }
 
     default:
