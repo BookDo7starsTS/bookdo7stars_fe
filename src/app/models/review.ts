@@ -3,6 +3,7 @@ import { User } from './user';
 
 export interface ReviewDto {
   bookId: number;
+  reviewId?: string;
   content: string;
 }
 

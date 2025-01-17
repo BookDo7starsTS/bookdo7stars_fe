@@ -21,7 +21,6 @@ function getAllReviewsOfBookAPI(data: AddReviewRequestAction['data']) {
 
 export function* getAllReviewsOfBook(action: AddReviewRequestAction): SagaIterator {
   try {
-    console.log(action.data);
     const response: any = yield call(getAllReviewsOfBookAPI, action.data);
     yield put({
       type: GET_ALL_REVIEWS_OF_BOOK_SUCCESS,
@@ -57,7 +56,8 @@ export function* addReview(action: AddReviewRequestAction): SagaIterator {
 }
 
 function editReviewAPI(data: EditReviewRequestAction['data']) {
-  return axios.put(`/review/${data.bookId}`, data, {
+  console.log(data);
+  return axios.put(`/review/${data.bookId}/${data.reviewId}`, data, {
     withCredentials: true,
   });
 }

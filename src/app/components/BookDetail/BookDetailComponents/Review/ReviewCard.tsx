@@ -1,16 +1,19 @@
 import { Review } from '@/app/models/review';
+import CheckIcon from '@mui/icons-material/Check';
+import CloseIcon from '@mui/icons-material/Close';
 import DeleteIcon from '@mui/icons-material/Delete';
 import EditIcon from '@mui/icons-material/Edit';
-import { Avatar, Box, Card, Typography, Container, IconButton, TextField, Button } from '@mui/material';
+import { Avatar, Box, Card, Typography, Container, IconButton, TextField } from '@mui/material';
 
 type ReviewCardProps = {
   review: Review;
+  editedReviewContent: string;
   handleEditReview: (reviewId: string) => void;
   handleDeleteReview: (reviewId: string) => void;
   handleOnChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
-  handleOnClick: () => void;
-  handleOnClickCancel: () => void;
-  isEditing: boolean;
+  handleOnClick: (reviewId?: string) => void;
+  handleOnClickCancel: (reviewId: string) => void;
+  isEditing: Record<string, boolean>;
 };
 function stringToColor(string: string) {
   let hash = 0;
@@ -43,7 +46,7 @@ function stringAvatar(name: string) {
 }
 
 const ReviewCard = (props: ReviewCardProps) => {
-  const { review, handleEditReview, handleDeleteReview, isEditing, handleOnChange, handleOnClick, handleOnClickCancel } = props;
+  const { review, editedReviewContent, handleEditReview, handleDeleteReview, isEditing, handleOnChange, handleOnClick, handleOnClickCancel } = props;
 
   const date = review.createdAt === review.updatedAt ? review.createdAt : review.updatedAt;
   const isUpdated = review.createdAt !== review.updatedAt;
@@ -55,32 +58,47 @@ const ReviewCard = (props: ReviewCardProps) => {
           padding: '1rem',
           boxShadow: 3,
           display: 'flex',
-          justifyContent: 'space-between',
           alignItems: 'center',
         }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', marginBottom: '0.5rem' }}>
+        <Box sx={{ display: 'flex', alignItems: 'center', width: '70%' }}>
           <Avatar alt={review.user.name} {...stringAvatar(`${review.user.name}`)} />
-          {!isEditing ? (
+          {!isEditing[review.id] ? (
             <>
-              <Typography variant="body1">{review.content}</Typography>
-              {isUpdated && <span style={{ marginLeft: '0.5rem', color: 'gray' }}>(수정됨)</span>}
+              <Typography variant="body1" sx={{ width: '90%' }}>
+                {review.content}
+              </Typography>
+              {isUpdated && <span style={{ marginLeft: '0.5rem', color: 'gray', fontSize: '14px', width: '10%' }}>(수정됨)</span>}
             </>
           ) : (
-            <Box>
-              <TextField value={review} onChange={handleOnChange} fullWidth variant="outlined" />
-              <Button variant="outlined" onClick={handleOnClick}>
-                Edit
-              </Button>
-              <Button variant="outlined" onClick={handleOnClickCancel}>
-                Cancel
-              </Button>
+            <Box className="review-edit-box" sx={{ display: 'flex', alignItems: 'center', width: '100%' }}>
+              <TextField id="standard-multiline-static" multiline rows={1} value={editedReviewContent} onChange={handleOnChange} fullWidth variant="outlined" />
             </Box>
           )}
         </Box>
-        <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.25rem' }}>
-          <IconButton aria-label="edit" color="primary" onClick={() => handleEditReview(review.id)}>
-            <EditIcon />
-          </IconButton>
+        <Box sx={{ display: 'flex', alignItems: 'center', gap: '0.25rem', justifyContent: 'flex-end' }}>
+          {!isEditing[review.id] ? (
+            <IconButton aria-label="edit" color="primary" onClick={() => handleEditReview(review.id)}>
+              <EditIcon />
+            </IconButton>
+          ) : (
+            <Box sx={{ display: 'flex', flexDirection: 'row' }}>
+              <IconButton
+                aria-label="edit-ok"
+                color="primary"
+                onClick={() => handleOnClick(review.id)}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter' || e.key === ' ') {
+                    handleOnClick(review.id);
+                  }
+                }}>
+                <CheckIcon />
+              </IconButton>
+              <IconButton aria-label="edit-ok" color="primary" onClick={() => handleOnClickCancel(review.id)}>
+                <CloseIcon />
+              </IconButton>
+            </Box>
+          )}
+
           <IconButton aria-label="delete" color="primary" sx={{ marginRight: '1rem' }} onClick={() => handleDeleteReview(review.id)}>
             <DeleteIcon />
           </IconButton>
