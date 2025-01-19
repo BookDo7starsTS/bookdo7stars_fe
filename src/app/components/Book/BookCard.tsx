@@ -1,16 +1,18 @@
 import { Book } from '@/app/models/book';
+import { CartItemDto } from '@/app/models/cart';
+import { RootState } from '@/app/reducers';
 import { AppDispatch } from '@/app/store/store';
+import { addToCart } from '@/utils/cartUtils';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import { Box, Card, CardContent, CardMedia, Typography } from '@mui/material';
 import { pink } from '@mui/material/colors';
 import IconButton from '@mui/material/IconButton';
 import { useRouter } from 'next/navigation';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 
 import { currencyFormat } from '../../../utils/helpers';
-import { addToCartRequest } from '../../actions/types';
 
 interface BookCardProps {
   book: Book;
@@ -28,13 +30,21 @@ const StyledTypography = styled(Typography)`
 const BookCard: React.FC<BookCardProps> = ({ book }) => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
+  const { user } = useSelector((store: RootState) => store.user);
+  const { isAddToCartDone } = useSelector((store: RootState) => store.cart);
+
   const clickBookCard = (book: Book) => {
     router.push(`/book/${book.id}`);
   };
 
-  const handleAddToCart = (bookId: number) => {
-    const cartItem = { bookId, quantity: 1 };
-    dispatch(addToCartRequest(cartItem));
+  const handleOnClickAddToCart = (bookId: number) => {
+    const cartItem: CartItemDto[] = [{ bookId: bookId, quantity: 1 }];
+    const books: Book[] = [book];
+    if (user) {
+      addToCart(cartItem, books, dispatch, isAddToCartDone, user);
+    } else {
+      addToCart(cartItem, books, dispatch, isAddToCartDone);
+    }
   };
 
   return (
@@ -78,7 +88,7 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
               <IconButton sx={{ padding: '5px' }} aria-label="add to favorites">
                 <FavoriteBorderIcon fontSize="small" sx={{ color: pink[500] }} />
               </IconButton>
-              <IconButton sx={{ padding: '5px' }} aria-label="add to cart" onClick={() => handleAddToCart(book.id)}>
+              <IconButton sx={{ padding: '5px' }} aria-label="add to cart" onClick={() => handleOnClickAddToCart(book.id)}>
                 <ShoppingCartIcon fontSize="small" />
               </IconButton>
             </Box>
