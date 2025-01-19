@@ -22,6 +22,7 @@ import {
   GET_MAINPAGE_BESTSELLER_BOOKS_REQUEST,
   GET_MAINPAGE_BESTSELLER_BOOKS_SUCCESS,
   GET_MAINPAGE_BESTSELLER_BOOKS_FAILURE,
+  RESET_MAINPAGE_BOOKS,
   RESET_GROUP_BOOKS,
   GET_BOOKS_BY_CATEGORY_FAILURE,
   GET_BOOKS_BY_CATEGORY_REQUEST,
@@ -181,6 +182,10 @@ export interface GetMainpageBestSellerBooksFailureAction {
   error: string;
 }
 
+export interface ResetMainpageBooksAction {
+  type: typeof RESET_MAINPAGE_BOOKS;
+}
+
 export interface GetBookFailureAction {
   type: typeof GET_BOOK_FAILURE;
   error: string;
@@ -236,6 +241,7 @@ export type BookActionTypes =
   | GetMainpageBestSellerBooksRequestAction
   | GetMainpageBestSellerBooksSuccessAction
   | GetMainpageBestSellerBooksFailureAction
+  | ResetMainpageBooksAction
   | ResetBookAction
   | SetFiltersAction
   | GetBooksByCategoryRequestAction
@@ -383,6 +389,10 @@ export const getMainpageBestSellerBooksSuccess = (payload: GetMainpageBestSeller
 export const getMainpageBestSellerBooksFailure = (error: string): GetMainpageBestSellerBooksFailureAction => ({
   type: GET_MAINPAGE_BESTSELLER_BOOKS_FAILURE,
   error,
+});
+
+export const resetMainpageBooks = (): ResetMainpageBooksAction => ({
+  type: RESET_MAINPAGE_BOOKS,
 });
 
 export const resetGroupBooks = (): ResetGroupBooksAction => ({

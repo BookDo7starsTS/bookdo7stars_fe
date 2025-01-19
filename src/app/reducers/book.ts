@@ -23,6 +23,7 @@ import {
   GET_MAINPAGE_BESTSELLER_BOOKS_REQUEST,
   GET_MAINPAGE_BESTSELLER_BOOKS_SUCCESS,
   GET_MAINPAGE_BESTSELLER_BOOKS_FAILURE,
+  RESET_MAINPAGE_BOOKS,
   RESET_GROUP_BOOKS,
   RESET_BOOK,
   SET_FILTERS,
@@ -163,7 +164,7 @@ function bookReducer(state = initialState, action: BookActionTypes) {
     case GET_MAINPAGE_BESTSELLER_BOOKS_REQUEST:
       return { ...state, isGetMainPageBestSellerBooksLoading: true };
     case GET_MAINPAGE_BESTSELLER_BOOKS_SUCCESS:
-      return { ...state, isGetMainPageBestSellerBooksLoading: false, isGetMainPageBestSellerBooksDone: true, books: action.payload };
+      return { ...state, isGetMainPageBestSellerBooksLoading: false, isGetMainPageBestSellerBooksDone: true, groupBooks: action.payload };
     case GET_MAINPAGE_BESTSELLER_BOOKS_FAILURE:
       return { ...state, isGetMainPageBestSellerBooksLoading: false, book: null, isGetMainPageBestSellerBooksError: action.error };
 
@@ -191,6 +192,8 @@ function mainpageBookReducer(state = initialState, action: BookActionTypes) {
       return { ...state, isGetMainpageBooksLoading: false, isGetMainpageBooksDone: true, mainpageBooks: action.payload };
     case GET_MAINPAGE_BOOKS_FAILURE:
       return { ...state, isGetBookLoading: false, book: null, isGetMainpageBooksError: action.error };
+    case RESET_MAINPAGE_BOOKS:
+      return { ...state, mainpageBooks: { banner: [], itemNewSpecial: [], bestSellerCategory: [], itemNewAll: [], itemEditorChoice: [] } };
     default:
       return state;
   }
