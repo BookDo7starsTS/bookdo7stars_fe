@@ -50,3 +50,5 @@ export const SET_FILTERS = 'SET_FILTERS';
 export const SET_PAGE = 'SET_PAGE';
 
 export const SET_SORTBY = 'SET_SORTBY';
+
+export const SET_SELECTED_BOOKS = 'SET_SELECTED_BOOKS';
