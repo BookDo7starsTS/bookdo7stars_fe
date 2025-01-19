@@ -30,6 +30,7 @@ import {
   SET_FILTERS,
   SET_PAGE,
   SET_SORTBY,
+  SET_SELECTED_BOOKS,
 } from '../constants';
 
 // Action type
@@ -212,6 +213,11 @@ export interface SetSortByAction {
   data: string;
 }
 
+export interface SetSelectedBooksAction {
+  type: typeof SET_SELECTED_BOOKS;
+  data: Book[];
+}
+
 //Union type
 export type BookActionTypes =
   | GetAllBooksRequestAction
@@ -242,7 +248,8 @@ export type BookActionTypes =
   | GetBooksByCategorySuccessAction
   | GetBooksByCategoryFailureAction
   | SetPageAction
-  | SetSortByAction;
+  | SetSortByAction
+  | SetSelectedBooksAction;
 
 // Action creater
 
@@ -405,5 +412,10 @@ export const setPage = (data: SetPageAction['data']): SetPageAction => ({
 
 export const setSortBy = (data: SetSortByAction['data']): SetSortByAction => ({
   type: SET_SORTBY,
+  data: data,
+});
+
+export const setSelectedBooks = (data: SetSelectedBooksAction['data']): SetSelectedBooksAction => ({
+  type: SET_SELECTED_BOOKS,
   data: data,
 });
