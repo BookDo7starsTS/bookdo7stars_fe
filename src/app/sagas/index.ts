@@ -5,12 +5,13 @@ import bookSaga from './book';
 import cartSaga from './cart';
 import categorySaga from './category';
 import userSaga from './user';
+import reviewSaga from './review';
 
 axios.defaults.baseURL = 'http://localhost:4000';
 axios.defaults.withCredentials = true;
 
 export function* rootSaga() {
-  yield all([fork(userSaga), fork(bookSaga), fork(categorySaga), fork(cartSaga)]);
+  yield all([fork(userSaga), fork(bookSaga), fork(categorySaga), fork(cartSaga), fork(reviewSaga)]);
 }
 
 export default rootSaga;

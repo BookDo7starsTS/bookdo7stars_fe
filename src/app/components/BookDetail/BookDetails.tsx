@@ -1,25 +1,44 @@
 'use client';
 import { useEffect, useState } from 'react';
 
+import { addReviewRequest, deleteReviewRequest, editReviewRequest, getAllReviewsOfBookRequest } from '@/app/actions/types';
+import { RootState } from '@/app/reducers';
+import { AppDispatch } from '@/app/store/store';
 import { Box, Container, Tabs, Tab, Typography, Paper } from '@mui/material';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import BookDetailBookInfo from './BookDetailComponents/BookDetailBookInfo';
 import BookDetailOtherByAuthor from './BookDetailComponents/BookDetailOtherByAuthor';
-import BookDetailReview from './BookDetailComponents/BookDetailReview';
 import BookDetailShippingPolicy from './BookDetailComponents/BookDetailShippingPolicy';
+import Review from './BookDetailComponents/Review/Review';
+import ReviewCard from './BookDetailComponents/Review/ReviewCard';
 import { Book } from '../../models/book';
+import { User } from '@/app/models/user';
 
 interface BookDetailsProps {
   book: Book;
+  user: User | null;
 }
 
-const BookDetails: React.FC<BookDetailsProps> = ({ book }) => {
+const BookDetails: React.FC<BookDetailsProps> = ({ book, user }) => {
   const [activeTab, setActiveTab] = useState<string>('bookIntro');
+  const [review, setReview] = useState<string>('');
+  const [editedReview, setEditedReview] = useState<string>('');
+  const [isEditing, setIsEditing] = useState<Record<string, boolean>>({});
+  const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const searchParams = useSearchParams();
+  const { isAddReviewError, isAddReviewDone, reviews, isEditReviewDone, isEditReviewError, isDeleteReviewDone, isDeleteReviewError } = useSelector(
+    (store: RootState) => store.review,
+  );
 
   const section = searchParams.get('section') || 'bookIntro';
+
+  useEffect(() => {
+    dispatch(getAllReviewsOfBookRequest({ bookId: book.id }));
+  }, [book.id, isAddReviewDone, isEditReviewDone]);
 
   useEffect(() => {
     if (section && section !== activeTab) {
@@ -35,10 +54,76 @@ const BookDetails: React.FC<BookDetailsProps> = ({ book }) => {
     router.push(`?${params.toString()}`);
   };
 
-  // {
-  //   pathname: '/book/[bookId]',
-  //   query: { section: newValue },
-  // }
+  useEffect(() => {
+    if (isAddReviewError) {
+      toast.error(isAddReviewError);
+    }
+    if (isEditReviewError) {
+      toast.error(isEditReviewError);
+    }
+
+    if (isDeleteReviewError) {
+      toast.error(isDeleteReviewError);
+    }
+  }, [isAddReviewError, isEditReviewError, isDeleteReviewError]);
+
+  useEffect(() => {
+    if (isAddReviewDone) {
+      toast.success('Your review is posted Successfully!');
+    }
+  }, [isAddReviewDone]);
+
+  useEffect(() => {
+    if (isEditReviewDone) {
+      toast.success('Your review is edited Successfully!');
+    }
+  }, [isEditReviewDone]);
+
+  const handleOnChangeReview = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setReview(event.target.value);
+  };
+
+  const handleOnChangeEditReview = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEditedReview(event.target.value);
+  };
+
+  const postReview = (reviewId?: string) => {
+    if (!isEditing[reviewId!]) {
+      dispatch(addReviewRequest({ bookId: book.id, content: review }));
+      dispatch(getAllReviewsOfBookRequest({ bookId: book.id }));
+    } else {
+      dispatch(editReviewRequest({ bookId: book.id, reviewId: reviewId, content: editedReview }));
+      dispatch(getAllReviewsOfBookRequest({ bookId: book.id }));
+    }
+    setReview('');
+    setEditedReview('');
+    setIsEditing((prevState) => ({
+      ...prevState,
+      [reviewId!]: false,
+    }));
+  };
+
+  const editReview = (reviewId: string) => {
+    const selectedReview = reviews.find((review) => review.id === reviewId);
+    setEditedReview(selectedReview ? selectedReview.content : '');
+    setIsEditing((prevState) => ({
+      ...prevState,
+      [reviewId]: true,
+    }));
+  };
+
+  const deleteReview = (reviewId: string) => {
+    dispatch(deleteReviewRequest({ bookId: book.id, reviewId: reviewId }));
+    dispatch(getAllReviewsOfBookRequest({ bookId: book.id }));
+  };
+
+  const cancelEditReview = (reviewId: string) => {
+    setEditedReview('');
+    setIsEditing((prevState) => ({
+      ...prevState,
+      [reviewId]: false,
+    }));
+  };
 
   if (!book) {
     return <p>책 정보를 읽어오지 못했습니다.</p>;
@@ -98,8 +183,26 @@ const BookDetails: React.FC<BookDetailsProps> = ({ book }) => {
           <BookDetailOtherByAuthor />
         </Box>
         <Box id="reviews" my={4}>
-          <Typography variant="h4">Reviews</Typography>
-          <BookDetailReview />
+          <Typography variant="h4" sx={{ marginBottom: '1rem' }}>
+            Reviews
+          </Typography>
+          {reviews.length > 0 &&
+            reviews.map((review, index) => (
+              <ReviewCard
+                key={index}
+                user={user}
+                review={review}
+                editedReviewContent={editedReview}
+                handleDeleteReview={deleteReview}
+                handleEditReview={editReview}
+                isEditing={isEditing}
+                handleOnChange={(event: React.ChangeEvent<HTMLInputElement>) => handleOnChangeEditReview(event)}
+                handleOnClick={postReview}
+                handleOnClickCancel={cancelEditReview}
+              />
+            ))}
+          <Review handleOnClick={postReview} handleOnChange={(event: React.ChangeEvent<HTMLInputElement>) => handleOnChangeReview(event)} review={review} />
+          {/* <BookDetailReview /> */}
         </Box>
         <Box id="delivery" my={4}>
           <Typography variant="h4">Shipping/Returns/Exchanges Policy</Typography>
