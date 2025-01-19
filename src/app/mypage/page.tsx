@@ -177,7 +177,7 @@ const MyPage = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {wishlist.map((row: any) => (
+                      {wishlist?.map((row: any) => (
                         <TableRow key={row.id}>
                           <TableCell style={{ width: 60 }} align="right">
                             {row.id}
