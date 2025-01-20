@@ -28,7 +28,7 @@ export interface GetWishlistFailureAction {
 
 export interface ToggleWishlistRequestAction {
   type: typeof TOGGLE_WISHLIST_REQUEST;
-  bookId: number;
+  bookId: [number];
 }
 
 export interface ToggleWishlistSuccessAction {

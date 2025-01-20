@@ -84,8 +84,8 @@ const MyPage = () => {
     setValue(newValue);
   };
 
-  const { wishlist } = useSelector((store: RootState) => store.wishlist);
-
+  const { wishlist } = useSelector((store: RootState) => store.wishlist) || { wishlist: [] };
+  console.log('wishlist', wishlist);
   useEffect(() => {
     dispatch(getWishlistRequest(1, 5));
   }, []);

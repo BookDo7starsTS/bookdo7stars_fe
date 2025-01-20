@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 import { toggleWishlistRequest } from '@/app/actions/types';
 import { Book } from '@/app/models/book';
@@ -53,7 +53,7 @@ const BookCard: React.FC<BookCardProps> = ({ book }) => {
   };
 
   const handleFavoriteButton = () => {
-    dispatch(toggleWishlistRequest(book.id));
+    dispatch(toggleWishlistRequest([book.id]));
     setIsBookmarked(!isBookmarked);
   };
 
