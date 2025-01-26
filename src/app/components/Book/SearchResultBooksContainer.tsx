@@ -1,9 +1,16 @@
 import { useState, useEffect } from 'react';
 
+import { setSelectedBooks, toggleWishlistRequest } from '@/app/actions/types';
+import { CartItemDto } from '@/app/models/cart';
+import { RootState } from '@/app/reducers';
 import { IsbnType } from '@/app/search/types/isbnType';
 import { SearchType } from '@/app/search/types/searchType';
+import { AppDispatch } from '@/app/store/store';
+import { addToCart } from '@/utils/cartUtils';
+import { getTitle } from '@/utils/pageUtils';
 import { useMediaQuery, Container, Typography, Grid, Box, Checkbox } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
+import { useDispatch, useSelector } from 'react-redux';
 
 import BookDetailCard from './BookDetailCard';
 import { Book } from '../../models/book';
@@ -11,13 +18,6 @@ import ActionButtons from '../Buttons/ActionButtons';
 import ToggleButtons from '../Buttons/ToggleButtons';
 import CustomPagination from '../CustomPagination';
 import ResultFilters from '../Result/ResultFilters';
-import { getTitle } from '@/utils/pageUtils';
-import { RootState } from '@/app/reducers';
-import { useDispatch, useSelector } from 'react-redux';
-import { addToCart } from '@/utils/cartUtils';
-import { CartItemDto } from '@/app/models/cart';
-import { AppDispatch } from '@/app/store/store';
-import { setSelectedBooks } from '@/app/actions/types';
 interface SearchResultBooksContainerProps {
   books: Book[];
   count: number;
@@ -88,6 +88,7 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
         } else {
           setSelectedBookIds(books.map((book) => book.id));
         }
+        break;
       }
       case '장바구니 담기': {
         const cartItem: CartItemDto[] = [];
@@ -101,6 +102,12 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
           addToCart(cartItem, selectedBooks, dispatch, isAddToCartDone);
           setSelectedBookIds([]);
         }
+        break;
+      }
+      case '보관함 담기': {
+        dispatch(toggleWishlistRequest(selectedBookIds));
+        setSelectedBookIds([]);
+        break;
       }
     }
   };

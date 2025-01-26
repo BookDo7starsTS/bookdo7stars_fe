@@ -1,15 +1,17 @@
-import React from 'react';
+import { useState, React } from 'react';
 
+import { toggleWishlistRequest } from '@/app/actions/types';
+import { Book } from '@/app/models/book';
+import { CartItemDto } from '@/app/models/cart';
+import { RootState } from '@/app/reducers';
+import { AppDispatch } from '@/app/store/store';
+import { addToCart } from '@/utils/cartUtils';
 import AddShoppingCartIcon from '@mui/icons-material/AddShoppingCart';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import { Button, Box } from '@mui/material';
 import { pink } from '@mui/material/colors';
-import { Book } from '@/app/models/book';
-import { CartItemDto } from '@/app/models/cart';
 import { useDispatch, useSelector } from 'react-redux';
-import { RootState } from '@/app/reducers';
-import { addToCart } from '@/utils/cartUtils';
-import { AppDispatch } from '@/app/store/store';
 
 // Props 타입 정의
 
@@ -22,6 +24,7 @@ const BookToCartButton: React.FC<BookToCartButtonProps> = ({ book, quantity }) =
   const { user } = useSelector((store: RootState) => store.user);
   const { isAddToCartDone } = useSelector((store: RootState) => store.cart);
   const dispatch = useDispatch<AppDispatch>();
+  const [isBookmarked, setIsBookmarked] = useState<boolean>(book.isBookmarked);
 
   const handleAddToCart = () => {
     const cartItem: CartItemDto[] = [{ bookId: book.id, quantity: quantity }];
@@ -33,14 +36,10 @@ const BookToCartButton: React.FC<BookToCartButtonProps> = ({ book, quantity }) =
     }
   };
 
-  const handleFavoriteClick = () => {
+  const handleWishlistClick = () => {
     // 찜하기 기능 구현
-    console.log('찜하기: ', book.title);
-  };
-
-  const deleteFavoriteClick = () => {
-    // 찜하기 취소 기능 구현
-    console.log('찜하기 취소: ', book.title);
+    dispatch(toggleWishlistRequest([book.id]));
+    setIsBookmarked(!isBookmarked);
   };
 
   return (
@@ -51,9 +50,9 @@ const BookToCartButton: React.FC<BookToCartButtonProps> = ({ book, quantity }) =
       <Button
         variant="outlined"
         color="primary"
-        startIcon={<FavoriteBorderIcon sx={{ color: pink[500] }} />}
+        startIcon={isBookmarked ? <FavoriteIcon sx={{ color: pink[500] }} /> : <FavoriteBorderIcon sx={{ color: pink[500] }} />}
         sx={{ height: '60px', flexGrow: 1 }}
-        onClick={handleFavoriteClick}>
+        onClick={handleWishlistClick}>
         찜하기
       </Button>
     </Box>

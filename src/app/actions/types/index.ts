@@ -2,4 +2,5 @@ export * from './user';
 export * from './book';
 export * from './category';
 export * from './cart';
-export * from './review'
+export * from './wishlist';
+export * from './review';
