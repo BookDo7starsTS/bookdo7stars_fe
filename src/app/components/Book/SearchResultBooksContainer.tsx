@@ -88,6 +88,7 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
         } else {
           setSelectedBookIds(books.map((book) => book.id));
         }
+        break;
       }
       case '장바구니 담기': {
         const cartItem: CartItemDto[] = [];
@@ -101,10 +102,12 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
           addToCart(cartItem, selectedBooks, dispatch, isAddToCartDone);
           setSelectedBookIds([]);
         }
+        break;
       }
       case '보관함 담기': {
         dispatch(toggleWishlistRequest(selectedBookIds));
         setSelectedBookIds([]);
+        break;
       }
     }
   };

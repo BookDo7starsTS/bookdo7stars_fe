@@ -1,9 +1,11 @@
 import { useState } from 'react';
 
+import { toggleWishlistRequest } from '@/app/actions/types';
 import { Book } from '@/app/models/book';
 import { CartItemDto } from '@/app/models/cart';
 import { RootState } from '@/app/reducers';
 import { addToCart } from '@/utils/cartUtils';
+import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
 import PaymentIcon from '@mui/icons-material/Payment';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
@@ -26,7 +28,7 @@ const BookDetailCard: React.FC<BookDetailCardProps> = ({ book }) => {
   const router = useRouter();
   const { user } = useSelector((store: RootState) => store.user);
   const { isAddToCartDone } = useSelector((store: RootState) => store.cart);
-
+  const [isBookmarked, setIsBookmarked] = useState<boolean>(book.isBookmarked);
   const [address, setAddress] = useState('Select your region');
   const [loading, setLoading] = useState(false);
   const theme = useTheme();
@@ -40,7 +42,7 @@ const BookDetailCard: React.FC<BookDetailCardProps> = ({ book }) => {
   const buttonIcons = {
     장바구니: { component: <ShoppingCartIcon />, style: { color: 'inherit', marginRight: 0.5 } },
     바로구매: { component: <PaymentIcon />, style: { color: 'primary', marginRight: 0.5 } },
-    보관함: { component: <FavoriteBorderIcon />, style: { color: pink[500], marginRight: 0.5 } },
+    보관함: { component: isBookmarked ? <FavoriteIcon /> : <FavoriteBorderIcon />, style: { color: pink[500], marginRight: 0.5 } },
   };
 
   const handleOnClick = (name: string) => {
@@ -53,6 +55,11 @@ const BookDetailCard: React.FC<BookDetailCardProps> = ({ book }) => {
         } else {
           addToCart(cartItem, books, dispatch, isAddToCartDone);
         }
+        break;
+      }
+      case '보관함': {
+        dispatch(toggleWishlistRequest([book.id]));
+        setIsBookmarked(!isBookmarked);
         break;
       }
     }
