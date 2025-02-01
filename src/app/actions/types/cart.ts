@@ -14,6 +14,7 @@ import {
   DELETE_CART_ITEM_SUCCESS,
   DELETE_CART_ITEM_FAILURE,
   SET_QUANTITY_IN_LOCALSTORAGE,
+  SET_SELECTED_ITEMS_FOR_ORDER,
 } from '../constants';
 
 export interface GetItemsInCartRequestAction {
@@ -79,6 +80,11 @@ export interface SetQuantityInLocalstorageAction {
   data: { totalItems: number };
 }
 
+export interface SetSelectedItemsForOrderAction {
+  type: typeof SET_SELECTED_ITEMS_FOR_ORDER;
+  data: CartItem[];
+}
+
 export type CartActionTypes =
   | GetItemsInCartRequestAction
   | GetItemsInCartSuccessAction
@@ -92,7 +98,8 @@ export type CartActionTypes =
   | DeleteCartItemRequestAction
   | DeleteCartItemSuccessAction
   | DeleteCartItemFailureAction
-  | SetQuantityInLocalstorageAction;
+  | SetQuantityInLocalstorageAction
+  | SetSelectedItemsForOrderAction;
 
 export const getItemsInCartRequest = (): GetItemsInCartRequestAction => ({
   type: GET_ITEMS_IN_CART_REQUEST,
@@ -155,4 +162,9 @@ export const deleteCartItemFailure = (error: string): DeleteCartItemFailureActio
 export const setQuantityInLocalstorage = (data: SetQuantityInLocalstorageAction['data']): SetQuantityInLocalstorageAction => ({
   type: SET_QUANTITY_IN_LOCALSTORAGE,
   data,
+});
+
+export const setSelectedItemsForOrder = (data: SetSelectedItemsForOrderAction['data']): SetSelectedItemsForOrderAction => ({
+  type: SET_SELECTED_ITEMS_FOR_ORDER,
+  data: data,
 });
