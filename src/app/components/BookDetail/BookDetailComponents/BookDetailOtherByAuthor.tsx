@@ -23,7 +23,7 @@ const BookDetailOtherByAuthor: React.FC<BookDetailOtherByAuthorProps> = ({ autho
   useEffect(() => {
     dispatch(resetAuthorBooks());
     dispatch(getBooksAuthorSearchRequest(author, bookId, page, 6));
-  }, []);
+  }, [bookId]);
 
   const handleSeeMore = () => {
     setPage((prev) => prev + 1);
