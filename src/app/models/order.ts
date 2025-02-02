@@ -10,3 +10,10 @@ export interface ShippingInfo {
 export interface ShippingInfoError {
   zipCode: string;
 }
+
+export interface CardInfo {
+  cardType: string;
+  cardNumber: string;
+  expiryDate: string;
+  cvc: string;
+}

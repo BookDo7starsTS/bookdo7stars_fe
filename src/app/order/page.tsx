@@ -8,6 +8,7 @@ import { useSelector } from 'react-redux';
 import CustomTable from '../components/Order/CustomTable';
 import { RootState } from '../reducers';
 import AddressForm from '../components/Order/AddressForm';
+import PaymentInfoForm from '../components/Order/PaymentInfoForm';
 
 const StyledButton = styled(Button)(({ theme }) => ({
   borderRadius: theme.shape.borderRadius,
@@ -50,6 +51,12 @@ const OrderPage = () => {
         <Typography> 주문 내역이 없습니다.</Typography>
       )}
       <AddressForm />
+      <PaymentInfoForm />
+      <Box sx={{ marginTop: 2, marginBottom: 2, display: 'flex', justifyContent: 'center' }}>
+        <Button variant="contained" color="primary">
+          결제하기
+        </Button>
+      </Box>
     </Container>
   );
 };

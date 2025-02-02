@@ -23,7 +23,7 @@ const AddressForm = () => {
     throw new Error('Function not implemented.');
   }
 
-  const handleShippingInfoChange = (e) => {
+  const handleShippingInfoChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setShippingInfo((prevInfo) => ({
       ...prevInfo,
@@ -40,7 +40,7 @@ const AddressForm = () => {
     script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
     script.onload = () => {
       new window.daum.Postcode({
-        oncomplete: function (data) {
+        oncomplete: function (data: any) {
           setShippingInfo((prevInfo) => ({
             ...prevInfo,
             zipCode: data.zonecode,
@@ -58,7 +58,7 @@ const AddressForm = () => {
   };
 
   return (
-    <Paper elevation={0} sx={{ height: '100vh', width: '100%', mt: '6rem' }}>
+    <Paper elevation={0} sx={{ width: '100%', mt: '6rem' }}>
       <Box
         sx={{
           backgroundColor: (theme) => theme.palette.third?.main || '#000',
