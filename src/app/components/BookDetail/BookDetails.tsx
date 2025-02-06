@@ -30,7 +30,7 @@ const BookDetails: React.FC<BookDetailsProps> = ({ book, user }) => {
   const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { isAddReviewError, isAddReviewDone, reviews, isEditReviewDone, isEditReviewError, isDeleteReviewDone, isDeleteReviewError } = useSelector(
+  const { isAddReviewError, isAddReviewDone, reviews, isEditReviewDone, isEditReviewError, isDeleteReviewError } = useSelector(
     (store: RootState) => store.review,
   );
   const section = searchParams.get('section') || 'bookIntro';
@@ -172,7 +172,7 @@ const BookDetails: React.FC<BookDetailsProps> = ({ book, user }) => {
         </Box>
         <Box id="author" my={4}>
           <Typography variant="h4">Other Books by the Author</Typography>
-          <BookDetailOtherByAuthor />
+          <BookDetailOtherByAuthor author={book.author} bookId={book.id} />
         </Box>
         <Box id="reviews" my={4}>
           <Typography variant="h4" sx={{ marginBottom: '1rem' }}>
