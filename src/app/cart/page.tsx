@@ -7,10 +7,12 @@ import { AppDispatch } from '@/app/store/store';
 import { Box, Button, Typography, Grid } from '@mui/material';
 import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import { deleteCartItemRequest, getItemsInCartRequest, setQuantityInLocalstorage, setSelectedItemsForOrder, updateCartItemRequest } from '../actions/types';
 import CartCard from '../components/Cart/CartCard';
 import { CartItem } from '../models/cart';
+
 const CartPage = () => {
   const dispatch = useDispatch<AppDispatch>();
   const { items, isUpdateCartItemDone, isDeleteCartItemDone } = useSelector((state: RootState) => state.cart);
@@ -121,7 +123,12 @@ const CartPage = () => {
 
   const goToOrderPage = () => {
     dispatch(setSelectedItemsForOrder(selectedItems));
-    router.push('/order');
+    if (user) {
+      router.push(`/order/${user?.id}`);
+    } else {
+      toast.error('You must be logged in first!');
+      router.push('/login');
+    }
   };
 
   return (

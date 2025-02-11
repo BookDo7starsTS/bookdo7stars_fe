@@ -5,10 +5,10 @@ import React, { useState } from 'react';
 import { alpha, Box, Button, Container, styled, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 
-import CustomTable from '../components/Order/CustomTable';
-import { RootState } from '../reducers';
-import AddressForm from '../components/Order/AddressForm';
-import PaymentInfoForm from '../components/Order/PaymentInfoForm';
+import AddressForm from '../../components/Order/AddressForm';
+import CustomTable from '../../components/Order/CustomTable';
+import PaymentInfoForm from '../../components/Order/PaymentInfoForm';
+import { RootState } from '../../reducers';
 
 const StyledButton = styled(Button)(({ theme }) => ({
   borderRadius: theme.shape.borderRadius,
