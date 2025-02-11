@@ -1,12 +1,13 @@
 'use client';
 
+import React, { ChangeEvent } from 'react';
+
 import { CardInfo } from '@/app/models/order';
 import PaymentOutlinedIcon from '@mui/icons-material/PaymentOutlined';
 import {
   Paper,
   Typography,
   TextField,
-  Button,
   Box,
   useMediaQuery,
   useTheme,
@@ -17,27 +18,24 @@ import {
   InputLabel,
   MenuItem,
   Select,
-  SelectChangeEvent,
   FormHelperText,
+  SelectChangeEvent,
 } from '@mui/material';
-import { ChangeEvent, useState } from 'react';
 
-const PaymentInfoForm = () => {
-  const [paymentMethod, setPaymentMethod] = useState<String>('creditCard');
-  const [cardInfo, setCardInfo] = useState<CardInfo>({
-    cardType: '',
-    cardNumber: '',
-    expiryDate: '',
-    cvc: '',
-  });
-  const [errors, setErrors] = useState<any>({});
+type PaymentInfoFormProps = {
+  paymentMethod: string;
+  errors: any;
+  handleCardInfoChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  handleCardTypeChange: (e: SelectChangeEvent) => void;
+  handlePaymentMethodChange: (e: SelectChangeEvent) => void;
+  cardInfo: CardInfo;
+};
+
+const PaymentInfoForm: React.FC<PaymentInfoFormProps> = (props: PaymentInfoFormProps) => {
+  const { paymentMethod, handlePaymentMethodChange, errors, handleCardInfoChange, handleCardTypeChange, cardInfo } = props;
   const theme = useTheme();
 
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-
-  const handleCardInfoChange = (e: ChangeEvent<HTMLInputElement>) => {};
-
-  const handleCardTypeChange = (e: SelectChangeEvent) => {};
 
   return (
     <Paper elevation={0} sx={{ width: '100%', mt: '6rem' }}>
@@ -58,7 +56,7 @@ const PaymentInfoForm = () => {
       </Box>
 
       <FormControl component="fieldset" fullWidth margin="normal">
-        <RadioGroup row value={paymentMethod} onChange={(e) => setPaymentMethod(e.target.value)}>
+        <RadioGroup row value={paymentMethod} onChange={handlePaymentMethodChange}>
           <FormControlLabel value="creditCard" control={<Radio />} label="신용카드" />
           <FormControlLabel value="transfer" control={<Radio />} label="무통장 입금" />
           <FormControlLabel value="phonePayment" control={<Radio />} label="휴대폰 결제" />

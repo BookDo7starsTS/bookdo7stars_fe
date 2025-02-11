@@ -1,14 +1,17 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { ChangeEvent, useEffect, useState } from 'react';
 
-import { alpha, Box, Button, Container, styled, Typography } from '@mui/material';
+import { CardInfo, ShippingInfo } from '@/app/models/order';
+import { alpha, Box, Button, Container, SelectChangeEvent, styled, Typography } from '@mui/material';
 import { useSelector } from 'react-redux';
 
 import AddressForm from '../../components/Order/AddressForm';
 import CustomTable from '../../components/Order/CustomTable';
 import PaymentInfoForm from '../../components/Order/PaymentInfoForm';
 import { RootState } from '../../reducers';
+import { useRouter } from 'next/navigation';
+import { toast } from 'react-toastify';
 
 const StyledButton = styled(Button)(({ theme }) => ({
   borderRadius: theme.shape.borderRadius,
@@ -23,10 +26,91 @@ const StyledButton = styled(Button)(({ theme }) => ({
 }));
 const OrderPage = () => {
   const { selectedItems } = useSelector((store: RootState) => store.cart);
+  const { user } = useSelector((store: RootState) => store.user);
+  const router = useRouter();
   const [isTableExpanded, setIsTableExpanded] = useState<boolean>(false);
+  const [paymentMethod, setPaymentMethod] = useState<string>('creditCard');
+  const [cardInfo, setCardInfo] = useState<CardInfo>({
+    cardType: '',
+    cardNumber: '',
+    expiryDate: '',
+    cvc: '',
+  });
+  const [shippingInfo, setShippingInfo] = useState<ShippingInfo>({
+    name: '',
+    zipCode: '',
+    address1: '',
+    address2: '',
+    phone: '',
+    email: '',
+  });
+  const [errors, setErrors] = useState<any>({});
+
+  useEffect(() => {
+    if (!user) {
+      toast.error('you must login!');
+      router.push('/login');
+    }
+  }, [user]);
+
+  const handleShippingInfoChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setShippingInfo((prevInfo) => ({
+      ...prevInfo,
+      [name]: value,
+    }));
+    setErrors((prevErrors: any) => ({
+      ...prevErrors,
+      [name]: '',
+    }));
+  };
+
+  const handlePostcode = () => {
+    const script = document.createElement('script');
+    script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
+    script.onload = () => {
+      new window.daum.Postcode({
+        oncomplete: function (data: any) {
+          setShippingInfo((prevInfo) => ({
+            ...prevInfo,
+            zipCode: data.zonecode,
+            address1: data.address,
+          }));
+          setErrors((prevErrors: any) => ({
+            ...prevErrors,
+            zipCode: '',
+            address1: '',
+          }));
+        },
+      }).open();
+    };
+    document.body.appendChild(script);
+  };
+
+  const handlePaymentMethodChange = (e: SelectChangeEvent) => {
+    setPaymentMethod(e.target.value);
+  };
+  const handleCardInfoChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const targetName = e.target.name;
+    setCardInfo({
+      ...cardInfo,
+      [targetName]: e.target.value,
+    });
+  };
+
+  const handleCardTypeChange = (e: SelectChangeEvent) => {
+    setCardInfo({
+      ...cardInfo,
+      cardType: e.target.value,
+    });
+  };
 
   const expandTable = () => {
     setIsTableExpanded((prev) => !prev);
+  };
+
+  const submit = () => {
+    console.log(shippingInfo, user, selectedItems);
   };
 
   return (
@@ -50,10 +134,17 @@ const OrderPage = () => {
       ) : (
         <Typography> 주문 내역이 없습니다.</Typography>
       )}
-      <AddressForm />
-      <PaymentInfoForm />
+      <AddressForm shippingInfo={shippingInfo} handlePostcode={handlePostcode} handleShippingInfoChange={handleShippingInfoChange} errors={errors} />
+      <PaymentInfoForm
+        paymentMethod={paymentMethod}
+        errors={errors}
+        handleCardInfoChange={handleCardInfoChange}
+        handleCardTypeChange={handleCardTypeChange}
+        handlePaymentMethodChange={handlePaymentMethodChange}
+        cardInfo={cardInfo}
+      />
       <Box sx={{ marginTop: 2, marginBottom: 2, display: 'flex', justifyContent: 'center' }}>
-        <Button variant="contained" color="primary">
+        <Button variant="contained" color="primary" onClick={submit}>
           결제하기
         </Button>
       </Box>

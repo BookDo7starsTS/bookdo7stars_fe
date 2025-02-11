@@ -1,61 +1,23 @@
 'use client';
 
-import { ChangeEvent, useState } from 'react';
+import { ChangeEvent } from 'react';
 
+import { ShippingInfo } from '@/app/models/order';
 import LocalShippingOutlinedIcon from '@mui/icons-material/LocalShippingOutlined';
-import { Box, Paper, Typography, Grid, TextField, Button, useMediaQuery, useTheme } from '@mui/material';
-import { ShippingInfo, ShippingInfoError } from '@/app/models/order';
+import { Box, Paper, Typography, TextField, Button, useMediaQuery, useTheme } from '@mui/material';
 
-const AddressForm = () => {
-  const [shippingInfo, setShippingInfo] = useState<ShippingInfo>({
-    name: '',
-    zipCode: '',
-    address1: '',
-    address2: '',
-    phone: '',
-    email: '',
-  });
-  const [errors, setErrors] = useState<ShippingInfoError>({ zipCode: '' });
+type AddressFormProps = {
+  shippingInfo: ShippingInfo;
+  handleShippingInfoChange: (e: ChangeEvent<HTMLInputElement>) => void;
+  handlePostcode: () => void;
+  errors: any;
+};
+
+const AddressForm: React.FC<AddressFormProps> = (props: AddressFormProps) => {
+  const { shippingInfo, handleShippingInfoChange, handlePostcode, errors } = props;
   const theme = useTheme();
 
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'));
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>): void {
-    throw new Error('Function not implemented.');
-  }
-
-  const handleShippingInfoChange = (e: ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setShippingInfo((prevInfo) => ({
-      ...prevInfo,
-      [name]: value,
-    }));
-    setErrors((prevErrors) => ({
-      ...prevErrors,
-      [name]: '',
-    }));
-  };
-
-  const handlePostcode = () => {
-    const script = document.createElement('script');
-    script.src = '//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js';
-    script.onload = () => {
-      new window.daum.Postcode({
-        oncomplete: function (data: any) {
-          setShippingInfo((prevInfo) => ({
-            ...prevInfo,
-            zipCode: data.zonecode,
-            address1: data.address,
-          }));
-          setErrors((prevErrors) => ({
-            ...prevErrors,
-            zipCode: '',
-            address1: '',
-          }));
-        },
-      }).open();
-    };
-    document.body.appendChild(script);
-  };
 
   return (
     <Paper elevation={0} sx={{ width: '100%', mt: '6rem' }}>
@@ -77,14 +39,7 @@ const AddressForm = () => {
 
       <Box mt={2}>
         <Box display="flex" alignItems="center" mb={2}>
-          <TextField
-            label="이름"
-            name="title"
-            placeholder="이름"
-            variant="outlined"
-            onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e)}
-            sx={{ flex: 1 }}
-          />
+          <TextField label="이름" name="title" placeholder="이름" variant="outlined" onChange={handleShippingInfoChange} sx={{ flex: 1 }} />
         </Box>
 
         <Box display="flex" alignItems="center" mb={2}>
@@ -103,44 +58,16 @@ const AddressForm = () => {
         </Box>
 
         <Box display="flex" alignItems="center" mb={2}>
-          <TextField
-            label="주소"
-            name="address1"
-            placeholder="주소"
-            variant="outlined"
-            onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e)}
-            sx={{ flex: 1 }}
-          />
+          <TextField label="주소" name="address1" placeholder="주소" variant="outlined" onChange={handleShippingInfoChange} sx={{ flex: 1 }} />
         </Box>
         <Box display="flex" alignItems="center" mb={2}>
-          <TextField
-            label="상세 주소"
-            name="address2"
-            placeholder="상세 주소"
-            variant="outlined"
-            onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e)}
-            sx={{ flex: 1 }}
-          />
+          <TextField label="상세 주소" name="address2" placeholder="상세 주소" variant="outlined" onChange={handleShippingInfoChange} sx={{ flex: 1 }} />
         </Box>
         <Box display="flex" alignItems="center" mb={2}>
-          <TextField
-            label="전화번호"
-            name="phone"
-            placeholder="전화번호"
-            variant="outlined"
-            onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e)}
-            sx={{ flex: 1 }}
-          />
+          <TextField label="전화번호" name="phone" placeholder="전화번호" variant="outlined" onChange={handleShippingInfoChange} sx={{ flex: 1 }} />
         </Box>
         <Box display="flex" alignItems="center" mb={2}>
-          <TextField
-            label="이메일"
-            name="email"
-            placeholder="email"
-            variant="outlined"
-            onChange={(e: ChangeEvent<HTMLInputElement>) => handleChange(e)}
-            sx={{ flex: 1 }}
-          />
+          <TextField label="이메일" name="email" placeholder="email" variant="outlined" onChange={handleShippingInfoChange} sx={{ flex: 1 }} />
         </Box>
       </Box>
     </Paper>
