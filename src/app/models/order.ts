@@ -25,3 +25,16 @@ export interface OrderContent {
   orderedItems: CartItem[];
   totalPrice: number;
 }
+export interface OrderHistory {
+  order_number: string;
+  created_at: string;
+  title: string;
+  total_price: number;
+  orderDetails: OrderDetail[];
+}
+
+export interface OrderDetail {
+  book_id: number;
+  quantity: number;
+  title: string;
+}
