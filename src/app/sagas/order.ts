@@ -3,7 +3,7 @@ import { SagaIterator } from 'redux-saga';
 import { all, call, fork, put, takeLatest } from 'redux-saga/effects';
 
 import { MAKE_AN_ORDER_REQUEST, MAKE_AN_ORDER_SUCCESS, MAKE_AN_ORDER_FAILURE } from '../actions/constants';
-import { MakeAnOrderRequestAction, UpdateCartItemRequestAction } from '../actions/types';
+import { MakeAnOrderRequestAction } from '../actions/types';
 
 function makeAnOrderAPI(data: MakeAnOrderRequestAction['data']) {
   return axios.post('/order', data, {
@@ -16,7 +16,7 @@ export function* makeAnOrder(action: MakeAnOrderRequestAction): SagaIterator {
     const response: any = yield call(makeAnOrderAPI, action.data);
     yield put({
       type: MAKE_AN_ORDER_SUCCESS,
-      payload: response.data,
+      payload: response.data.orderNumber,
     });
   } catch (err: any) {
     yield put({

@@ -28,6 +28,7 @@ const StyledButton = styled(Button)(({ theme }) => ({
 }));
 const OrderPage = () => {
   const { selectedItems, totalPrice } = useSelector((store: RootState) => store.cart);
+  const { isMakeAnOrderDone, orderNumber } = useSelector((store: RootState) => store.order);
   const { user } = useSelector((store: RootState) => store.user);
   const router = useRouter();
   const dispatch = useDispatch<AppDispatch>();
@@ -55,6 +56,13 @@ const OrderPage = () => {
       router.push('/login');
     }
   }, [user]);
+
+  useEffect(() => {
+    if (isMakeAnOrderDone && user && orderNumber) {
+      console.log(orderNumber);
+      router.push(`/order/order-success/${user.id}/${orderNumber}`);
+    }
+  }, [isMakeAnOrderDone, user, orderNumber]);
 
   const handleShippingInfoChange = (e: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -120,8 +128,6 @@ const OrderPage = () => {
     };
 
     dispatch(makeAnOrderRequest(orderContents));
-
-    console.log(shippingInfo, selectedItems, totalPrice);
   };
 
   return (

@@ -2,13 +2,13 @@ import { MAKE_AN_ORDER_REQUEST, MAKE_AN_ORDER_SUCCESS, MAKE_AN_ORDER_FAILURE } f
 import { OrderActionTypes } from '../actions/types';
 
 interface OrderState {
-  orderNumber: string;
+  orderNumber: string | null;
   isMakeAnOrderLoading: boolean;
   isMakeAnOrderDone: boolean;
   isMakeAnOrderError: string;
 }
 const initialOrderState: OrderState = {
-  orderNumber: '',
+  orderNumber: null,
   isMakeAnOrderLoading: false,
   isMakeAnOrderDone: false,
   isMakeAnOrderError: '',
@@ -19,7 +19,7 @@ function orderReducer(state = initialOrderState, action: OrderActionTypes): Orde
       return { ...state, isMakeAnOrderLoading: true };
 
     case MAKE_AN_ORDER_SUCCESS: {
-      console.log(action.payload);
+      console.log('ordernumber', action.payload);
       return { ...state, isMakeAnOrderLoading: false, isMakeAnOrderDone: true, orderNumber: action.payload };
     }
 
