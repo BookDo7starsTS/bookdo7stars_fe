@@ -6,6 +6,7 @@ import categoryReducer from './category';
 import reviewReducer from './review';
 import userReducer from './user';
 import wishlistReducer from './wishlist';
+import orderReducer from './order';
 
 const rootReducer = combineReducers({
   user: userReducer,
@@ -15,6 +16,7 @@ const rootReducer = combineReducers({
   cart: cartReducer,
   wishlist: wishlistReducer,
   review: reviewReducer,
+  order: orderReducer,
 });
 
 export type RootState = ReturnType<typeof rootReducer>;

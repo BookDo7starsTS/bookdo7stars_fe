@@ -1,3 +1,5 @@
+import { CartItem } from './cart';
+
 export interface ShippingInfo {
   name: string;
   zipCode: string;
@@ -16,4 +18,10 @@ export interface CardInfo {
   cardNumber: string;
   expiryDate: string;
   cvc: string;
+}
+
+export interface OrderContent {
+  shipInfo: ShippingInfo;
+  orderedItems: CartItem[];
+  totalPrice: number;
 }

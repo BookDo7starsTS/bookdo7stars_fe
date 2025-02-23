@@ -2,16 +2,18 @@
 
 import React, { ChangeEvent, useEffect, useState } from 'react';
 
-import { CardInfo, ShippingInfo } from '@/app/models/order';
+import { makeAnOrderRequest } from '@/app/actions/types/order';
+import { CardInfo, OrderContent, ShippingInfo } from '@/app/models/order';
+import { AppDispatch } from '@/app/store/store';
 import { alpha, Box, Button, Container, SelectChangeEvent, styled, Typography } from '@mui/material';
-import { useSelector } from 'react-redux';
+import { useRouter } from 'next/navigation';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
 import AddressForm from '../../components/Order/AddressForm';
 import CustomTable from '../../components/Order/CustomTable';
 import PaymentInfoForm from '../../components/Order/PaymentInfoForm';
 import { RootState } from '../../reducers';
-import { useRouter } from 'next/navigation';
-import { toast } from 'react-toastify';
 
 const StyledButton = styled(Button)(({ theme }) => ({
   borderRadius: theme.shape.borderRadius,
@@ -25,9 +27,10 @@ const StyledButton = styled(Button)(({ theme }) => ({
   },
 }));
 const OrderPage = () => {
-  const { selectedItems } = useSelector((store: RootState) => store.cart);
+  const { selectedItems, totalPrice } = useSelector((store: RootState) => store.cart);
   const { user } = useSelector((store: RootState) => store.user);
   const router = useRouter();
+  const dispatch = useDispatch<AppDispatch>();
   const [isTableExpanded, setIsTableExpanded] = useState<boolean>(false);
   const [paymentMethod, setPaymentMethod] = useState<string>('creditCard');
   const [cardInfo, setCardInfo] = useState<CardInfo>({
@@ -110,7 +113,15 @@ const OrderPage = () => {
   };
 
   const submit = () => {
-    console.log(shippingInfo, user, selectedItems);
+    const orderContents: OrderContent = {
+      shipInfo: shippingInfo,
+      orderedItems: selectedItems,
+      totalPrice: totalPrice,
+    };
+
+    dispatch(makeAnOrderRequest(orderContents));
+
+    console.log(shippingInfo, selectedItems, totalPrice);
   };
 
   return (
