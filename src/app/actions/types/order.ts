@@ -1,6 +1,28 @@
-import { OrderHistory } from '@/app/models/order';
+import { OrderContent, OrderHistory } from '@/app/models/order';
 
-import { GET_ORDER_HISTORY_REQUEST, GET_ORDER_HISTORY_SUCCESS, GET_ORDER_HISTORY_FAILURE } from '../constants';
+import {
+  MAKE_AN_ORDER_FAILURE,
+  MAKE_AN_ORDER_REQUEST,
+  MAKE_AN_ORDER_SUCCESS,
+  GET_ORDER_HISTORY_REQUEST,
+  GET_ORDER_HISTORY_SUCCESS,
+  GET_ORDER_HISTORY_FAILURE,
+} from '../constants/order';
+
+export interface MakeAnOrderRequestAction {
+  type: typeof MAKE_AN_ORDER_REQUEST;
+  data: OrderContent;
+}
+
+export interface MakeAnOrderSuccessAction {
+  type: typeof MAKE_AN_ORDER_SUCCESS;
+  payload: string;
+}
+
+export interface MakeAnOrderFailureAction {
+  type: typeof MAKE_AN_ORDER_FAILURE;
+  error: string;
+}
 
 export interface GetOrderHistoryRequestAction {
   type: typeof GET_ORDER_HISTORY_REQUEST;
@@ -19,9 +41,29 @@ export interface GetOrderHistoryFailureAction {
   error: string;
 }
 
-export type OrderActionTypes = GetOrderHistoryRequestAction | GetOrderHistorySuccessAction | GetOrderHistoryFailureAction;
+export type OrderActionTypes =
+  | MakeAnOrderRequestAction
+  | MakeAnOrderSuccessAction
+  | MakeAnOrderFailureAction
+  | GetOrderHistoryRequestAction
+  | GetOrderHistorySuccessAction
+  | GetOrderHistoryFailureAction;
 
-// action creater functions
+export const makeAnOrderRequest = (data: MakeAnOrderRequestAction['data']): MakeAnOrderRequestAction => ({
+  type: MAKE_AN_ORDER_REQUEST,
+  data,
+});
+
+export const makeAnOrderSuccess = (payload: MakeAnOrderSuccessAction['payload']): MakeAnOrderSuccessAction => ({
+  type: MAKE_AN_ORDER_SUCCESS,
+  payload: payload,
+});
+
+export const makeAnOrderFailure = (error: string): MakeAnOrderFailureAction => ({
+  type: MAKE_AN_ORDER_FAILURE,
+  error,
+});
+
 export const getOrderHistoryRequest = (page: number, pageSize: number): GetOrderHistoryRequestAction => ({
   type: GET_ORDER_HISTORY_REQUEST,
   page,

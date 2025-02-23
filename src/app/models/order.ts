@@ -1,3 +1,5 @@
+import { CartItem } from './cart';
+
 export interface ShippingInfo {
   name: string;
   zipCode: string;
@@ -18,6 +20,11 @@ export interface CardInfo {
   cvc: string;
 }
 
+export interface OrderContent {
+  shipInfo: ShippingInfo;
+  orderedItems: CartItem[];
+  totalPrice: number;
+}
 export interface OrderHistory {
   order_number: string;
   created_at: string;

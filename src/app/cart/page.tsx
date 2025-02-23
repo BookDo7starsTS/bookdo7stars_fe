@@ -9,7 +9,14 @@ import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
-import { deleteCartItemRequest, getItemsInCartRequest, setQuantityInLocalstorage, setSelectedItemsForOrder, updateCartItemRequest } from '../actions/types';
+import {
+  deleteCartItemRequest,
+  getItemsInCartRequest,
+  setQuantityInLocalstorage,
+  setSelectedItemsForOrder,
+  setTotalPrice,
+  updateCartItemRequest,
+} from '../actions/types';
 import CartCard from '../components/Cart/CartCard';
 import { CartItem } from '../models/cart';
 
@@ -114,7 +121,7 @@ const CartPage = () => {
   // 총 금액 및 상품 수 계산
   const selectedItems = cartItems.filter((item) => checkedItems.includes(item.book.id.toString()));
 
-  let totalPrice;
+  let totalPrice: number;
   let totalItems;
   if (selectedItems) {
     totalPrice = selectedItems.reduce((sum, item) => sum + item.quantity * item.book.priceSales, 0);
@@ -123,6 +130,7 @@ const CartPage = () => {
 
   const goToOrderPage = () => {
     dispatch(setSelectedItemsForOrder(selectedItems));
+    dispatch(setTotalPrice(totalPrice));
     if (user) {
       router.push(`/order/${user?.id}`);
     } else {
@@ -165,7 +173,7 @@ const CartPage = () => {
         <Grid container spacing={2}>
           <Grid item xs={6}>
             <Typography>
-              총 상품가격: <b>₩{totalPrice?.toLocaleString()}</b> (1,500원 할인)
+              총 상품가격: <b>₩{totalPrice!.toLocaleString()}</b> (1,500원 할인)
             </Typography>
             <Typography>
               배송비: <b>2,500원</b>
@@ -188,7 +196,7 @@ const CartPage = () => {
         </Grid>
         <Box sx={{ mt: 2, borderTop: '1px solid #ddd', pt: 2 }}>
           <Typography variant="h6">
-            총 결제 예상 금액: <b>₩{totalPrice?.toLocaleString()}</b>
+            총 결제 예상 금액: <b>₩{totalPrice!.toLocaleString()}</b>
           </Typography>
           <Typography variant="h6">
             총 적립 예상 마일리지: <b>750원</b>

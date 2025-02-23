@@ -13,6 +13,7 @@ import {
   DELETE_CART_ITEM_SUCCESS,
   SET_QUANTITY_IN_LOCALSTORAGE,
   SET_SELECTED_ITEMS_FOR_ORDER,
+  SET_TOTAL_PRICE,
 } from '../actions/constants';
 import { CartActionTypes } from '../actions/types';
 import { CartItem } from '../models/cart';
@@ -123,6 +124,10 @@ function cartReducer(state = initialCartState, action: CartActionTypes): CartSta
 
     case SET_SELECTED_ITEMS_FOR_ORDER: {
       return { ...state, selectedItems: action.data };
+    }
+
+    case SET_TOTAL_PRICE: {
+      return { ...state, totalPrice: action.data };
     }
 
     default:

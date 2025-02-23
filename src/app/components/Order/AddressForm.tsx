@@ -39,7 +39,7 @@ const AddressForm: React.FC<AddressFormProps> = (props: AddressFormProps) => {
 
       <Box mt={2}>
         <Box display="flex" alignItems="center" mb={2}>
-          <TextField label="이름" name="title" placeholder="이름" variant="outlined" onChange={handleShippingInfoChange} sx={{ flex: 1 }} />
+          <TextField label="이름" name="name" placeholder="이름" variant="outlined" onChange={handleShippingInfoChange} sx={{ flex: 1 }} />
         </Box>
 
         <Box display="flex" alignItems="center" mb={2}>
