@@ -53,12 +53,10 @@ const CustomTable = (props: CustomTableProps) => {
               <StyledTableCell component="th" scope="row">
                 {row.book.title}
               </StyledTableCell>
-              <StyledTableCell align="right">{row.book.priceStandard}</StyledTableCell>
-              <StyledTableCell align="right">
-                {row.book.priceSales} - {row.book.priceStandard}
-              </StyledTableCell>
+              <StyledTableCell align="right">₩ {row.book.priceStandard}</StyledTableCell>
               <StyledTableCell align="right">{row.quantity}</StyledTableCell>
-              <StyledTableCell align="right">{row.book.priceStandard}</StyledTableCell>
+              <StyledTableCell align="right">₩ {Math.abs(row.book.priceSales - row.book.priceStandard)}</StyledTableCell>
+              <StyledTableCell align="right">₩ {Math.imul(row.book.priceStandard, row.quantity)}</StyledTableCell>
               <StyledTableCell align="right">배송 정보가 없습니다.</StyledTableCell>
             </StyledTableRow>
           ))}

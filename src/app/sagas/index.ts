@@ -8,7 +8,6 @@ import orderSaga from './order';
 import reviewSaga from './review';
 import userSaga from './user';
 import wishlistSaga from './wishlist';
-import orderSaga from './order';
 
 axios.defaults.baseURL = 'http://localhost:4000';
 axios.defaults.withCredentials = true;
