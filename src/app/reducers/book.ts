@@ -35,13 +35,13 @@ import {
   SET_SORTBY,
   SET_SELECTED_BOOKS,
 } from '../actions/constants';
-import { BookActionTypes } from '../actions/types';
+import { BookActionTypes, GetBooksSearchRequestAction } from '../actions/types';
 import { Book } from '../models/book';
 
 type InitialState = {
   books: Book[];
   mainpageBooks: any;
-  searchData: {};
+  searchData: GetBooksSearchRequestAction['data'];
   count: number;
   groupBooks: Book[];
   categoryBooks: Book[];

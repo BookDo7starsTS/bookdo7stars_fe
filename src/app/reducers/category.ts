@@ -88,9 +88,10 @@ function categoryReducer(state = initialState, action: CategoryActionTypes) {
       };
     case GET_CATEGORY_BY_ID_FAILURE:
       return { ...state, isGetCategoryByIdLoading: false, isGetCategoryByIdDone: false, isGetCategoryByIdError: action.error };
-    case RESET_CATEGORY_BY_ID_REQUEST:
+    case RESET_CATEGORY_BY_ID_REQUEST: {
       const { [action.id]: _, ...restCategoriesById } = state.categoriesById;
       return { ...state, isResetCategoryByIdLoading: true, categoriesById: restCategoriesById };
+    }
     case SET_SELECTED_CATEGORY_IDS:
       return {
         ...state,

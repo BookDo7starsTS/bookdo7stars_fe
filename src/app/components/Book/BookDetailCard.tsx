@@ -4,6 +4,7 @@ import { toggleWishlistRequest } from '@/app/actions/types';
 import { Book } from '@/app/models/book';
 import { CartItemDto } from '@/app/models/cart';
 import { RootState } from '@/app/reducers';
+import { AppDispatch } from '@/app/store/store';
 import { addToCart } from '@/utils/cartUtils';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import FavoriteBorderIcon from '@mui/icons-material/FavoriteBorder';
@@ -24,7 +25,7 @@ interface BookDetailCardProps {
 }
 
 const BookDetailCard: React.FC<BookDetailCardProps> = ({ book }) => {
-  const dispatch = useDispatch();
+  const dispatch = useDispatch<AppDispatch>();
   const router = useRouter();
   const { user } = useSelector((store: RootState) => store.user);
   const { isAddToCartDone } = useSelector((store: RootState) => store.cart);

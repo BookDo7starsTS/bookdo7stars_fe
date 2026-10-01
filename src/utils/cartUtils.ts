@@ -1,4 +1,4 @@
-import { addToCartRequest, getItemsInCartRequest, setQuantityInLocalstorage } from '@/app/actions/types';
+import { addToCartRequest, setQuantityInLocalstorage } from '@/app/actions/types';
 import { Book } from '@/app/models/book';
 import { CartItemDto, CartItem } from '@/app/models/cart';
 import { User } from '@/app/models/user';

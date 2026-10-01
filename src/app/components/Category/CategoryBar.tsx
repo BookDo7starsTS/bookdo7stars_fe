@@ -11,7 +11,6 @@ import { useRouter } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 
 import { QueryTypes, bookGroups, getBooksPageURL } from '../../books/constants';
-import { Category } from '../../models/category';
 
 const CategoryBar = () => {
   const dispatch = useDispatch<AppDispatch>();
