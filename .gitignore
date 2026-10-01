@@ -37,4 +37,5 @@ next-env.d.ts
 
 .vscode
 
+.nvmrc
 src/app/styles/styles.css
