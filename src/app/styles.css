@@ -6,13 +6,6 @@ body {
   margin: 0;
 }
 
-@media (min-width: 2560px) {
-  body {
-    margin-left: 20%;
-    margin-right: 20%;
-  }
-}
-
 main {
   display: flex;
   justify-content: center;

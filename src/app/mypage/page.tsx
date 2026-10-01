@@ -86,13 +86,14 @@ const MyPage = () => {
   };
 
   const { wishlist } = useSelector((store: RootState) => store.wishlist) || { wishlist: [] };
+  const wishlistItems = Array.isArray(wishlist) ? wishlist : [];
   console.log('wishlist', wishlist);
   useEffect(() => {
     dispatch(getWishlistRequest(1, 5));
   }, []);
   const [page, setPage] = React.useState(0);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - wishlist.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - wishlistItems.length) : 0;
   const handleChangePage = (event: React.MouseEvent<HTMLButtonElement> | null, newPage: number) => {
     setPage(newPage);
     //setRows([]);
@@ -178,7 +179,7 @@ const MyPage = () => {
                       </TableRow>
                     </TableHead>
                     <TableBody>
-                      {wishlist?.map((row: any) => (
+                      {wishlistItems.map((row: any) => (
                         <TableRow key={row.id}>
                           <TableCell style={{ width: 60 }} align="right">
                             {row.id}
@@ -208,7 +209,7 @@ const MyPage = () => {
                         <TablePagination
                           rowsPerPageOptions={[5, 10, 25, { label: 'All', value: -1 }]}
                           colSpan={3}
-                          count={wishlist.length}
+                          count={wishlistItems.length}
                           rowsPerPage={rowsPerPage}
                           page={page}
                           slotProps={{

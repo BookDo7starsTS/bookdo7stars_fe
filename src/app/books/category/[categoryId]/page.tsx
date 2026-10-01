@@ -124,7 +124,7 @@ const CategoryBookPage = () => {
     border: `1px solid ${theme.palette.primary.main}`,
   };
 
-  const pageTitle = getTitle(count, undefined, isGetCategoryByIdDone && selectedCategory ? selectedCategory : undefined);
+  const pageTitle = getTitle(count, theme, undefined, isGetCategoryByIdDone && selectedCategory ? selectedCategory : undefined);
 
   return (
     <>

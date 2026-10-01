@@ -1,11 +1,9 @@
 import React from 'react';
 
 import { CategoryById } from '@/app/models/category';
-import { AppDispatch } from '@/app/store/store';
 import ArrowForwardIosOutlinedIcon from '@mui/icons-material/ArrowForwardIosOutlined';
 import RemoveOutlinedIcon from '@mui/icons-material/RemoveOutlined';
 import { IconButton, ListItem, ListItemText, SxProps, useTheme } from '@mui/material';
-import { useDispatch } from 'react-redux';
 
 type CategoryListItemProps = {
   category: CategoryById;

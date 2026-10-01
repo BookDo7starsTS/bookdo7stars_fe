@@ -1,4 +1,3 @@
-import { User } from '../../models/user';
 import {
   REGISTER_REQUEST,
   REGISTER_SUCCESS,

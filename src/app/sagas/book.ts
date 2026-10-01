@@ -150,7 +150,7 @@ export function* getBookIsbnSearch(action: GetBookIsbnSearchRequestAction): Saga
   }
 }
 
-function getBooksAuthorSearchAPI(author: string, bookId: number, page: number, pageSize: number) {
+function getBooksAuthorSearchAPI(author: string, bookId: number, page = 1, pageSize = 20) {
   return axios.get(`/book/search/author?author=${author}&bookId=${bookId}&page=${page}&pageSize=${pageSize}`);
 }
 
@@ -162,7 +162,7 @@ export function* getBooksAuthorSearch(action: GetBooksAuthorSearchRequestAction)
     const response: any = yield call(getBooksAuthorSearchAPI, action.author, action.bookId, action.page, action.pageSize);
     yield put({
       type: GET_BOOKS_AUTHOR_SEARCH_SUCCESS,
-      payload: response.data.books,
+      payload: { books: response.data.books, count: response.data.count },
     });
   } catch (error: any) {
     yield put({

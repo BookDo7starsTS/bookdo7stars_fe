@@ -30,7 +30,7 @@ const BookOverview: React.FC<BookOverviewProps> = ({ book }) => {
 
   return (
     <Box data-testid="book-overview-box" sx={{ mt: { xs: 8, md: 16 } }}>
-      <Container sx={{ mb: 4 }}>
+      <Container sx={{ width: { xs: '100%', md: '60%' }, maxWidth: 'none !important', mb: 4 }}>
         <Grid container rowSpacing={2} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
           <Grid item xs={12} md={4} sx={{ textAlign: 'center' }}>
             <BookCover cover={book.cover} />
