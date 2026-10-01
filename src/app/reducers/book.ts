@@ -77,6 +77,7 @@ type InitialState = {
   sortBy: string;
   selectedBooks: Book[];
   authorBooks: Book[];
+  authorBooksCount: number;
 };
 
 export const initialState: InitialState = {
@@ -125,6 +126,7 @@ export const initialState: InitialState = {
   sortBy: 'accuracy',
   selectedBooks: [],
   authorBooks: [],
+  authorBooksCount: 0,
 };
 
 function bookReducer(state = initialState, action: BookActionTypes) {
@@ -167,9 +169,22 @@ function bookReducer(state = initialState, action: BookActionTypes) {
     case GET_BOOKS_AUTHOR_SEARCH_REQUEST:
       return { ...state, isGetBooksSearchLoading: true };
     case GET_BOOKS_AUTHOR_SEARCH_SUCCESS:
-      return { ...state, isGetBooksSearchLoading: false, isGetBooksSearchDone: true, authorBooks: state.authorBooks.concat(action.payload), count: 1 };
+      return {
+        ...state,
+        isGetBooksSearchLoading: false,
+        isGetBooksSearchDone: true,
+        authorBooks: state.authorBooks.concat(action.payload.books),
+        authorBooksCount: action.payload.count,
+      };
     case GET_BOOKS_AUTHOR_SEARCH_FAILURE:
-      return { ...state, isGetBooksSearchLoading: false, isGetBooksSearchDone: false, isGetBooksSearchError: action.error, authorBooks: [] };
+      return {
+        ...state,
+        isGetBooksSearchLoading: false,
+        isGetBooksSearchDone: false,
+        isGetBooksSearchError: action.error,
+        authorBooks: [],
+        authorBooksCount: 0,
+      };
 
     case GET_BOOK_REQUEST:
       return { ...state, isGetBookLoading: true };
@@ -189,7 +204,7 @@ function bookReducer(state = initialState, action: BookActionTypes) {
     case RESET_GROUP_BOOKS:
       return { ...state, groupBooks: [] };
     case RESET_AUTHOR_BOOKS:
-      return { ...state, authorBooks: [] };
+      return { ...state, authorBooks: [], authorBooksCount: 0 };
 
     case SET_FILTERS:
       return { ...state, filters: action.data };

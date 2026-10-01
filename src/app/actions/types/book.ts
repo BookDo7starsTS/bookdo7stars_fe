@@ -154,7 +154,10 @@ export interface GetBooksAuthorSearchRequestAction {
 
 export interface GetBooksAuthorSearchSuccessAction {
   type: typeof GET_BOOKS_AUTHOR_SEARCH_SUCCESS;
-  payload: Book[];
+  payload: {
+    books: Book[];
+    count: number;
+  };
 }
 
 export interface GetBooksAuthorSearchFailureAction {

@@ -162,7 +162,7 @@ export function* getBooksAuthorSearch(action: GetBooksAuthorSearchRequestAction)
     const response: any = yield call(getBooksAuthorSearchAPI, action.author, action.bookId, action.page, action.pageSize);
     yield put({
       type: GET_BOOKS_AUTHOR_SEARCH_SUCCESS,
-      payload: response.data.books,
+      payload: { books: response.data.books, count: response.data.count },
     });
   } catch (error: any) {
     yield put({
