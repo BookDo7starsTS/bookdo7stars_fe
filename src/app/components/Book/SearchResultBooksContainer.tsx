@@ -8,7 +8,7 @@ import { SearchType } from '@/app/search/types/searchType';
 import { AppDispatch } from '@/app/store/store';
 import { addToCart } from '@/utils/cartUtils';
 import { getTitle } from '@/utils/pageUtils';
-import { useMediaQuery, Container, Typography, Grid, Box, Checkbox } from '@mui/material';
+import { Container, Typography, Grid, Box, Checkbox } from '@mui/material';
 import { useTheme } from '@mui/material/styles';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -44,8 +44,6 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
   const pageCount = Math.ceil(count / booksPerPage);
   const theme = useTheme();
 
-  const isWidth900Up = useMediaQuery('(min-width:900px)');
-
   useEffect(() => {
     if (selectedBookIds.length !== 0) {
       const selectedBooks = books.filter((book) => selectedBookIds.includes(book.id));
@@ -59,7 +57,7 @@ const SearchResultBooksContainer: React.FC<SearchResultBooksContainerProps> = ({
     );
   };
 
-  const pageTitle = getTitle(resultCount, parsedSearchCondition);
+  const pageTitle = getTitle(resultCount, theme, parsedSearchCondition);
 
   const paginationStyle = {
     display: 'flex',

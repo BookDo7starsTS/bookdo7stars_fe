@@ -1,10 +1,8 @@
 import { ICategory } from '@/app/models/category';
 import { SearchType } from '@/app/search/types/searchType';
-import { useTheme } from '@mui/material/styles';
+import { Theme } from '@mui/material/styles';
 
-export const getTitle = (resultCount: number, parsedSearchCondition?: SearchType, category?: ICategory) => {
-  const theme = useTheme();
-
+export const getTitle = (resultCount: number, theme: Theme, parsedSearchCondition?: SearchType, category?: ICategory) => {
   if (parsedSearchCondition) {
     const resultString = Object.entries(parsedSearchCondition)
       .filter(([key, value]) => value !== '' && key !== 'page' && key !== 'pageSize' && key !== 'orderTerm')

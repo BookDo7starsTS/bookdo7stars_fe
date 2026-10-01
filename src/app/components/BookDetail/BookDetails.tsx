@@ -6,7 +6,6 @@ import { User } from '@/app/models/user';
 import { RootState } from '@/app/reducers';
 import { AppDispatch } from '@/app/store/store';
 import { Box, Container, Tabs, Tab, Typography, Paper } from '@mui/material';
-import { useRouter, useSearchParams } from 'next/navigation';
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
 
@@ -28,10 +27,7 @@ const BookDetails: React.FC<BookDetailsProps> = ({ book, user }) => {
   const [editedReview, setEditedReview] = useState<string>('');
   const [isEditing, setIsEditing] = useState<Record<string, boolean>>({});
   const dispatch = useDispatch<AppDispatch>();
-  const router = useRouter();
-  const searchParams = useSearchParams();
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
-  const lastScrollY = useRef<number>(0);
 
   const { reviews, isAddReviewError, isAddReviewDone, isEditReviewError, isEditReviewDone, isDeleteReviewError } = useSelector(
     (store: RootState) => store.review,
@@ -153,7 +149,13 @@ const BookDetails: React.FC<BookDetailsProps> = ({ book, user }) => {
           ))}
         </Tabs>
         {sections.map((section) => (
-          <Box key={section.id} id={section.id} ref={(el) => (sectionRefs.current[section.id] = el)} my={8}>
+          <Box
+            key={section.id}
+            id={section.id}
+            ref={(el) => {
+              sectionRefs.current[section.id] = el as HTMLDivElement | null;
+            }}
+            my={8}>
             <Typography variant="h4">{section.label}</Typography>
             {section.id === 'bookIntro' && (
               <Box component={Paper} sx={{ mt: 2, mb: 2, outline: '1px solid #DFE4DF', backgroundColor: '#DADFDA', width: '100%' }}>

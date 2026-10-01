@@ -7,7 +7,6 @@ import LoadingButton from '@mui/lab/LoadingButton';
 import { Container, Grid, Box } from '@mui/material';
 import { useDispatch, useSelector } from 'react-redux';
 
-import { Book } from '../../../models/book';
 import BookCard from '../../Book/BookCard';
 
 interface BookDetailOtherByAuthorProps {

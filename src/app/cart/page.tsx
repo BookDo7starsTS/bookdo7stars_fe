@@ -28,8 +28,7 @@ const CartPage = () => {
 
   const [checkedIds, setCheckedIds] = useState<Record<string, boolean>>({});
 
-  const itemsInLocalStorage = localStorage.getItem('cartItems');
-  const itemsInArray = itemsInLocalStorage ? JSON.parse(itemsInLocalStorage) : [];
+  const itemsInArray = itemsFromLocalstorage;
 
   const router = useRouter();
 
@@ -37,9 +36,10 @@ const CartPage = () => {
     if (user || isUpdateCartItemDone || isDeleteCartItemDone) {
       dispatch(getItemsInCartRequest());
     } else {
-      setItemsFromLocalstorage(itemsInArray);
+      const storedCartItems = window.localStorage.getItem('cartItems');
+      setItemsFromLocalstorage(storedCartItems ? JSON.parse(storedCartItems) : []);
     }
-  }, [user, isUpdateCartItemDone, isDeleteCartItemDone]);
+  }, [dispatch, user, isUpdateCartItemDone, isDeleteCartItemDone]);
 
   const cartItems = user ? items : itemsFromLocalstorage;
 

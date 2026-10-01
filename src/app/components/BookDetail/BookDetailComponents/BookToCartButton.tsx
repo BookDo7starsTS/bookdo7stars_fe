@@ -1,4 +1,4 @@
-import { useState, React } from 'react';
+import { useState } from 'react';
 
 import { toggleWishlistRequest } from '@/app/actions/types';
 import { Book } from '@/app/models/book';

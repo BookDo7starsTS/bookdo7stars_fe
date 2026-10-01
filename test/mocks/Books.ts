@@ -22,6 +22,7 @@ export const mockBooks: Book[] = [
     deleted: false,
     pubDate: new Date(),
     salesPoint: 0,
+    isBookmarked: false,
   },
   {
     id: 2,
@@ -44,5 +45,6 @@ export const mockBooks: Book[] = [
     deleted: false,
     pubDate: new Date(),
     salesPoint: 0,
+    isBookmarked: false,
   },
 ];

@@ -87,7 +87,7 @@ function deleteReviewAPI(data: DeleteReviewRequestAction['data']) {
 
 export function* deleteReview(action: DeleteReviewRequestAction): SagaIterator {
   try {
-    const response: any = yield call(deleteReviewAPI, action.data);
+    yield call(deleteReviewAPI, action.data);
     yield put({
       type: DELETE_REVIEW_SUCCESS,
     });

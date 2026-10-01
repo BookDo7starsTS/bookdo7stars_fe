@@ -1,6 +1,5 @@
 import { Review } from '@/app/models/review';
 import { User } from '@/app/models/user';
-import { RootState } from '@/app/reducers';
 import CheckIcon from '@mui/icons-material/Check';
 import CloseIcon from '@mui/icons-material/Close';
 import DeleteIcon from '@mui/icons-material/Delete';
