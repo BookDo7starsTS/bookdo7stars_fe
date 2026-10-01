@@ -72,12 +72,14 @@
 .postcode-widget {
   display: none;
   position: absolute;
-  width: 20%;
+  width: 400px;
+  max-width: calc(100vw - 32px);
   height: 400px;
   z-index: 1;
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
-  top: 100%;
+  top: calc(100% + 8px);
   left: 0;
+  background-color: white;
 }
 
 .postcode-widget.open {

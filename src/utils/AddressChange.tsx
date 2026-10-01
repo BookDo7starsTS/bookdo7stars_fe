@@ -14,10 +14,12 @@ declare global {
 
 const PostcodeWidget = styled.div`
   &.open {
-    position: absolute;
     z-index: 9999;
-    background: blue;
   }
+`;
+
+const AddressChangeWrapper = styled.div`
+  position: relative;
 `;
 
 interface AddressChangeProps {
@@ -67,7 +69,7 @@ const AddressChange: React.FC<AddressChangeProps> = ({ setAddress }) => {
   }, [isPostcodeOpen, setAddress, togglePostcode, dispatch]);
 
   return (
-    <>
+    <AddressChangeWrapper>
       <div className="address-change-container">
         <button className="change-button" onClick={togglePostcode}>
           지역 선택 {'▾'}
@@ -75,7 +77,7 @@ const AddressChange: React.FC<AddressChangeProps> = ({ setAddress }) => {
         <Typography sx={{ fontSize: '12px', color: 'red' }}>수도권과 부산은 하루배송 가능 지역입니다.</Typography>
       </div>
       <PostcodeWidget className={`postcode-widget ${isPostcodeOpen ? 'open' : ''}`} ref={elementRef} />
-    </>
+    </AddressChangeWrapper>
   );
 };
 
