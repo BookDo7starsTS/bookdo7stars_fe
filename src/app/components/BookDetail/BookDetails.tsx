@@ -1,7 +1,14 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
 
-import { addReviewRequest, deleteReviewRequest, editReviewRequest, getAllReviewsOfBookRequest } from '@/app/actions/types';
+import {
+  addReviewRequest,
+  deleteReviewRequest,
+  editReviewRequest,
+  getAllReviewsOfBookRequest,
+  getBooksAuthorSearchRequest,
+  resetAuthorBooks,
+} from '@/app/actions/types';
 import { User } from '@/app/models/user';
 import { RootState } from '@/app/reducers';
 import { AppDispatch } from '@/app/store/store';
@@ -22,21 +29,24 @@ interface BookDetailsProps {
 }
 
 const BookDetails: React.FC<BookDetailsProps> = ({ book, user }) => {
+  const authorBooksPageSize = 6;
   const [activeTab, setActiveTab] = useState<string>('bookIntro');
   const [review, setReview] = useState<string>('');
   const [editedReview, setEditedReview] = useState<string>('');
   const [isEditing, setIsEditing] = useState<Record<string, boolean>>({});
+  const [authorBooksPage, setAuthorBooksPage] = useState(1);
   const dispatch = useDispatch<AppDispatch>();
   const sectionRefs = useRef<Record<string, HTMLElement | null>>({});
 
   const { reviews, isAddReviewError, isAddReviewDone, isEditReviewError, isEditReviewDone, isDeleteReviewError } = useSelector(
     (store: RootState) => store.review,
   );
+  const { authorBooks, authorBooksCount, isGetBooksSearchLoading } = useSelector((store: RootState) => store.book);
 
   const sections = [
     { id: 'bookIntro', label: 'Book Introduction' },
     { id: 'bookInfo', label: 'Book Information' },
-    { id: 'author', label: 'Other Books by the Author' },
+    ...(authorBooks.length > 0 ? [{ id: 'author', label: 'Other Books by the Author' }] : []),
     { id: 'reviews', label: 'Reviews' },
     { id: 'delivery', label: 'Delivery' },
   ];
@@ -44,6 +54,12 @@ const BookDetails: React.FC<BookDetailsProps> = ({ book, user }) => {
   useEffect(() => {
     dispatch(getAllReviewsOfBookRequest({ bookId: book.id }));
   }, [book.id, isAddReviewDone, isEditReviewDone]);
+
+  useEffect(() => {
+    setAuthorBooksPage(1);
+    dispatch(resetAuthorBooks());
+    dispatch(getBooksAuthorSearchRequest(book.author, book.id, 1, authorBooksPageSize));
+  }, [book.id, book.author, dispatch]);
 
   useEffect(() => {
     if (isAddReviewError) toast.error(isAddReviewError);
@@ -131,6 +147,12 @@ const BookDetails: React.FC<BookDetailsProps> = ({ book, user }) => {
     }));
   };
 
+  const handleAuthorBooksSeeMore = () => {
+    const nextPage = authorBooksPage + 1;
+    setAuthorBooksPage(nextPage);
+    dispatch(getBooksAuthorSearchRequest(book.author, book.id, nextPage, authorBooksPageSize));
+  };
+
   if (!book) return <p>책 정보를 불러오지 못했습니다.</p>;
 
   return (
@@ -165,7 +187,14 @@ const BookDetails: React.FC<BookDetailsProps> = ({ book, user }) => {
               </Box>
             )}
             {section.id === 'bookInfo' && <BookDetailBookInfo book={book} />}
-            {section.id === 'author' && <BookDetailOtherByAuthor author={book.author} bookId={book.id} />}
+            {section.id === 'author' && (
+              <BookDetailOtherByAuthor
+                books={authorBooks}
+                hasMore={authorBooks.length < authorBooksCount}
+                isLoading={isGetBooksSearchLoading}
+                onSeeMore={handleAuthorBooksSeeMore}
+              />
+            )}
             {section.id === 'reviews' && (
               <>
                 {reviews.length > 0 &&
