@@ -135,7 +135,7 @@ const BookDetails: React.FC<BookDetailsProps> = ({ book, user }) => {
 
   return (
     <Box data-testid="book-detail-box" sx={{ mt: { xs: 8, md: 16 } }}>
-      <Container sx={{ mt: 5, mb: 4 }}>
+      <Container sx={{ width: '100%', maxWidth: '1280px !important', mt: 5, mb: 4 }}>
         <Tabs
           value={activeTab}
           onChange={handleTabChange}
